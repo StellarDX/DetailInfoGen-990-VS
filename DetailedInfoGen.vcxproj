@@ -112,6 +112,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -127,6 +128,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -137,7 +139,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="InfoGen990.cpp" />
+    <ClCompile Include="InfoGen990_Data\composite.cc" />
+    <ClCompile Include="InfoGen990_Data\composite1.cc" />
+    <ClCompile Include="InfoGen990_Data\final.cc" />
+    <ClCompile Include="InfoGen990_Data\gbuffer_basic.cc" />
+    <ClCompile Include="InfoGen990_Data\gbuffer_planet.cc" />
+    <ClCompile Include="InfoGen990_Data\gbuffer_star.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="InfoGen990_Data\composite.h" />
+    <ClInclude Include="InfoGen990_Data\composite1.h" />
+    <ClInclude Include="InfoGen990_Data\final.h" />
+    <ClInclude Include="InfoGen990_Data\gbuffer_basic.h" />
+    <ClInclude Include="InfoGen990_Data\gbuffer_planet.h" />
+    <ClInclude Include="InfoGen990_Data\gbuffer_star.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
