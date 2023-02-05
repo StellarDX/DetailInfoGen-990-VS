@@ -31,13 +31,36 @@ string Final;
 
 enum OutputFormat OFormat = MD;
 
+void Transcode(string& arg, int encoding)
+{
+	int len = MultiByteToWideChar(CP_ACP, 0, arg.c_str(), -1, NULL, 0);
+
+	wchar_t* wszUtf8 = new wchar_t[len];
+	memset(wszUtf8, 0, len);
+	MultiByteToWideChar(CP_ACP, 0, arg.c_str(), -1, wszUtf8, len);
+
+	len = WideCharToMultiByte(encoding, 0, wszUtf8, -1, NULL, 0, NULL, NULL);
+	char* szUtf8 = new char[len + 1];
+	memset(szUtf8, 0, len + 1);
+	WideCharToMultiByte(encoding, 0, wszUtf8, -1, szUtf8, len, NULL, NULL);
+
+	arg = szUtf8;
+	delete[] szUtf8;
+	delete[] wszUtf8;
+}
+
 /////////////////////////MAIN//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 int main(int argc, char const* argv[]) // main function can return "void" in C++20, WHY???
 {
+	vector<string> args;
+	for (size_t i = 0; i < argc; i++)
+	{
+		args.push_back(argv[i]);
+	}
 	cout << "Loading File...\n";
 
-	string FileName = "RS 1236-3145-0-0-548";
+	string FileName = "RS 1236-1389-4-2925-2839";
 	ISCStream SystemIn;
 	try{SystemIn = ParseFile(FileName + ".sc");}
 	catch (exception e)
@@ -58,11 +81,22 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 
 	cout << vformat("{} Objects loaded.\n", make_format_args(System.size()));
 
-	if (argc == 3 && "-html" == string(argv[3])) { OFormat = HTML; }
-	else if (argc == 3 && "-md" == string(argv[3])) { OFormat = MD; }
+	if (find(args.begin(), args.end(), "-html") != args.end()) { OFormat = HTML; }
+	else if (find(args.begin(), args.end(), "-md") != args.end()) { OFormat = MD; }
 
 	composite(argc, argv);
 	composite1(argc, argv);
+
+	int encoding = 65001; // Default encoding is UTF-8
+	for (size_t i = 0; i < argc; i++)
+	{
+		if (string(argv[i]).substr(0, 10) == "-encoding=")
+		{
+			string encodstr = string(argv[i]);
+			encoding = stoi(encodstr.substr(11, encodstr.size() - 11));
+		}
+	}
+	Transcode(Final, encoding);
 
 	ofstream fout(FileName + ".md");
 	fout << Final;

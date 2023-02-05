@@ -198,6 +198,12 @@ string GHMarkDownProc(shared_ptr<Object> Obj)
 	{
 		StarParams Params = gbuffer_star(Obj);
 		os << vformat("\n### {} - {}\n", make_format_args(Obj->Name[0], GenStarType(Obj->SpecClass)));
+
+		if (Obj->Orbit.RefPlane != NO_DATA_STRING && Obj->Orbit.RefPlane != "Static" && Obj->Orbit.RefPlane != "Fixed")
+		{
+			os << GHMarkDownGenOrbit(Obj);
+		}
+
 		os << " * Physical characteristics\n";
 		os << "| | |\n|:---|---:|\n";
 		os << vformat(fmtstring, make_format_args("Bolometric magnitude", Params.AbsMagnBol));
@@ -216,15 +222,17 @@ string GHMarkDownProc(shared_ptr<Object> Obj)
 			os << vformat(fmtstring, make_format_args("Obliquity", Params.Obliquity));
 			os << vformat(fmtstring, make_format_args("RotationPeriod (s)", Params.RotationPeriod));
 		}
+	}
+	else if (Obj->Type == "Planet" || Obj->Type == "DwarfPlanet" || Obj->Type == "Moon")
+	{
+		PlanetParams Par = gbuffer_planet(Obj);
+		os << vformat("\n### {} - {}\n", make_format_args(Obj->Name[0], GenPlanetType(Obj)));
+
 		if (Obj->Orbit.RefPlane != NO_DATA_STRING && Obj->Orbit.RefPlane != "Static" && Obj->Orbit.RefPlane != "Fixed")
 		{
 			os << GHMarkDownGenOrbit(Obj);
 		}
-	}
-	else if (Obj->Type == "Planet")
-	{
-		PlanetParams Par = gbuffer_planet(Obj);
-		os << vformat("\n### {} - {}\n", make_format_args(Obj->Name[0], GenPlanetType(Obj)));
+
 		os << " * Physical characteristics\n";
 		os << "| | |\n|:---|---:|\n";
 		os << vformat(fmtstring, make_format_args("Mean radius (m)", Par.MeanRadius));
@@ -242,7 +250,7 @@ string GHMarkDownProc(shared_ptr<Object> Obj)
 		os << vformat(fmtstring, make_format_args("Albedo (Bond)", Par.AlbedoBond));
 		os << vformat(fmtstring, make_format_args("Albedo (geometric)", Par.AlbedoGeom));
 
-		os << " * Surface temperature\n";
+		os << " * Surface temperature (Approximate value, only for reference)\n";
 		os << "| Min | Mean | Max |\n|:---:|:---:|:---:|\n";
 		string tfmtstring = "| {:." + to_string(_OUT_PRECISISION) + "g} | {:." + to_string(_OUT_PRECISISION) + "g} | {:." + to_string(_OUT_PRECISISION) + "g} |\n";
 		vec3 Temperatures(Par.MinTemperature, Par.MeanTemperature, Par.MaxTemperature);
@@ -251,11 +259,6 @@ string GHMarkDownProc(shared_ptr<Object> Obj)
 			Temperatures += Obj->Atmosphere.Greenhouse;
 		}
 		os << vformat(tfmtstring, make_format_args(Temperatures.x, Temperatures.y, Temperatures.z));
-
-		if (Obj->Orbit.RefPlane != NO_DATA_STRING && Obj->Orbit.RefPlane != "Static" && Obj->Orbit.RefPlane != "Fixed")
-		{
-			os << GHMarkDownGenOrbit(Obj);
-		}
 	}
 	return os.str();
 }
@@ -264,7 +267,7 @@ bool IsBinaryObject(OrbitParam Orbit1, OrbitParam Orbit2)
 {
 	return
 	(
-		cse::abs(Orbit1.Period - Orbit2.Period) < 1e-4 &&
+		cse::abs(Orbit1.Period - Orbit2.Period) < 1e-2 &&
 		Orbit1.Eccentricity == Orbit2.Eccentricity &&
 		Orbit1.Inclination == Orbit2.Inclination &&
 		Orbit1.AscendingNode == Orbit2.AscendingNode &&
@@ -424,7 +427,16 @@ void composite1(int argc, char const* argv[])
 
 	cout << "DONE.\n";
 
-	Final += "\n## Objects\n";
+	switch (OFormat)
+	{
+	case HTML:
+		break;
+	case MD:
+	default:
+		Final += "\n## Objects\n";
+		break;
+	}
+
 	__DFS_TransLum(SystemStructure);
 	__DFS_Iterate(SystemStructure);
 }

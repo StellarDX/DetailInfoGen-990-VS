@@ -5,6 +5,8 @@ using namespace cse;
 
 OrbitParam ParentOrbitBuffer;
 float64 ParentLumBuffer;
+vector<float64> ParentLumBufferVec;
+vector<OrbitParam> ParentOrbitBufferVec;
 
 string GenPlanetType(shared_ptr<Object> Obj)
 {
@@ -38,6 +40,8 @@ string GenPlanetType(shared_ptr<Object> Obj)
 		if (Obj->Teff >= 1400) { return "Class V(Silicate clouds) Gas giant"; }
 		return "Gas Giant";
 	}
+	if (Obj->Class == "Chthonia") { return "Helium Planet"; }
+	if (Obj->Class == "Asteroid") { return "Minor Planet"; }
 	return "Planet";
 }
 
@@ -87,6 +91,71 @@ PlanetParams gbuffer_planet(shared_ptr<Object> Companion)
 		Par.MeanTemperature = yroot(4, (Luminosity * (1. - Par.AlbedoBond)) / (16. * CSE_PI * cse::pow(SemiMajorAxis, 2) * StBConstant));
 		Par.MaxTemperature = yroot(4, (Luminosity * (1. - Par.AlbedoBond)) / (16. * CSE_PI * cse::pow(PeriHelion, 2) * StBConstant));
 
+		// Backtrack the parent body stack, and add the effect from companion stars
+		auto PBS = ParentBodyStack; // copy a backup for the stack
+		auto Parent = PBS.top();
+		PBS.pop(); // record the planet's parent star and remove it from stack
+
+		bool NoSMA = false;
+		if (isinf(Parent.Pointer->Orbit.SemiMajorAxis()))
+		{
+			NoSMA = true;
+		}
+
+		ParentLumBufferVec.clear();
+		ParentOrbitBufferVec.clear();
+
+		while (!PBS.empty())
+		{
+			SystemStruct::Elem Comp;
+			for (size_t i = 0; i < PBS.top().SubSystem->Catalog.size(); i++)
+			{
+				if 
+				(
+					(Parent.Pointer->Orbit.RefPlane == NO_DATA_STRING &&
+					PBS.top().SubSystem->Catalog[i].Pointer->Orbit.Binary) ||
+					(PBS.top().SubSystem->Catalog[i].Pointer->Orbit.RefPlane == NO_DATA_STRING &&
+					Parent.Pointer->Orbit.Binary)
+				)
+				{
+					Comp = PBS.top().SubSystem->Catalog[i];
+					break;
+				}
+			}
+
+			float64 Lum = 0;
+			OrbitParam POrbit;
+			if (NoSMA)
+			{
+				POrbit = Comp.Pointer->Orbit;
+				Lum = Comp.Pointer->LumBol;
+			}
+			else
+			{
+				POrbit = Parent.Pointer->Orbit;
+				Lum = Comp.Pointer->LumBol;
+			}
+
+			float64 AphelionP = 2. * POrbit.SemiMajorAxis() - POrbit.PericenterDist;
+			float64 SemiMajorAxisP = POrbit.SemiMajorAxis();
+			float64 PeriHelionP = POrbit.PericenterDist;
+			float64 AddTemp0 = yroot(4, (Lum * (1. - Par.AlbedoBond)) / (16. * CSE_PI * cse::pow(AphelionP, 2) * StBConstant));
+			float64 AddTemp1 = yroot(4, (Lum * (1. - Par.AlbedoBond)) / (16. * CSE_PI * cse::pow(SemiMajorAxisP, 2) * StBConstant));
+			float64 AddTemp2 = yroot(4, (Lum * (1. - Par.AlbedoBond)) / (16. * CSE_PI * cse::pow(PeriHelionP, 2) * StBConstant));
+			Par.MinTemperature += AddTemp0;
+			Par.MeanTemperature += AddTemp1;
+			Par.MaxTemperature += AddTemp2;
+
+			if (CurrentSubSystem != nullptr || BinaryPlanet)
+			{
+				ParentLumBufferVec.push_back(Lum);
+				ParentOrbitBufferVec.push_back(POrbit);
+			}
+
+			Parent = PBS.top();
+			PBS.pop();
+		}
+
 		if (CurrentSubSystem != nullptr || BinaryPlanet)
 		{
 			ParentOrbitBuffer = Companion->Orbit;
@@ -104,6 +173,19 @@ PlanetParams gbuffer_planet(shared_ptr<Object> Companion)
 		Par.MinTemperature = yroot(4, (Luminosity * (1. - Par.AlbedoBond)) / (16. * CSE_PI * cse::pow(Aphelion, 2) * StBConstant));
 		Par.MeanTemperature = yroot(4, (Luminosity * (1. - Par.AlbedoBond)) / (16. * CSE_PI * cse::pow(SemiMajorAxis, 2) * StBConstant));
 		Par.MaxTemperature = yroot(4, (Luminosity * (1. - Par.AlbedoBond)) / (16. * CSE_PI * cse::pow(PeriHelion, 2) * StBConstant));
+
+		for (size_t i = 0; i < ParentLumBufferVec.size(); i++)
+		{
+			float64 AphelionP = 2. * ParentOrbitBufferVec[i].SemiMajorAxis() - ParentOrbitBufferVec[i].PericenterDist;
+			float64 SemiMajorAxisP = ParentOrbitBufferVec[i].SemiMajorAxis();
+			float64 PeriHelionP = ParentOrbitBufferVec[i].PericenterDist;
+			float64 AddTemp0 = yroot(4, (ParentLumBufferVec[i] * (1. - Par.AlbedoBond)) / (16. * CSE_PI * cse::pow(AphelionP, 2) * StBConstant));
+			float64 AddTemp1 = yroot(4, (ParentLumBufferVec[i] * (1. - Par.AlbedoBond)) / (16. * CSE_PI * cse::pow(SemiMajorAxisP, 2) * StBConstant));
+			float64 AddTemp2 = yroot(4, (ParentLumBufferVec[i] * (1. - Par.AlbedoBond)) / (16. * CSE_PI * cse::pow(PeriHelionP, 2) * StBConstant));
+			Par.MinTemperature += AddTemp0;
+			Par.MeanTemperature += AddTemp1;
+			Par.MaxTemperature += AddTemp2;
+		}
 	}
 
 	if (BinaryPlanet)
