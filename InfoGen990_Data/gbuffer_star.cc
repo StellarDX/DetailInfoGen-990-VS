@@ -3,8 +3,9 @@
 using namespace std;
 using namespace cse;
 
-string GenStarType(SPECSTR Spec)
+string GenStarType(shared_ptr<Object> Pointer)
 {
+	SPECSTR Spec = Pointer->SpecClass;
 	if (IsHyperGiant(Spec)){return "Hypergiant";}
 	if (IsSuperGiant(Spec))
 	{
@@ -53,8 +54,28 @@ string GenStarType(SPECSTR Spec)
 	}
 	if (IsWhiteDwarf(Spec)) { return "White dwarf"; }
 	if (IsNeutronStar(Spec)) { return "Pulsar"; }
-	if (IsBlackHole(Spec)) { return "Black hole"; }
+	if (IsBlackHole(Spec))
+	{
+		if (isinf(Pointer->KerrSpin)) { Pointer->KerrSpin = 0; }
+		if (isinf(Pointer->KerrCharge)) { Pointer->KerrCharge = 0; }
+		if (Pointer->KerrSpin == 0 && Pointer->KerrCharge == 0) { return "Schwarzschild Black hole"; }
+		if (Pointer->KerrSpin != 0 && Pointer->KerrCharge == 0) { return "Kerr Black hole"; }
+		if (Pointer->KerrSpin == 0 && Pointer->KerrCharge != 0) { return "Reissner-Nordstrom Black hole"; }
+		if (Pointer->KerrSpin != 0 && Pointer->KerrCharge != 0) { return "Kerr-Newman Black hole"; }
+		return "Black hole";
+	}
 	return "Star";
+}
+
+BlackHoleParams BlackHolePar(shared_ptr<Object> arg)
+{
+	return
+	{
+		.Mass = arg->Mass,
+		.SchwarzschildRadius = SchwarzschildRadius(arg->Mass),
+		.Spin = arg->KerrSpin,
+		.Charge = arg->KerrCharge
+	};
 }
 
 StarParams gbuffer_star(shared_ptr<Object> arg)

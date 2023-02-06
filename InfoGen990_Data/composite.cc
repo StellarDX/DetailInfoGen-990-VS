@@ -129,6 +129,8 @@ void composite(int argc, char const* argv[])
 	switch (OFormat)
 	{
 	case HTML:
+		cout << "HTML format output is not support just now, maybe support in the future versions.\n";
+		exit(0xFFFFFFFF);
 		break;
 	case MD:
 	default:

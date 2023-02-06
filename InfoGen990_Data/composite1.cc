@@ -196,31 +196,44 @@ string GHMarkDownProc(shared_ptr<Object> Obj)
 	}
 	else if (Obj->Type == "Star")
 	{
-		StarParams Params = gbuffer_star(Obj);
-		os << vformat("\n### {} - {}\n", make_format_args(Obj->Name[0], GenStarType(Obj->SpecClass)));
+		os << vformat("\n### {} - {}\n", make_format_args(Obj->Name[0], GenStarType(Obj)));
 
 		if (Obj->Orbit.RefPlane != NO_DATA_STRING && Obj->Orbit.RefPlane != "Static" && Obj->Orbit.RefPlane != "Fixed")
 		{
 			os << GHMarkDownGenOrbit(Obj);
 		}
 
-		os << " * Physical characteristics\n";
-		os << "| | |\n|:---|---:|\n";
-		os << vformat(fmtstring, make_format_args("Bolometric magnitude", Params.AbsMagnBol));
-		os << vformat(ifmtstring, make_format_args("Spectral classification", Params.SpType));
-		os << vformat(fmtstring, make_format_args("Equatorial radius (m)", Params.EqRadius));
-		os << vformat(fmtstring, make_format_args("Flattening", Params.Flattening));
-		os << vformat(fmtstring, make_format_args("Volume (m^3)", Params.Volume));
-		os << vformat(fmtstring, make_format_args("Mass (Kg)", Params.Mass));
-		os << vformat(fmtstring, make_format_args("Average density (Kg/m^3)", Params.AvgDensity));
-		os << vformat(fmtstring, make_format_args("Equatorial surface gravity (m/s^2)", Params.EqSurfGrav));
-		os << vformat(fmtstring, make_format_args("Escape velocity (from the surface) (m/s)", Params.EscapeVelocity));
-		os << vformat(fmtstring, make_format_args("Temperature (°K)", Params.Temperature));
-		os << vformat(fmtstring, make_format_args("Luminosity (W)", Params.Luminosity));
-		if (!Obj->TidalLocked)
+		if (IsBlackHole(Obj->SpecClass)) // Pecular process for black holes
 		{
-			os << vformat(fmtstring, make_format_args("Obliquity", Params.Obliquity));
-			os << vformat(fmtstring, make_format_args("RotationPeriod (s)", Params.RotationPeriod));
+			BlackHoleParams Par = BlackHolePar(Obj);
+			os << " * Physical characteristics\n";
+			os << "| | |\n|:---|---:|\n";
+			os << vformat(fmtstring, make_format_args("Mass (Kg)", Par.Mass));
+			os << vformat(fmtstring, make_format_args("Schwarzschild Radius (m)", Par.SchwarzschildRadius));
+			os << vformat(fmtstring, make_format_args("Angular momentum", Par.Spin));
+			os << vformat(fmtstring, make_format_args("Electric charge", Par.Charge));
+		}
+		else
+		{
+			StarParams Params = gbuffer_star(Obj);
+			os << " * Physical characteristics\n";
+			os << "| | |\n|:---|---:|\n";
+			os << vformat(fmtstring, make_format_args("Bolometric magnitude", Params.AbsMagnBol));
+			os << vformat(ifmtstring, make_format_args("Spectral classification", Params.SpType));
+			os << vformat(fmtstring, make_format_args("Equatorial radius (m)", Params.EqRadius));
+			os << vformat(fmtstring, make_format_args("Flattening", Params.Flattening));
+			os << vformat(fmtstring, make_format_args("Volume (m^3)", Params.Volume));
+			os << vformat(fmtstring, make_format_args("Mass (Kg)", Params.Mass));
+			os << vformat(fmtstring, make_format_args("Average density (Kg/m^3)", Params.AvgDensity));
+			os << vformat(fmtstring, make_format_args("Equatorial surface gravity (m/s^2)", Params.EqSurfGrav));
+			os << vformat(fmtstring, make_format_args("Escape velocity (from the surface) (m/s)", Params.EscapeVelocity));
+			os << vformat(fmtstring, make_format_args("Temperature (°K)", Params.Temperature));
+			os << vformat(fmtstring, make_format_args("Luminosity (W)", Params.Luminosity));
+			if (!Obj->TidalLocked)
+			{
+				os << vformat(fmtstring, make_format_args("Obliquity", Params.Obliquity));
+				os << vformat(fmtstring, make_format_args("RotationPeriod (s)", Params.RotationPeriod));
+			}
 		}
 	}
 	else if (Obj->Type == "Planet" || Obj->Type == "DwarfPlanet" || Obj->Type == "Moon")
@@ -236,8 +249,11 @@ string GHMarkDownProc(shared_ptr<Object> Obj)
 		os << " * Physical characteristics\n";
 		os << "| | |\n|:---|---:|\n";
 		os << vformat(fmtstring, make_format_args("Mean radius (m)", Par.MeanRadius));
-		os << vformat(fmtstring, make_format_args("Equatorial radius (m)", Par.EqRadius));
-		os << vformat(fmtstring, make_format_args("Polar radius (m)", Par.PolarRadius));
+		if (Par.Flattening != 0)
+		{
+			os << vformat(fmtstring, make_format_args("Equatorial radius (m)", Par.EqRadius));
+			os << vformat(fmtstring, make_format_args("Polar radius (m)", Par.PolarRadius));
+		}
 		os << vformat(fmtstring, make_format_args("Flattening", Par.Flattening));
 		os << vformat(fmtstring, make_format_args("Volume (m^3)", Par.Volume));
 		os << vformat(fmtstring, make_format_args("Mass (Kg)", Par.Mass));
