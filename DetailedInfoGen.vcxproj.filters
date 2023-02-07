@@ -28,6 +28,9 @@
     <ClCompile Include="InfoGen990_Data\gbuffer_planet.cc">
       <Filter>Src</Filter>
     </ClCompile>
+    <ClCompile Include="InfoGen990_Data\gbuffer_atmosphere.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InfoGen990_Data\composite.h">
@@ -48,5 +51,6 @@
     <ClInclude Include="InfoGen990_Data\gbuffer_star.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="InfoGen990_Data\gbuffer_atmosphere.h" />
   </ItemGroup>
 </Project>

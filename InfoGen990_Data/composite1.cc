@@ -20,6 +20,7 @@
 
 #include "gbuffer_star.h"
 #include "gbuffer_planet.h"
+#include "gbuffer_atmosphere.h"
 #include "composite.h"
 #include "composite1.h"
 
@@ -181,6 +182,84 @@ string GHMarkDownGenOrbit(shared_ptr<Object> Obj)
 	return os.str();
 }
 
+string GHMarkDownGenSubSys(shared_ptr<Object> Obj)
+{
+	ostringstream os;
+	if (CurrentSubSystem != nullptr)
+	{
+		if (Obj->Type == "Barycenter") { os << " * Compositions\n"; }
+		else if (Obj->Type == "Moon") { os << " * Sub-satellites\n"; }
+		else { os << " * Satellites\n"; }
+		os << "| Name | Diameter(m) | Mass(Kg) | Semi-Major Axis(m) | Orbital Period(s) | Inclination | Eccentricity |\n|:---|:---|:---|:---|:---|:---|:---|\n";
+		string PrecStr = "{:." + to_string(_OUT_PRECISISION) + "g}";
+		for (size_t i = 0; i < CurrentSubSystem->Catalog.size(); i++)
+		{
+			if (CurrentSubSystem->Catalog[i].Pointer->Type == "Asteroid" || CurrentSubSystem->Catalog[i].Pointer->Type == "Comet")
+			{
+				continue;
+			}
+			string sfmtstr;
+			if
+			(
+				CurrentSubSystem->Catalog[i].Pointer->Dimensions.y == CurrentSubSystem->Catalog[i].Pointer->Dimensions.x &&
+				CurrentSubSystem->Catalog[i].Pointer->Dimensions.z == CurrentSubSystem->Catalog[i].Pointer->Dimensions.x
+			)
+			{
+				sfmtstr = "| {} | " + PrecStr + " | " + PrecStr + " | " + PrecStr + " | " + PrecStr + " | " + PrecStr + " | " + PrecStr + " |\n";
+				os << vformat(sfmtstr, make_format_args
+				(
+					CurrentSubSystem->Catalog[i].Pointer->Name[0],
+					CurrentSubSystem->Catalog[i].Pointer->Radius() * 2.,
+					CurrentSubSystem->Catalog[i].Pointer->Mass,
+					CurrentSubSystem->Catalog[i].Pointer->Orbit.SemiMajorAxis(),
+					CurrentSubSystem->Catalog[i].Pointer->Orbit.Period,
+					CurrentSubSystem->Catalog[i].Pointer->Orbit.Inclination,
+					CurrentSubSystem->Catalog[i].Pointer->Orbit.Eccentricity
+				));
+			}
+			else if
+			(
+				CurrentSubSystem->Catalog[i].Pointer->Dimensions.y != CurrentSubSystem->Catalog[i].Pointer->Dimensions.x &&
+				CurrentSubSystem->Catalog[i].Pointer->Dimensions.z == CurrentSubSystem->Catalog[i].Pointer->Dimensions.x
+			)
+			{
+				sfmtstr = "| {} | " + PrecStr + " (" + PrecStr + " × " + PrecStr + ") | " + PrecStr + " | " + PrecStr + " | " + PrecStr + " | " + PrecStr + " | " + PrecStr + " |\n";
+				os << vformat(sfmtstr, make_format_args
+				(
+					CurrentSubSystem->Catalog[i].Pointer->Name[0],
+					CurrentSubSystem->Catalog[i].Pointer->Radius() * 2.,
+					CurrentSubSystem->Catalog[i].Pointer->Dimensions.x,
+					CurrentSubSystem->Catalog[i].Pointer->Dimensions.y,
+					CurrentSubSystem->Catalog[i].Pointer->Mass,
+					CurrentSubSystem->Catalog[i].Pointer->Orbit.SemiMajorAxis(),
+					CurrentSubSystem->Catalog[i].Pointer->Orbit.Period,
+					CurrentSubSystem->Catalog[i].Pointer->Orbit.Inclination,
+					CurrentSubSystem->Catalog[i].Pointer->Orbit.Eccentricity
+				));
+			}
+			else
+			{
+				sfmtstr = "| {} | " + PrecStr + " (" + PrecStr + " × " + PrecStr + " × " + PrecStr + ") | " + PrecStr + " | " + PrecStr + " | " + PrecStr + " | " + PrecStr + " | " + PrecStr + " |\n";
+				os << vformat(sfmtstr, make_format_args
+				(
+					CurrentSubSystem->Catalog[i].Pointer->Name[0],
+					CurrentSubSystem->Catalog[i].Pointer->Radius() * 2.,
+					CurrentSubSystem->Catalog[i].Pointer->Dimensions.x,
+					CurrentSubSystem->Catalog[i].Pointer->Dimensions.y,
+					CurrentSubSystem->Catalog[i].Pointer->Dimensions.z,
+					CurrentSubSystem->Catalog[i].Pointer->Mass,
+					CurrentSubSystem->Catalog[i].Pointer->Orbit.SemiMajorAxis(),
+					CurrentSubSystem->Catalog[i].Pointer->Orbit.Period,
+					CurrentSubSystem->Catalog[i].Pointer->Orbit.Inclination,
+					CurrentSubSystem->Catalog[i].Pointer->Orbit.Eccentricity
+				));
+			}
+		}
+	}
+
+	return os.str();
+}
+
 string GHMarkDownProc(shared_ptr<Object> Obj)
 {
 	ostringstream os;
@@ -192,6 +271,10 @@ string GHMarkDownProc(shared_ptr<Object> Obj)
 		if (Obj->Orbit.RefPlane != NO_DATA_STRING && Obj->Orbit.RefPlane != "Static" && Obj->Orbit.RefPlane != "Fixed")
 		{
 			os << GHMarkDownGenOrbit(Obj);
+		}
+		if (Obj->Class != "Sun") // Except star barycenters
+		{
+			os << GHMarkDownGenSubSys(Obj);
 		}
 	}
 	else if (Obj->Type == "Star")
@@ -275,6 +358,30 @@ string GHMarkDownProc(shared_ptr<Object> Obj)
 			Temperatures += Obj->Atmosphere.Greenhouse;
 		}
 		os << vformat(tfmtstring, make_format_args(Temperatures.x, Temperatures.y, Temperatures.z));
+
+		if (!Obj->NoAtmosphere)
+		{
+			Atmosphere Atm = gbuffer_atmosphere(Obj);
+			os << " * Atmosphere\n";
+			os << "| | |\n|:---|:---|\n";
+			string aformatstring = "| {} | {:." + to_string(_OUT_PRECISISION) + "g}% {} |\n";
+			os << vformat(fmtstring, make_format_args("Surface pressure (Pa)", Atm.SurfPressure));
+			auto it = Atm.Composition.begin();
+			auto end = Atm.Composition.end();
+			while (it != end)
+			{
+				if (it == Atm.Composition.begin())
+				{
+					os << vformat(aformatstring, make_format_args("Composition by volume", it->second, it->first));
+				}
+				else
+				{
+					os << vformat(aformatstring, make_format_args("", it->second, it->first));
+				}
+				++it;
+			}
+		}
+		os << GHMarkDownGenSubSys(Obj);
 	}
 	return os.str();
 }

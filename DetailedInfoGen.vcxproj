@@ -142,6 +142,7 @@
     <ClCompile Include="InfoGen990_Data\composite.cc" />
     <ClCompile Include="InfoGen990_Data\composite1.cc" />
     <ClCompile Include="InfoGen990_Data\final.cc" />
+    <ClCompile Include="InfoGen990_Data\gbuffer_atmosphere.cc" />
     <ClCompile Include="InfoGen990_Data\gbuffer_basic.cc" />
     <ClCompile Include="InfoGen990_Data\gbuffer_planet.cc" />
     <ClCompile Include="InfoGen990_Data\gbuffer_star.cc" />
@@ -150,6 +151,7 @@
     <ClInclude Include="InfoGen990_Data\composite.h" />
     <ClInclude Include="InfoGen990_Data\composite1.h" />
     <ClInclude Include="InfoGen990_Data\final.h" />
+    <ClInclude Include="InfoGen990_Data\gbuffer_atmosphere.h" />
     <ClInclude Include="InfoGen990_Data\gbuffer_basic.h" />
     <ClInclude Include="InfoGen990_Data\gbuffer_planet.h" />
     <ClInclude Include="InfoGen990_Data\gbuffer_star.h" />
