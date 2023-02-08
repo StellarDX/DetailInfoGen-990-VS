@@ -73,6 +73,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ExternalIncludePath>E:\Projects\C艹\CSpaceEngine\Headers;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
     <LibraryPath>E:\Projects\C艹\CSpaceEngine\Libraries;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <TargetName>InfoGen</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ExternalIncludePath>E:\Projects\C艹\CSpaceEngine\Headers;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
@@ -139,22 +140,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="InfoGen990_Data\composite.cc" />
-    <ClCompile Include="InfoGen990_Data\composite1.cc" />
-    <ClCompile Include="InfoGen990_Data\final.cc" />
-    <ClCompile Include="InfoGen990_Data\gbuffer_atmosphere.cc" />
-    <ClCompile Include="InfoGen990_Data\gbuffer_basic.cc" />
-    <ClCompile Include="InfoGen990_Data\gbuffer_planet.cc" />
-    <ClCompile Include="InfoGen990_Data\gbuffer_star.cc" />
+    <ClCompile Include="InfoGen_Data\composite.cc" />
+    <ClCompile Include="InfoGen_Data\composite1.cc" />
+    <ClCompile Include="InfoGen_Data\final.cc" />
+    <ClCompile Include="InfoGen_Data\gbuffer_atmosphere.cc" />
+    <ClCompile Include="InfoGen_Data\gbuffer_basic.cc" />
+    <ClCompile Include="InfoGen_Data\gbuffer_planet.cc" />
+    <ClCompile Include="InfoGen_Data\gbuffer_star.cc" />
+    <ClCompile Include="InfoGen_Data\gbuffer_water.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="InfoGen990_Data\composite.h" />
-    <ClInclude Include="InfoGen990_Data\composite1.h" />
-    <ClInclude Include="InfoGen990_Data\final.h" />
-    <ClInclude Include="InfoGen990_Data\gbuffer_atmosphere.h" />
-    <ClInclude Include="InfoGen990_Data\gbuffer_basic.h" />
-    <ClInclude Include="InfoGen990_Data\gbuffer_planet.h" />
-    <ClInclude Include="InfoGen990_Data\gbuffer_star.h" />
+    <ClInclude Include="InfoGen_Data\composite.h" />
+    <ClInclude Include="InfoGen_Data\composite1.h" />
+    <ClInclude Include="InfoGen_Data\final.h" />
+    <ClInclude Include="InfoGen_Data\gbuffer_atmosphere.h" />
+    <ClInclude Include="InfoGen_Data\gbuffer_basic.h" />
+    <ClInclude Include="InfoGen_Data\gbuffer_planet.h" />
+    <ClInclude Include="InfoGen_Data\gbuffer_star.h" />
+    <ClInclude Include="InfoGen_Data\gbuffer_water.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

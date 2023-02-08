@@ -21,6 +21,7 @@
 #include "gbuffer_star.h"
 #include "gbuffer_planet.h"
 #include "gbuffer_atmosphere.h"
+#include "gbuffer_water.h"
 #include "composite.h"
 #include "composite1.h"
 
@@ -168,8 +169,21 @@ string GHMarkDownGenOrbit(shared_ptr<Object> Obj)
 	}
 	if (Obj->Orbit.Eccentricity != 0)
 	{
-		if (Obj->Orbit.Eccentricity < 1) { os << vformat(fmtstring, make_format_args("Aphelion (m)", Obj->Orbit.SemiMajorAxis() * 2 - Obj->Orbit.PericenterDist)); }
-		os << vformat(fmtstring, make_format_args("Perihelion (m)", Obj->Orbit.PericenterDist));
+		if (ParentBodyStack.top().Pointer->Type == "Star" || (ParentBodyStack.top().Pointer->Type == "Barycenter" && Obj->Type == "Planet"))
+		{
+			if (Obj->Orbit.Eccentricity < 1) { os << vformat(fmtstring, make_format_args("Aphelion (m)", Obj->Orbit.SemiMajorAxis() * 2 - Obj->Orbit.PericenterDist)); }
+			os << vformat(fmtstring, make_format_args("Perihelion (m)", Obj->Orbit.PericenterDist));
+		}
+		else if (ParentBodyStack.top().Pointer->Type == "Planet")
+		{
+			if (Obj->Orbit.Eccentricity < 1) { os << vformat(fmtstring, make_format_args("Apogee (m)", Obj->Orbit.SemiMajorAxis() * 2 - Obj->Orbit.PericenterDist)); }
+			os << vformat(fmtstring, make_format_args("Perigee (m)", Obj->Orbit.PericenterDist));
+		}
+		else
+		{
+			if (Obj->Orbit.Eccentricity < 1) { os << vformat(fmtstring, make_format_args("Apoapsis (m)", Obj->Orbit.SemiMajorAxis() * 2 - Obj->Orbit.PericenterDist)); }
+			os << vformat(fmtstring, make_format_args("Periapsis (m)", Obj->Orbit.PericenterDist));
+		}
 	}
 	if (Obj->Orbit.Eccentricity < 1) { os << vformat(fmtstring, make_format_args("Semi-major axis (a) (m)", Obj->Orbit.SemiMajorAxis())); }
 	os << vformat(fmtstring, make_format_args("Eccentricity (e)", Obj->Orbit.Eccentricity));
@@ -177,7 +191,22 @@ string GHMarkDownGenOrbit(shared_ptr<Object> Obj)
 	os << vformat(fmtstring, make_format_args("Mean anomaly", Obj->Orbit.MeanAnomaly));
 	os << vformat(fmtstring, make_format_args("Inclination (i)", Obj->Orbit.Inclination));
 	os << vformat(fmtstring, make_format_args("Longitude of ascending node (Ω)", Obj->Orbit.AscendingNode));
-	os << vformat(fmtstring, make_format_args("Argument of perihelion (ω) (secondary)", Obj->Orbit.ArgOfPericenter));
+	if (Obj->Orbit.Binary)
+	{
+		os << vformat(fmtstring, make_format_args("Argument of periastron (ω) (secondary)", Obj->Orbit.ArgOfPericenter));
+	}
+	else if (ParentBodyStack.top().Pointer->Type == "Star" || (ParentBodyStack.top().Pointer->Type == "Barycenter" && Obj->Type == "Planet"))
+	{
+		os << vformat(fmtstring, make_format_args("Argument of perihelion (ω)", Obj->Orbit.ArgOfPericenter));
+	}
+	else if (ParentBodyStack.top().Pointer->Type == "Planet")
+	{
+		os << vformat(fmtstring, make_format_args("Argument of perigee (ω)", Obj->Orbit.ArgOfPericenter));
+	}
+	else
+	{
+		os << vformat(fmtstring, make_format_args("Argument of periapsis (ω)", Obj->Orbit.ArgOfPericenter));
+	}
 
 	return os.str();
 }
@@ -267,6 +296,23 @@ string GHMarkDownProc(shared_ptr<Object> Obj)
 	string ifmtstring = "| {} | {} |\n";
 	if (Obj->Type == "Barycenter")
 	{
+		bool IsStarOrPlanet = false;
+		for (size_t i = 0; i < CurrentSubSystem->Catalog.size(); i++)
+		{
+			if 
+			(
+				CurrentSubSystem->Catalog[i].Pointer->Type == "Star" || 
+				CurrentSubSystem->Catalog[i].Pointer->Type == "Planet" || 
+				CurrentSubSystem->Catalog[i].Pointer->Type == "DwarfPlanet" || 
+				CurrentSubSystem->Catalog[i].Pointer->Type == "Moon"
+			)
+			{
+				IsStarOrPlanet = true;
+				break;
+			}
+		}
+		if (!IsStarOrPlanet) { return ""; } // Except asteroid barycenters
+
 		os << vformat("\n### {} - {}\n", make_format_args(Obj->Name[0], "System Barycenter"));
 		if (Obj->Orbit.RefPlane != NO_DATA_STRING && Obj->Orbit.RefPlane != "Static" && Obj->Orbit.RefPlane != "Fixed")
 		{
@@ -321,12 +367,13 @@ string GHMarkDownProc(shared_ptr<Object> Obj)
 	}
 	else if (Obj->Type == "Planet" || Obj->Type == "DwarfPlanet" || Obj->Type == "Moon")
 	{
+		string OrbitString = GHMarkDownGenOrbit(Obj);
 		PlanetParams Par = gbuffer_planet(Obj);
 		os << vformat("\n### {} - {}\n", make_format_args(Obj->Name[0], GenPlanetType(Obj)));
 
 		if (Obj->Orbit.RefPlane != NO_DATA_STRING && Obj->Orbit.RefPlane != "Static" && Obj->Orbit.RefPlane != "Fixed")
 		{
-			os << GHMarkDownGenOrbit(Obj);
+			os << OrbitString;
 		}
 
 		os << " * Physical characteristics\n";
@@ -381,6 +428,30 @@ string GHMarkDownProc(shared_ptr<Object> Obj)
 				++it;
 			}
 		}
+
+		if (!Obj->NoOcean)
+		{
+			Ocean Oc = gbuffer_water(Obj);
+			os << " * Ocean\n";
+			os << "| | |\n|:---|:---|\n";
+			string aformatstring = "| {} | {:." + to_string(_OUT_PRECISISION) + "g}% {} |\n";
+			os << vformat(fmtstring, make_format_args("Depth (m)", Oc.Height));
+			auto it = Oc.Composition.begin();
+			auto end = Oc.Composition.end();
+			while (it != end)
+			{
+				if (it == Oc.Composition.begin())
+				{
+					os << vformat(aformatstring, make_format_args("Composition by volume", it->second, it->first));
+				}
+				else
+				{
+					os << vformat(aformatstring, make_format_args("", it->second, it->first));
+				}
+				++it;
+			}
+		}
+
 		os << GHMarkDownGenSubSys(Obj);
 	}
 	return os.str();

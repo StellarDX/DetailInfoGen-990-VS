@@ -10,47 +10,51 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="InfoGen990_Data\final.cc">
+    <ClCompile Include="InfoGen_Data\final.cc">
       <Filter>Src</Filter>
     </ClCompile>
-    <ClCompile Include="InfoGen990_Data\composite.cc">
+    <ClCompile Include="InfoGen_Data\composite.cc">
       <Filter>Src</Filter>
     </ClCompile>
-    <ClCompile Include="InfoGen990_Data\gbuffer_basic.cc">
+    <ClCompile Include="InfoGen_Data\gbuffer_basic.cc">
       <Filter>Src</Filter>
     </ClCompile>
-    <ClCompile Include="InfoGen990_Data\gbuffer_star.cc">
+    <ClCompile Include="InfoGen_Data\gbuffer_star.cc">
       <Filter>Src</Filter>
     </ClCompile>
-    <ClCompile Include="InfoGen990_Data\composite1.cc">
+    <ClCompile Include="InfoGen_Data\composite1.cc">
       <Filter>Src</Filter>
     </ClCompile>
-    <ClCompile Include="InfoGen990_Data\gbuffer_planet.cc">
+    <ClCompile Include="InfoGen_Data\gbuffer_planet.cc">
       <Filter>Src</Filter>
     </ClCompile>
-    <ClCompile Include="InfoGen990_Data\gbuffer_atmosphere.cc">
+    <ClCompile Include="InfoGen_Data\gbuffer_atmosphere.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="InfoGen_Data\gbuffer_water.cpp">
       <Filter>Src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="InfoGen990_Data\composite.h">
+    <ClInclude Include="InfoGen_Data\composite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InfoGen990_Data\composite1.h">
+    <ClInclude Include="InfoGen_Data\composite1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InfoGen990_Data\final.h">
+    <ClInclude Include="InfoGen_Data\final.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InfoGen990_Data\gbuffer_basic.h">
+    <ClInclude Include="InfoGen_Data\gbuffer_basic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InfoGen990_Data\gbuffer_planet.h">
+    <ClInclude Include="InfoGen_Data\gbuffer_planet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InfoGen990_Data\gbuffer_star.h">
+    <ClInclude Include="InfoGen_Data\gbuffer_star.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InfoGen990_Data\gbuffer_atmosphere.h" />
+    <ClInclude Include="InfoGen_Data\gbuffer_atmosphere.h" />
+    <ClInclude Include="InfoGen_Data\gbuffer_water.h" />
   </ItemGroup>
 </Project>
