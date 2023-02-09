@@ -20,6 +20,7 @@
 
 #include "composite.h"
 #include "composite1.h"
+#include "composite2.h"
 #include "final.h"
 #include <fstream>
 
@@ -64,6 +65,14 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		cout << "-outformat=<fmt> : Specify output format, supports Github Markdown(md).\n";
 		cout << "-encoding=<encod> : Specify encoding, use numbers of codepage, e.g. -encoding=0 -> ANSI.\n";
 		cout << "-out <filename> : Specify output file name.\n";
+
+		cout << "-minorplanetsort=<char> : Generate a list of minor planets(include dwarf planets) that are exceptional in some way. The following values are valid:\n";
+		cout << "\tdiameter - IRAS standard, asteroids with a diameter greater than 120 Km (This is default option when argument is missing or invalid.)\n";
+		cout << "\tmass - Asteroids with nominal mass > 1E+18 kg\n";
+		cout << "\tslowrotator - slowest-rotating known minor planets with a period of at least 1000 hours\n";
+		cout << "\tfastrotator - fastest-rotating minor planets with a period of less than 100 seconds\n";
+		cout << "\tretrograde - Minor planets with orbital inclinations greater than 90 deg\n";
+		cout << "\thighinclined - Minor planets with orbital inclinations greater than 10 deg and smaller than 90 deg\n";
 		return 0x7FFFFFFF;
 	}
 	vector<string> args;
@@ -105,6 +114,7 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 
 	composite(argc, argv);
 	composite1(argc, argv);
+	composite2(argc, argv);
 
 	int encoding = 65001; // Default encoding is UTF-8
 	for (size_t i = 0; i < args.size(); i++)

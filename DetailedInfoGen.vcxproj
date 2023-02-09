@@ -142,22 +142,26 @@
   <ItemGroup>
     <ClCompile Include="InfoGen_Data\composite.cc" />
     <ClCompile Include="InfoGen_Data\composite1.cc" />
+    <ClCompile Include="InfoGen_Data\composite2.cc" />
     <ClCompile Include="InfoGen_Data\final.cc" />
     <ClCompile Include="InfoGen_Data\gbuffer_atmosphere.cc" />
     <ClCompile Include="InfoGen_Data\gbuffer_basic.cc" />
     <ClCompile Include="InfoGen_Data\gbuffer_planet.cc" />
     <ClCompile Include="InfoGen_Data\gbuffer_star.cc" />
-    <ClCompile Include="InfoGen_Data\gbuffer_water.cpp" />
+    <ClCompile Include="InfoGen_Data\gbuffer_water.cc" />
+    <ClCompile Include="InfoGen_Data\sorting.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InfoGen_Data\composite.h" />
     <ClInclude Include="InfoGen_Data\composite1.h" />
+    <ClInclude Include="InfoGen_Data\composite2.h" />
     <ClInclude Include="InfoGen_Data\final.h" />
     <ClInclude Include="InfoGen_Data\gbuffer_atmosphere.h" />
     <ClInclude Include="InfoGen_Data\gbuffer_basic.h" />
     <ClInclude Include="InfoGen_Data\gbuffer_planet.h" />
     <ClInclude Include="InfoGen_Data\gbuffer_star.h" />
     <ClInclude Include="InfoGen_Data\gbuffer_water.h" />
+    <ClInclude Include="InfoGen_Data\sorting.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

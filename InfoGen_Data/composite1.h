@@ -20,6 +20,7 @@ struct SystemStruct
 	std::vector<Elem> Catalog;
 };
 
+extern std::shared_ptr<SystemStruct> SystemStructure;
 extern std::stack<SystemStruct::Elem> ParentBodyStack;
 extern std::shared_ptr<SystemStruct> CurrentSubSystem;
 

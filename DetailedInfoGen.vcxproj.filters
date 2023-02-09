@@ -31,7 +31,13 @@
     <ClCompile Include="InfoGen_Data\gbuffer_atmosphere.cc">
       <Filter>Src</Filter>
     </ClCompile>
-    <ClCompile Include="InfoGen_Data\gbuffer_water.cpp">
+    <ClCompile Include="InfoGen_Data\gbuffer_water.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="InfoGen_Data\composite2.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="InfoGen_Data\sorting.cc">
       <Filter>Src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -56,5 +62,7 @@
     </ClInclude>
     <ClInclude Include="InfoGen_Data\gbuffer_atmosphere.h" />
     <ClInclude Include="InfoGen_Data\gbuffer_water.h" />
+    <ClInclude Include="InfoGen_Data\composite2.h" />
+    <ClInclude Include="InfoGen_Data\sorting.h" />
   </ItemGroup>
 </Project>
