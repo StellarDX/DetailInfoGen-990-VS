@@ -14,7 +14,7 @@ string GenPlanetType(shared_ptr<Object> Obj)
 	if (Obj->Class == "Terra") { return "Rocky planet"; }
 	if (Obj->Class == "Aquaria")
 	{
-		if (!Obj->NoOcean && Obj->Ocean.Height > 10)
+		if (!Obj->NoOcean && Obj->Ocean.Height > 15000)
 		{
 			return "Ocean planet";
 		}
