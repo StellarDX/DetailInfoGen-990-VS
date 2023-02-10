@@ -10,7 +10,7 @@
 (这还是一个究极不完整的版本)
 
 ## 编译
-先编译CSpaceEngine，然后打开工程的sln文件，右键DetailedInfoGen工程，转到属性->VC++目录，
+先编译CSpaceEngine，然后打开工程的sln文件，右键DetailedInfoGen项目，转到属性->VC++目录，
 将外部包含目录和库目录修改为CSE的头文件目录(/headers)，以及CSE本体(CSE.lib)所在的目录，然后再生成就可以了。
 
 ## 使用方法
