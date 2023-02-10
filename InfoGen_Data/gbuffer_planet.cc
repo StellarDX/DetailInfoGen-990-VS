@@ -124,32 +124,39 @@ PlanetParams gbuffer_planet(shared_ptr<Object> Companion)
 			}
 
 			float64 Lum = 0;
-			OrbitParam POrbit;
-			if (NoSMA)
+			OrbitParam POrbit = 
 			{
-				POrbit = Comp.Pointer->Orbit;
-				Lum = Comp.Pointer->LumBol;
-			}
-			else
+				.PericenterDist = 1,
+				.Eccentricity = 0
+			};
+			if (Comp.Pointer != nullptr)
 			{
-				POrbit = Parent.Pointer->Orbit;
-				Lum = Comp.Pointer->LumBol;
-			}
+				if (NoSMA)
+				{
+					POrbit = Comp.Pointer->Orbit;
+					Lum = Comp.Pointer->LumBol;
+				}
+				else
+				{
+					POrbit = Parent.Pointer->Orbit;
+					Lum = Comp.Pointer->LumBol;
+				}
 
-			float64 AphelionP = 2. * POrbit.SemiMajorAxis() - POrbit.PericenterDist;
-			float64 SemiMajorAxisP = POrbit.SemiMajorAxis();
-			float64 PeriHelionP = POrbit.PericenterDist;
-			float64 AddTemp0 = yroot(4, (Lum * (1. - Par.AlbedoBond)) / (16. * CSE_PI * cse::pow(AphelionP, 2) * StBConstant));
-			float64 AddTemp1 = yroot(4, (Lum * (1. - Par.AlbedoBond)) / (16. * CSE_PI * cse::pow(SemiMajorAxisP, 2) * StBConstant));
-			float64 AddTemp2 = yroot(4, (Lum * (1. - Par.AlbedoBond)) / (16. * CSE_PI * cse::pow(PeriHelionP, 2) * StBConstant));
-			Par.MinTemperature += AddTemp0;
-			Par.MeanTemperature += AddTemp1;
-			Par.MaxTemperature += AddTemp2;
+				float64 AphelionP = 2. * POrbit.SemiMajorAxis() - POrbit.PericenterDist;
+				float64 SemiMajorAxisP = POrbit.SemiMajorAxis();
+				float64 PeriHelionP = POrbit.PericenterDist;
+				float64 AddTemp0 = yroot(4, (Lum * (1. - Par.AlbedoBond)) / (16. * CSE_PI * cse::pow(AphelionP, 2) * StBConstant));
+				float64 AddTemp1 = yroot(4, (Lum * (1. - Par.AlbedoBond)) / (16. * CSE_PI * cse::pow(SemiMajorAxisP, 2) * StBConstant));
+				float64 AddTemp2 = yroot(4, (Lum * (1. - Par.AlbedoBond)) / (16. * CSE_PI * cse::pow(PeriHelionP, 2) * StBConstant));
+				Par.MinTemperature += AddTemp0;
+				Par.MeanTemperature += AddTemp1;
+				Par.MaxTemperature += AddTemp2;
 
-			if (CurrentSubSystem != nullptr || BinaryPlanet)
-			{
-				ParentLumBufferVec.push_back(Lum);
-				ParentOrbitBufferVec.push_back(POrbit);
+				if (CurrentSubSystem != nullptr || BinaryPlanet)
+				{
+					ParentLumBufferVec.push_back(Lum);
+					ParentOrbitBufferVec.push_back(POrbit);
+				}
 			}
 
 			Parent = PBS.top();

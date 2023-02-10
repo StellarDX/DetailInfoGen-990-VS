@@ -32,7 +32,7 @@ SystemInfo gbuffer_basic(ObjectBuffer& Sys, std::map<std::string, std::vector<si
 		}
 
 		string SpTyStr;
-		if (it->second.size() > 1)
+		if (it->second.size() >= 1)
 		{
 			for (size_t i = 0; i < it->second.size(); i++)
 			{

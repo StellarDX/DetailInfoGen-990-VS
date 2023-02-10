@@ -313,6 +313,17 @@ string GHMarkDownProc(shared_ptr<Object> Obj)
 		}
 		if (!IsStarOrPlanet) { return ""; } // Except asteroid barycenters
 
+		bool IsMainBarycenter = false;
+		for (size_t i = 0; i < Obj->Name.size(); i++)
+		{
+			if (Obj->Name[i] == Obj->ParentBody)
+			{
+				IsMainBarycenter = true;
+				break;
+			}
+		}
+		if (IsMainBarycenter) { return ""; } // Return tmpty string if it is the main barycenter.
+
 		os << vformat("\n### {} - {}\n", make_format_args(Obj->Name[0], "System Barycenter"));
 		if (Obj->Orbit.RefPlane != NO_DATA_STRING && Obj->Orbit.RefPlane != "Static" && Obj->Orbit.RefPlane != "Fixed")
 		{
