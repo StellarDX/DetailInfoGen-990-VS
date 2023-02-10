@@ -411,7 +411,16 @@ string GHMarkDownProc(shared_ptr<Object> Obj)
 		os << "| Min | Mean | Max |\n|:---:|:---:|:---:|\n";
 		string tfmtstring = "| {:." + to_string(_OUT_PRECISISION) + "g} | {:." + to_string(_OUT_PRECISISION) + "g} | {:." + to_string(_OUT_PRECISISION) + "g} |\n";
 		vec3 Temperatures(Par.MinTemperature, Par.MeanTemperature, Par.MaxTemperature);
-		if (!Obj->NoAtmosphere && !isinf(Obj->Atmosphere.Greenhouse))
+
+		#define IGNORE_GAS_GIANT_GREENHOUSE 1 // When open, greenhouse effect on gas giants will ignored
+
+		if
+		(
+			!Obj->NoAtmosphere && !isinf(Obj->Atmosphere.Greenhouse) 
+			#if IGNORE_GAS_GIANT_GREENHOUSE
+			&& (Obj->Class != "Jupiter" && Obj->Class != "GasGiant" && Obj->Class != "Neptune" && Obj->Class != "IceGiant")
+			#endif
+		)
 		{
 			Temperatures += Obj->Atmosphere.Greenhouse;
 		}
