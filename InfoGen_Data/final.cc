@@ -23,6 +23,7 @@
 #include "composite2.h"
 #include "final.h"
 #include <fstream>
+#include <yvals_core.h> // STD version header
 
 using namespace std;
 using namespace cse;
@@ -55,7 +56,9 @@ void Transcode(string& arg, int encoding)
 int main(int argc, char const* argv[]) // main function can return "void" in C++20, WHY???
 {
 	cout << "SpaceEngine 0.990 Detailed information generator\nCopyright (C) StellarDX Astronomy.\n";
-	cout << "This is a free software, licenced under GNU General public license v2.\n\n";
+	cout << "This is a free software, licenced under GNU General public license v2.\n";
+	cout << "Built with " + COMPILER_VERSION << '\n' << '\n';
+
 	if (argc == 1)
 	{
 		cout << "Usage: \n";

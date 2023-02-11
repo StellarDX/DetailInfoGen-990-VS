@@ -3,6 +3,13 @@
 #ifndef __FINAL__
 #define __FINAL__
 
+// Check CSpaceEngine has installed
+#ifdef __has_include
+#if !__has_include(<CSE/CSE.h>)
+#error "Compile or install CSpaceEngine to continue."
+#endif
+#endif
+
 #include <vector>
 #include <CSE/SCStream.h>
 #include <CSE/Object.h>
