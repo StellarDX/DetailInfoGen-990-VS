@@ -289,190 +289,216 @@ string GHMarkDownGenSubSys(shared_ptr<Object> Obj)
 	return os.str();
 }
 
-string GHMarkDownProc(shared_ptr<Object> Obj)
+string GHMarkDownProcBar(shared_ptr<Object> Obj)
+{
+	ostringstream os;
+	bool IsStarOrPlanet = false;
+	for (size_t i = 0; i < CurrentSubSystem->Catalog.size(); i++)
+	{
+		if 
+		(
+			CurrentSubSystem->Catalog[i].Pointer->Type == "Star" || 
+			CurrentSubSystem->Catalog[i].Pointer->Type == "Planet" || 
+			CurrentSubSystem->Catalog[i].Pointer->Type == "DwarfPlanet" || 
+			CurrentSubSystem->Catalog[i].Pointer->Type == "Moon"
+		)
+		{
+			IsStarOrPlanet = true;
+			break;
+		}
+	}
+	if (!IsStarOrPlanet) { return ""; } // Except asteroid barycenters
+
+	bool IsMainBarycenter = false;
+	for (size_t i = 0; i < Obj->Name.size(); i++)
+	{
+		if (Obj->Name[i] == Obj->ParentBody)
+		{
+			IsMainBarycenter = true;
+			break;
+		}
+	}
+	if (IsMainBarycenter) { return ""; } // Return tmpty string if it is the main barycenter.
+
+	os << vformat("\n### {} - {}\n", make_format_args(Obj->Name[0], "System Barycenter"));
+	if (Obj->Orbit.RefPlane != NO_DATA_STRING && Obj->Orbit.RefPlane != "Static" && Obj->Orbit.RefPlane != "Fixed")
+	{
+		os << GHMarkDownGenOrbit(Obj);
+	}
+	if (Obj->Class != "Sun") // Except star barycenters
+	{
+		os << GHMarkDownGenSubSys(Obj);
+	}
+
+	return os.str();
+}
+
+string GHMarkDownProcStar(shared_ptr<Object> Obj)
 {
 	ostringstream os;
 	string fmtstring = "| {} | {:." + to_string(_OUT_PRECISISION) + "g} |\n";
 	string ifmtstring = "| {} | {} |\n";
+	os << vformat("\n### {} - {}\n", make_format_args(Obj->Name[0], GenStarType(Obj)));
+
+	if (Obj->Orbit.RefPlane != NO_DATA_STRING && Obj->Orbit.RefPlane != "Static" && Obj->Orbit.RefPlane != "Fixed")
+	{
+		os << GHMarkDownGenOrbit(Obj);
+	}
+
+	if (IsBlackHole(Obj->SpecClass)) // Pecular process for black holes
+	{
+		BlackHoleParams Par = BlackHolePar(Obj);
+		os << " * Physical characteristics\n";
+		os << "| | |\n|:---|---:|\n";
+		os << vformat(fmtstring, make_format_args("Mass (Kg)", Par.Mass));
+		os << vformat(fmtstring, make_format_args("Schwarzschild Radius (m)", Par.SchwarzschildRadius));
+		os << vformat(fmtstring, make_format_args("Angular momentum", Par.Spin));
+		os << vformat(fmtstring, make_format_args("Electric charge", Par.Charge));
+	}
+	else
+	{
+		StarParams Params = gbuffer_star(Obj);
+		os << " * Physical characteristics\n";
+		os << "| | |\n|:---|---:|\n";
+		os << vformat(fmtstring, make_format_args("Bolometric magnitude", Params.AbsMagnBol));
+		os << vformat(ifmtstring, make_format_args("Spectral classification", Params.SpType));
+		os << vformat(fmtstring, make_format_args("Equatorial radius (m)", Params.EqRadius));
+		os << vformat(fmtstring, make_format_args("Flattening", Params.Flattening));
+		os << vformat(fmtstring, make_format_args("Volume (m^3)", Params.Volume));
+		os << vformat(fmtstring, make_format_args("Mass (Kg)", Params.Mass));
+		os << vformat(fmtstring, make_format_args("Average density (Kg/m^3)", Params.AvgDensity));
+		os << vformat(fmtstring, make_format_args("Equatorial surface gravity (m/s^2)", Params.EqSurfGrav));
+		os << vformat(fmtstring, make_format_args("Escape velocity (from the surface) (m/s)", Params.EscapeVelocity));
+		os << vformat(fmtstring, make_format_args("Temperature (°K)", Params.Temperature));
+		os << vformat(fmtstring, make_format_args("Luminosity (W)", Params.Luminosity));
+		if (!Obj->TidalLocked)
+		{
+			os << vformat(fmtstring, make_format_args("Obliquity", Params.Obliquity));
+			os << vformat(fmtstring, make_format_args("RotationPeriod (s)", Params.RotationPeriod));
+		}
+	}
+
+	return os.str();
+}
+
+string GHMarkDownProcPlanet(shared_ptr<Object> Obj)
+{
+	ostringstream os;
+	string fmtstring = "| {} | {:." + to_string(_OUT_PRECISISION) + "g} |\n";
+	string ifmtstring = "| {} | {} |\n";
+	string OrbitString = GHMarkDownGenOrbit(Obj);
+	PlanetParams Par = gbuffer_planet(Obj);
+	os << vformat("\n### {} - {}\n", make_format_args(Obj->Name[0], GenPlanetType(Obj)));
+
+	if (Obj->Orbit.RefPlane != NO_DATA_STRING && Obj->Orbit.RefPlane != "Static" && Obj->Orbit.RefPlane != "Fixed")
+	{
+		os << OrbitString;
+	}
+
+	os << " * Physical characteristics\n";
+	os << "| | |\n|:---|---:|\n";
+	os << vformat(fmtstring, make_format_args("Mean radius (m)", Par.MeanRadius));
+	if (Par.Flattening != 0)
+	{
+		os << vformat(fmtstring, make_format_args("Equatorial radius (m)", Par.EqRadius));
+		os << vformat(fmtstring, make_format_args("Polar radius (m)", Par.PolarRadius));
+	}
+	os << vformat(fmtstring, make_format_args("Flattening", Par.Flattening));
+	os << vformat(fmtstring, make_format_args("Volume (m^3)", Par.Volume));
+	os << vformat(fmtstring, make_format_args("Mass (Kg)", Par.Mass));
+	os << vformat(fmtstring, make_format_args("Mean density (Kg/m^3)", Par.MeanDensity));
+	os << vformat(fmtstring, make_format_args("Surface gravity (m/s^2)", Par.SurfGrav));
+	os << vformat(fmtstring, make_format_args("Escape velocity (m/s)", Par.EscapeVel));
+	os << vformat(fmtstring, make_format_args("Synodic rotation period (s)", Par.SynodicPeriod));
+	os << vformat(fmtstring, make_format_args("Sidereal rotation period (s)", Par.RotationPeriod));
+	os << vformat(fmtstring, make_format_args("Axial tilt", Par.AxialTilt));
+	os << vformat(fmtstring, make_format_args("Albedo (Bond)", Par.AlbedoBond));
+	os << vformat(fmtstring, make_format_args("Albedo (geometric)", Par.AlbedoGeom));
+
+	os << " * Surface temperature (Approximate value, only for reference)\n";
+	os << "| Min | Mean | Max |\n|:---:|:---:|:---:|\n";
+	string tfmtstring = "| {:." + to_string(_OUT_PRECISISION) + "g} | {:." + to_string(_OUT_PRECISISION) + "g} | {:." + to_string(_OUT_PRECISISION) + "g} |\n";
+	vec3 Temperatures(Par.MinTemperature, Par.MeanTemperature, Par.MaxTemperature);
+
+	#define IGNORE_GAS_GIANT_GREENHOUSE 1 // When open, greenhouse effect on gas giants will ignored
+
+	if
+	(
+		!Obj->NoAtmosphere && !isinf(Obj->Atmosphere.Greenhouse) 
+		#if IGNORE_GAS_GIANT_GREENHOUSE
+		&& (Obj->Class != "Jupiter" && Obj->Class != "GasGiant" && Obj->Class != "Neptune" && Obj->Class != "IceGiant")
+		#endif
+	)
+	{
+		Temperatures += Obj->Atmosphere.Greenhouse;
+	}
+	os << vformat(tfmtstring, make_format_args(Temperatures.x, Temperatures.y, Temperatures.z));
+
+	if (!Obj->NoAtmosphere)
+	{
+		Atmosphere Atm = gbuffer_atmosphere(Obj);
+		os << " * Atmosphere\n";
+		os << "| | |\n|:---|:---|\n";
+		string aformatstring = "| {} | {:." + to_string(_OUT_PRECISISION) + "g}% {} |\n";
+		os << vformat(fmtstring, make_format_args("Surface pressure (Pa)", Atm.SurfPressure));
+		auto it = Atm.Composition.begin();
+		auto end = Atm.Composition.end();
+		while (it != end)
+		{
+			if (it == Atm.Composition.begin())
+			{
+				os << vformat(aformatstring, make_format_args("Composition by volume", it->second, it->first));
+			}
+			else
+			{
+				os << vformat(aformatstring, make_format_args("", it->second, it->first));
+			}
+			++it;
+		}
+	}
+
+	if (!Obj->NoOcean)
+	{
+		Ocean Oc = gbuffer_water(Obj);
+		os << " * Ocean\n";
+		os << "| | |\n|:---|:---|\n";
+		string aformatstring = "| {} | {:." + to_string(_OUT_PRECISISION) + "g}% {} |\n";
+		os << vformat(fmtstring, make_format_args("Depth (m)", Oc.Height));
+		auto it = Oc.Composition.begin();
+		auto end = Oc.Composition.end();
+		while (it != end)
+		{
+			if (it == Oc.Composition.begin())
+			{
+				os << vformat(aformatstring, make_format_args("Composition by volume", it->second, it->first));
+			}
+			else
+			{
+				os << vformat(aformatstring, make_format_args("", it->second, it->first));
+			}
+			++it;
+		}
+	}
+
+	os << GHMarkDownGenSubSys(Obj);
+
+	return os.str();
+}
+
+string GHMarkDownProc(shared_ptr<Object> Obj)
+{
+	ostringstream os;
 	if (Obj->Type == "Barycenter")
 	{
-		bool IsStarOrPlanet = false;
-		for (size_t i = 0; i < CurrentSubSystem->Catalog.size(); i++)
-		{
-			if 
-			(
-				CurrentSubSystem->Catalog[i].Pointer->Type == "Star" || 
-				CurrentSubSystem->Catalog[i].Pointer->Type == "Planet" || 
-				CurrentSubSystem->Catalog[i].Pointer->Type == "DwarfPlanet" || 
-				CurrentSubSystem->Catalog[i].Pointer->Type == "Moon"
-			)
-			{
-				IsStarOrPlanet = true;
-				break;
-			}
-		}
-		if (!IsStarOrPlanet) { return ""; } // Except asteroid barycenters
-
-		bool IsMainBarycenter = false;
-		for (size_t i = 0; i < Obj->Name.size(); i++)
-		{
-			if (Obj->Name[i] == Obj->ParentBody)
-			{
-				IsMainBarycenter = true;
-				break;
-			}
-		}
-		if (IsMainBarycenter) { return ""; } // Return tmpty string if it is the main barycenter.
-
-		os << vformat("\n### {} - {}\n", make_format_args(Obj->Name[0], "System Barycenter"));
-		if (Obj->Orbit.RefPlane != NO_DATA_STRING && Obj->Orbit.RefPlane != "Static" && Obj->Orbit.RefPlane != "Fixed")
-		{
-			os << GHMarkDownGenOrbit(Obj);
-		}
-		if (Obj->Class != "Sun") // Except star barycenters
-		{
-			os << GHMarkDownGenSubSys(Obj);
-		}
+		os << GHMarkDownProcBar(Obj);
 	}
 	else if (Obj->Type == "Star")
 	{
-		os << vformat("\n### {} - {}\n", make_format_args(Obj->Name[0], GenStarType(Obj)));
-
-		if (Obj->Orbit.RefPlane != NO_DATA_STRING && Obj->Orbit.RefPlane != "Static" && Obj->Orbit.RefPlane != "Fixed")
-		{
-			os << GHMarkDownGenOrbit(Obj);
-		}
-
-		if (IsBlackHole(Obj->SpecClass)) // Pecular process for black holes
-		{
-			BlackHoleParams Par = BlackHolePar(Obj);
-			os << " * Physical characteristics\n";
-			os << "| | |\n|:---|---:|\n";
-			os << vformat(fmtstring, make_format_args("Mass (Kg)", Par.Mass));
-			os << vformat(fmtstring, make_format_args("Schwarzschild Radius (m)", Par.SchwarzschildRadius));
-			os << vformat(fmtstring, make_format_args("Angular momentum", Par.Spin));
-			os << vformat(fmtstring, make_format_args("Electric charge", Par.Charge));
-		}
-		else
-		{
-			StarParams Params = gbuffer_star(Obj);
-			os << " * Physical characteristics\n";
-			os << "| | |\n|:---|---:|\n";
-			os << vformat(fmtstring, make_format_args("Bolometric magnitude", Params.AbsMagnBol));
-			os << vformat(ifmtstring, make_format_args("Spectral classification", Params.SpType));
-			os << vformat(fmtstring, make_format_args("Equatorial radius (m)", Params.EqRadius));
-			os << vformat(fmtstring, make_format_args("Flattening", Params.Flattening));
-			os << vformat(fmtstring, make_format_args("Volume (m^3)", Params.Volume));
-			os << vformat(fmtstring, make_format_args("Mass (Kg)", Params.Mass));
-			os << vformat(fmtstring, make_format_args("Average density (Kg/m^3)", Params.AvgDensity));
-			os << vformat(fmtstring, make_format_args("Equatorial surface gravity (m/s^2)", Params.EqSurfGrav));
-			os << vformat(fmtstring, make_format_args("Escape velocity (from the surface) (m/s)", Params.EscapeVelocity));
-			os << vformat(fmtstring, make_format_args("Temperature (°K)", Params.Temperature));
-			os << vformat(fmtstring, make_format_args("Luminosity (W)", Params.Luminosity));
-			if (!Obj->TidalLocked)
-			{
-				os << vformat(fmtstring, make_format_args("Obliquity", Params.Obliquity));
-				os << vformat(fmtstring, make_format_args("RotationPeriod (s)", Params.RotationPeriod));
-			}
-		}
+		os << GHMarkDownProcStar(Obj);
 	}
 	else if (Obj->Type == "Planet" || Obj->Type == "DwarfPlanet" || Obj->Type == "Moon")
 	{
-		string OrbitString = GHMarkDownGenOrbit(Obj);
-		PlanetParams Par = gbuffer_planet(Obj);
-		os << vformat("\n### {} - {}\n", make_format_args(Obj->Name[0], GenPlanetType(Obj)));
-
-		if (Obj->Orbit.RefPlane != NO_DATA_STRING && Obj->Orbit.RefPlane != "Static" && Obj->Orbit.RefPlane != "Fixed")
-		{
-			os << OrbitString;
-		}
-
-		os << " * Physical characteristics\n";
-		os << "| | |\n|:---|---:|\n";
-		os << vformat(fmtstring, make_format_args("Mean radius (m)", Par.MeanRadius));
-		if (Par.Flattening != 0)
-		{
-			os << vformat(fmtstring, make_format_args("Equatorial radius (m)", Par.EqRadius));
-			os << vformat(fmtstring, make_format_args("Polar radius (m)", Par.PolarRadius));
-		}
-		os << vformat(fmtstring, make_format_args("Flattening", Par.Flattening));
-		os << vformat(fmtstring, make_format_args("Volume (m^3)", Par.Volume));
-		os << vformat(fmtstring, make_format_args("Mass (Kg)", Par.Mass));
-		os << vformat(fmtstring, make_format_args("Mean density (Kg/m^3)", Par.MeanDensity));
-		os << vformat(fmtstring, make_format_args("Surface gravity (m/s^2)", Par.SurfGrav));
-		os << vformat(fmtstring, make_format_args("Escape velocity (m/s)", Par.EscapeVel));
-		os << vformat(fmtstring, make_format_args("Synodic rotation period (s)", Par.SynodicPeriod));
-		os << vformat(fmtstring, make_format_args("Sidereal rotation period (s)", Par.RotationPeriod));
-		os << vformat(fmtstring, make_format_args("Axial tilt", Par.AxialTilt));
-		os << vformat(fmtstring, make_format_args("Albedo (Bond)", Par.AlbedoBond));
-		os << vformat(fmtstring, make_format_args("Albedo (geometric)", Par.AlbedoGeom));
-
-		os << " * Surface temperature (Approximate value, only for reference)\n";
-		os << "| Min | Mean | Max |\n|:---:|:---:|:---:|\n";
-		string tfmtstring = "| {:." + to_string(_OUT_PRECISISION) + "g} | {:." + to_string(_OUT_PRECISISION) + "g} | {:." + to_string(_OUT_PRECISISION) + "g} |\n";
-		vec3 Temperatures(Par.MinTemperature, Par.MeanTemperature, Par.MaxTemperature);
-
-		#define IGNORE_GAS_GIANT_GREENHOUSE 1 // When open, greenhouse effect on gas giants will ignored
-
-		if
-		(
-			!Obj->NoAtmosphere && !isinf(Obj->Atmosphere.Greenhouse) 
-			#if IGNORE_GAS_GIANT_GREENHOUSE
-			&& (Obj->Class != "Jupiter" && Obj->Class != "GasGiant" && Obj->Class != "Neptune" && Obj->Class != "IceGiant")
-			#endif
-		)
-		{
-			Temperatures += Obj->Atmosphere.Greenhouse;
-		}
-		os << vformat(tfmtstring, make_format_args(Temperatures.x, Temperatures.y, Temperatures.z));
-
-		if (!Obj->NoAtmosphere)
-		{
-			Atmosphere Atm = gbuffer_atmosphere(Obj);
-			os << " * Atmosphere\n";
-			os << "| | |\n|:---|:---|\n";
-			string aformatstring = "| {} | {:." + to_string(_OUT_PRECISISION) + "g}% {} |\n";
-			os << vformat(fmtstring, make_format_args("Surface pressure (Pa)", Atm.SurfPressure));
-			auto it = Atm.Composition.begin();
-			auto end = Atm.Composition.end();
-			while (it != end)
-			{
-				if (it == Atm.Composition.begin())
-				{
-					os << vformat(aformatstring, make_format_args("Composition by volume", it->second, it->first));
-				}
-				else
-				{
-					os << vformat(aformatstring, make_format_args("", it->second, it->first));
-				}
-				++it;
-			}
-		}
-
-		if (!Obj->NoOcean)
-		{
-			Ocean Oc = gbuffer_water(Obj);
-			os << " * Ocean\n";
-			os << "| | |\n|:---|:---|\n";
-			string aformatstring = "| {} | {:." + to_string(_OUT_PRECISISION) + "g}% {} |\n";
-			os << vformat(fmtstring, make_format_args("Depth (m)", Oc.Height));
-			auto it = Oc.Composition.begin();
-			auto end = Oc.Composition.end();
-			while (it != end)
-			{
-				if (it == Oc.Composition.begin())
-				{
-					os << vformat(aformatstring, make_format_args("Composition by volume", it->second, it->first));
-				}
-				else
-				{
-					os << vformat(aformatstring, make_format_args("", it->second, it->first));
-				}
-				++it;
-			}
-		}
-
-		os << GHMarkDownGenSubSys(Obj);
+		os << GHMarkDownProcPlanet(Obj);
 	}
 	return os.str();
 }
