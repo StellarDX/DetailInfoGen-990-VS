@@ -25,6 +25,8 @@
 #include <fstream>
 #include <yvals_core.h> // STD version header
 
+#include "geochronology/final.h"
+
 using namespace std;
 using namespace cse;
 
@@ -49,6 +51,25 @@ void Transcode(string& arg, int encoding)
 	arg = szUtf8;
 	delete[] szUtf8;
 	delete[] wszUtf8;
+}
+
+void NormalProcess(ISCStream& SystemIn, vector<string> args)
+{
+	cout << "Loading - Initializing object phase 1...\n";
+
+	auto it = SystemIn->begin();
+	auto end = SystemIn->end();
+	while (it != end)
+	{
+		System.push_back(ObjectLoader(it));
+		++it;
+	}
+
+	cout << vformat("{} Objects loaded.\n", make_format_args(System.size()));
+
+	composite();
+	composite1();
+	composite2(args);
 }
 
 /////////////////////////MAIN//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -76,13 +97,24 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		cout << "\tfastrotator - fastest-rotating minor planets with a period of less than 100 seconds\n";
 		cout << "\tretrograde - Minor planets with orbital inclinations greater than 90 deg\n";
 		cout << "\thighinclined - Minor planets with orbital inclinations greater than 10 deg and smaller than 90 deg\n";
+
+		cout << "-geochronology : Generate timeline of the evolutionary history of a life planet, the following additional arguments are needed.\n";
+		cout << "\t-target <ObjectName> : Specify target object.\n";
+		cout << "\t-parent <ObjectName> : Specify parent body, it will automatically detected when missing.\n";
+
 		return 0x7FFFFFFF;
 	}
+
 	vector<string> args;
 	for (size_t i = 0; i < argc; i++)
 	{
 		args.push_back(argv[i]);
 	}
+
+	if (find(args.begin(), args.end(), "-outformat=html") != args.end()) { OFormat = HTML; }
+	else if (find(args.begin(), args.end(), "-outformat=md") != args.end()) { OFormat = MD; }
+
+	// Parse File
 
 	cout << "Loading File...\n";
 
@@ -100,29 +132,17 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		abort();
 	}
 
-	cout << "Loading - Initializing object phase 1...\n";
+	// Processing
 
-	auto it = SystemIn->begin();
-	auto end = SystemIn->end();
-	while (it != end)
-	{
-		System.push_back(ObjectLoader(it));
-		++it;
-	}
+	if (find(args.begin(), args.end(), "-geochronology") != args.end()) { geochronology(SystemIn, args); }
+	else { NormalProcess(SystemIn, args); }
 
-	cout << vformat("{} Objects loaded.\n", make_format_args(System.size()));
-
-	if (find(args.begin(), args.end(), "-outformat=html") != args.end()) { OFormat = HTML; }
-	else if (find(args.begin(), args.end(), "-outformat=md") != args.end()) { OFormat = MD; }
-
-	composite(argc, argv);
-	composite1(argc, argv);
-	composite2(argc, argv);
+	// Transcode
 
 	int encoding = 65001; // Default encoding is UTF-8
 	for (size_t i = 0; i < args.size(); i++)
 	{
-		if (string(argv[i]).substr(0, 10) == "-encoding=")
+		if (args[i].substr(0, 10) == "-encoding=")
 		{
 			string encodstr = args[i];
 			encoding = stoi(encodstr.substr(10, encodstr.size() - 10));
@@ -130,6 +150,8 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		}
 	}
 	Transcode(Final, encoding);
+
+	// Output file
 
 	string OutputFileName;
 	switch (OFormat)
@@ -145,8 +167,13 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 
 	for (size_t i = 0; i < args.size(); i++)
 	{
-		if (args[i] == "-out" && i < args.size() - 1)
+		if (args[i] == "-out" && i < args.size())
 		{
+			if (args[i + 1][0] == '-' || i == args.size() - 1)
+			{
+				cout << "Invalid output filename." << '\n';
+				abort();
+			}
 			OutputFileName = args[i + 1];
 			break;
 		}

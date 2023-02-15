@@ -10,7 +10,7 @@
 
 #include "gbuffer_basic.h"
 
-#define _OUT_PRECISISION 12
+#define _OUT_PRECISION 12
 
 extern std::map<std::string, std::vector<size_t>> TypeIndices;
 extern std::map<std::string, std::vector<size_t>> Companions;
@@ -19,6 +19,6 @@ void SortSystemType(ObjectBuffer Sys);
 void SortParentBody(ObjectBuffer Sys);
 std::string SystemInfoTable(SystemInfo Info);
 
-void composite(int argc, char const* argv[]);
+void composite();
 
 #endif

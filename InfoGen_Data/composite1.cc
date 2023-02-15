@@ -31,6 +31,7 @@ using namespace cse;
 shared_ptr<SystemStruct> SystemStructure;
 stack<SystemStruct::Elem> ParentBodyStack;
 shared_ptr<SystemStruct> CurrentSubSystem;
+float64 SynodicPeriodBuffer;
 
 void __BFS_Build(vector<shared_ptr<SystemStruct::Elem>>& Src, shared_ptr<SystemStruct>& Dst)
 {
@@ -154,7 +155,7 @@ shared_ptr<SystemStruct> BuildTree(map<string, vector<size_t>> CompanionBuffer)
 string GHMarkDownGenOrbit(shared_ptr<Object> Obj)
 {
 	ostringstream os;
-	string fmtstring = "| {} | {:." + to_string(_OUT_PRECISISION) + "g} |\n";
+	string fmtstring = "| {} | {:." + to_string(_OUT_PRECISION) + "g} |\n";
 	string ifmtstring = "| {} | {} |\n";
 	os << '\n';
 	os << " * Orbital characteristics\n";
@@ -188,6 +189,25 @@ string GHMarkDownGenOrbit(shared_ptr<Object> Obj)
 	if (Obj->Orbit.Eccentricity < 1) { os << vformat(fmtstring, make_format_args("Semi-major axis (a) (m)", Obj->Orbit.SemiMajorAxis())); }
 	os << vformat(fmtstring, make_format_args("Eccentricity (e)", Obj->Orbit.Eccentricity));
 	os << vformat(fmtstring, make_format_args("Orbital period (sidereal) (P) (s)", Obj->Orbit.Period));
+
+	// Calculate Synodic month when object is moon.
+	if (ParentBodyStack.top().Pointer->Type == "Planet")
+	{
+		auto OrbitParent = ParentBodyStack.top().Pointer->Orbit;
+		if ((Obj->Orbit.Inclination > 90 && Obj->Orbit.Inclination < 270) ||
+			(Obj->Orbit.Inclination < -90 && Obj->Orbit.Inclination > -270)) // Check retrograde
+		{
+			SynodicPeriodBuffer = (Obj->Orbit.Period * OrbitParent.Period) / (OrbitParent.Period + Obj->Orbit.Period);
+			os << vformat(fmtstring, make_format_args("Orbital period (synodic) (s)", SynodicPeriodBuffer));
+			SynodicPeriodBuffer *= -1;
+		}
+		else
+		{
+			SynodicPeriodBuffer = (Obj->Orbit.Period * OrbitParent.Period) / (OrbitParent.Period - Obj->Orbit.Period);
+			os << vformat(fmtstring, make_format_args("Orbital period (synodic) (s)", SynodicPeriodBuffer));
+		}
+	}
+
 	os << vformat(fmtstring, make_format_args("Mean anomaly", Obj->Orbit.MeanAnomaly));
 	os << vformat(fmtstring, make_format_args("Inclination (i)", Obj->Orbit.Inclination));
 	os << vformat(fmtstring, make_format_args("Longitude of ascending node (Ω)", Obj->Orbit.AscendingNode));
@@ -220,7 +240,7 @@ string GHMarkDownGenSubSys(shared_ptr<Object> Obj)
 		else if (Obj->Type == "Moon") { os << " * Sub-satellites\n"; }
 		else { os << " * Satellites\n"; }
 		os << "| Name | Diameter(m) | Mass(Kg) | Semi-Major Axis(m) | Orbital Period(s) | Inclination | Eccentricity |\n|:---|:---|:---|:---|:---|:---|:---|\n";
-		string PrecStr = "{:." + to_string(_OUT_PRECISISION) + "g}";
+		string PrecStr = "{:." + to_string(_OUT_PRECISION) + "g}";
 		for (size_t i = 0; i < CurrentSubSystem->Catalog.size(); i++)
 		{
 			if (CurrentSubSystem->Catalog[i].Pointer->Type == "Asteroid" || CurrentSubSystem->Catalog[i].Pointer->Type == "Comet")
@@ -336,7 +356,7 @@ string GHMarkDownProcBar(shared_ptr<Object> Obj)
 string GHMarkDownProcStar(shared_ptr<Object> Obj)
 {
 	ostringstream os;
-	string fmtstring = "| {} | {:." + to_string(_OUT_PRECISISION) + "g} |\n";
+	string fmtstring = "| {} | {:." + to_string(_OUT_PRECISION) + "g} |\n";
 	string ifmtstring = "| {} | {} |\n";
 	os << vformat("\n### {} - {}\n", make_format_args(Obj->Name[0], GenStarType(Obj)));
 
@@ -384,7 +404,7 @@ string GHMarkDownProcStar(shared_ptr<Object> Obj)
 string GHMarkDownProcPlanet(shared_ptr<Object> Obj)
 {
 	ostringstream os;
-	string fmtstring = "| {} | {:." + to_string(_OUT_PRECISISION) + "g} |\n";
+	string fmtstring = "| {} | {:." + to_string(_OUT_PRECISION) + "g} |\n";
 	string ifmtstring = "| {} | {} |\n";
 	string OrbitString = GHMarkDownGenOrbit(Obj);
 	PlanetParams Par = gbuffer_planet(Obj);
@@ -409,6 +429,10 @@ string GHMarkDownProcPlanet(shared_ptr<Object> Obj)
 	os << vformat(fmtstring, make_format_args("Mean density (Kg/m^3)", Par.MeanDensity));
 	os << vformat(fmtstring, make_format_args("Surface gravity (m/s^2)", Par.SurfGrav));
 	os << vformat(fmtstring, make_format_args("Escape velocity (m/s)", Par.EscapeVel));
+	if (ParentBodyStack.top().Pointer->Type == "Planet" && Obj->TidalLocked)
+	{
+		Par.SynodicPeriod = SynodicPeriodBuffer;
+	}
 	os << vformat(fmtstring, make_format_args("Synodic rotation period (s)", Par.SynodicPeriod));
 	os << vformat(fmtstring, make_format_args("Sidereal rotation period (s)", Par.RotationPeriod));
 	os << vformat(fmtstring, make_format_args("Axial tilt", Par.AxialTilt));
@@ -417,7 +441,7 @@ string GHMarkDownProcPlanet(shared_ptr<Object> Obj)
 
 	os << " * Surface temperature (Approximate value, only for reference)\n";
 	os << "| Min | Mean | Max |\n|:---:|:---:|:---:|\n";
-	string tfmtstring = "| {:." + to_string(_OUT_PRECISISION) + "g} | {:." + to_string(_OUT_PRECISISION) + "g} | {:." + to_string(_OUT_PRECISISION) + "g} |\n";
+	string tfmtstring = "| {:." + to_string(_OUT_PRECISION) + "g} | {:." + to_string(_OUT_PRECISION) + "g} | {:." + to_string(_OUT_PRECISION) + "g} |\n";
 	vec3 Temperatures(Par.MinTemperature, Par.MeanTemperature, Par.MaxTemperature);
 
 	#define IGNORE_GAS_GIANT_GREENHOUSE 1 // When open, greenhouse effect on gas giants will ignored
@@ -439,7 +463,7 @@ string GHMarkDownProcPlanet(shared_ptr<Object> Obj)
 		Atmosphere Atm = gbuffer_atmosphere(Obj);
 		os << " * Atmosphere\n";
 		os << "| | |\n|:---|:---|\n";
-		string aformatstring = "| {} | {:." + to_string(_OUT_PRECISISION) + "g}% {} |\n";
+		string aformatstring = "| {} | {:." + to_string(_OUT_PRECISION) + "g}% {} |\n";
 		os << vformat(fmtstring, make_format_args("Surface pressure (Pa)", Atm.SurfPressure));
 		auto it = Atm.Composition.begin();
 		auto end = Atm.Composition.end();
@@ -462,7 +486,7 @@ string GHMarkDownProcPlanet(shared_ptr<Object> Obj)
 		Ocean Oc = gbuffer_water(Obj);
 		os << " * Ocean\n";
 		os << "| | |\n|:---|:---|\n";
-		string aformatstring = "| {} | {:." + to_string(_OUT_PRECISISION) + "g}% {} |\n";
+		string aformatstring = "| {} | {:." + to_string(_OUT_PRECISION) + "g}% {} |\n";
 		os << vformat(fmtstring, make_format_args("Depth (m)", Oc.Height));
 		auto it = Oc.Composition.begin();
 		auto end = Oc.Composition.end();
@@ -579,7 +603,11 @@ void TransportOrbitData(shared_ptr<Object>& Barycenter, shared_ptr<Object>& Prim
 		Barycenter->Orbit = OrbitParam(); // Clear barycenter's data
 	}
 
-	if (Primary->TidalLocked && isinf(Primary->Rotation.RotationPeriod)) { Primary->Rotation.RotationPeriod = Companion->Orbit.Period; }
+	if (Primary->TidalLocked && isinf(Primary->Rotation.RotationPeriod))
+	{
+		Primary->Rotation.RotationPeriod = Companion->Orbit.Period;
+		Primary->TidalLocked = false;
+	}
 	if (Companion->TidalLocked && isinf(Companion->Rotation.RotationPeriod)) { Companion->Rotation.RotationPeriod = Companion->Orbit.Period; }
 }
 
@@ -652,7 +680,7 @@ void __DFS_Iterate(shared_ptr<SystemStruct> SysTree)
 
 /////////////////////////MAIN//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void composite1(int argc, char const* argv[])
+void composite1()
 {
 	auto Barycenters = TypeIndices.find("Barycenter");
 	if (Barycenters != TypeIndices.end())

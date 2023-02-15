@@ -63,7 +63,7 @@ bool IsHighInclined(shared_ptr<Object> Obj)
 
 string GHMarkDownMPDiam(shared_ptr<Object> Obj)
 {
-	string PrecStr = "{:." + to_string(_OUT_PRECISISION) + "g}";
+	string PrecStr = "{:." + to_string(_OUT_PRECISION) + "g}";
 	string fmtstr = "| {} | {} | " + PrecStr + " | (" + PrecStr + " × " + PrecStr + " × " + PrecStr + ") | " + PrecStr + " |\n";
 	return vformat(fmtstr, make_format_args
 	(
@@ -79,7 +79,7 @@ string GHMarkDownMPDiam(shared_ptr<Object> Obj)
 
 string GHMarkDownMPMass(shared_ptr<Object> Obj)
 {
-	string PrecStr = "{:." + to_string(_OUT_PRECISISION) + "g}";
+	string PrecStr = "{:." + to_string(_OUT_PRECISION) + "g}";
 	string fmtstr = "| {} | {} | " + PrecStr + " |\n";
 	return vformat(fmtstr, make_format_args
 	(
@@ -91,7 +91,7 @@ string GHMarkDownMPMass(shared_ptr<Object> Obj)
 
 string GHMarkDownMPRot(shared_ptr<Object> Obj)
 {
-	string PrecStr = "{:." + to_string(_OUT_PRECISISION) + "g}";
+	string PrecStr = "{:." + to_string(_OUT_PRECISION) + "g}";
 	string fmtstr = "| {} | " + PrecStr + " | {} | " + PrecStr + " |\n";
 	return vformat(fmtstr, make_format_args
 	(
@@ -104,7 +104,7 @@ string GHMarkDownMPRot(shared_ptr<Object> Obj)
 
 string GHMarkDownMPIncl(shared_ptr<Object> Obj)
 {
-	string PrecStr = "{:." + to_string(_OUT_PRECISISION) + "g}";
+	string PrecStr = "{:." + to_string(_OUT_PRECISION) + "g}";
 	string fmtstr = "| {} | {} | " + PrecStr + " |\n";
 	return vformat(fmtstr, make_format_args
 	(
@@ -228,20 +228,14 @@ string GHMarkDownMPList()
 
 /////////////////////////MAIN//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void composite2(int argc, char const* argv[])
+void composite2(vector<string> args)
 {
-	vector<string> args;
-	for (size_t i = 0; i < argc; i++)
-	{
-		args.push_back(argv[i]);
-	}
-
 	cout << "Generating minor planet list...\n";
 
 	string MPSStr = "diameter";
 	for (size_t i = 0; i < args.size(); i++)
 	{
-		if (string(argv[i]).substr(0, 17) == "-minorplanetsort=")
+		if (args[i].substr(0, 17) == "-minorplanetsort=")
 		{
 			string encodstr = args[i];
 			MPSStr = encodstr.substr(17, encodstr.size() - 17);

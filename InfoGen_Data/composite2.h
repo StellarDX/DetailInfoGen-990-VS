@@ -3,6 +3,8 @@
 #ifndef __COMPOSITE2__
 #define __COMPOSITE2__
 
+#include <vector>
+
 enum MPSArg
 {
 	MPS_Diam,
@@ -15,6 +17,6 @@ enum MPSArg
 
 extern MPSArg MinorPlanetSortArg;
 
-void composite2(int argc, char const* argv[]);
+void composite2(std::vector<std::string> args);
 
 #endif

@@ -149,6 +149,31 @@
     <ClCompile Include="InfoGen_Data\gbuffer_planet.cc" />
     <ClCompile Include="InfoGen_Data\gbuffer_star.cc" />
     <ClCompile Include="InfoGen_Data\gbuffer_water.cc" />
+    <ClCompile Include="InfoGen_Data\geochronology\composite.cc">
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_geo</AssemblerListingLocation>
+      <ModuleOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_geo</ModuleOutputFile>
+      <ModuleDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_geo</ModuleDependenciesFile>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)composite_geo</ObjectFileName>
+      <ProgramDataBaseFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)vc$(PlatformToolsetVersion)_geo.pdb</ProgramDataBaseFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_geo</XMLDocumentationFileName>
+      <SourceDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_geo</SourceDependenciesFile>
+    </ClCompile>
+    <ClCompile Include="InfoGen_Data\geochronology\final.cc">
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_geo</AssemblerListingLocation>
+      <ModuleOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_geo</ModuleOutputFile>
+      <ModuleDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_geo</ModuleDependenciesFile>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)final_geo</ObjectFileName>
+      <ProgramDataBaseFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)vc$(PlatformToolsetVersion)_geo.pdb</ProgramDataBaseFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_geo</XMLDocumentationFileName>
+      <SourceDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_geo</SourceDependenciesFile>
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_geo</AssemblerListingLocation>
+      <ModuleOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_geo</ModuleOutputFile>
+      <ModuleDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_geo</ModuleDependenciesFile>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)final_geo</ObjectFileName>
+      <ProgramDataBaseFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)vc$(PlatformToolsetVersion)_geo.pdb</ProgramDataBaseFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_geo</XMLDocumentationFileName>
+      <SourceDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_geo</SourceDependenciesFile>
+    </ClCompile>
     <ClCompile Include="InfoGen_Data\sorting.cc" />
   </ItemGroup>
   <ItemGroup>
@@ -161,7 +186,14 @@
     <ClInclude Include="InfoGen_Data\gbuffer_planet.h" />
     <ClInclude Include="InfoGen_Data\gbuffer_star.h" />
     <ClInclude Include="InfoGen_Data\gbuffer_water.h" />
+    <ClInclude Include="InfoGen_Data\geochronology\composite.h" />
+    <ClInclude Include="InfoGen_Data\geochronology\final.h" />
     <ClInclude Include="InfoGen_Data\sorting.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="InfoGen_Data\geochronology\COMMON.INL">
+      <FileType>Document</FileType>
+    </ClInclude>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

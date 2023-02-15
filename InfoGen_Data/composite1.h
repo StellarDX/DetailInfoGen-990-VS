@@ -24,6 +24,6 @@ extern std::shared_ptr<SystemStruct> SystemStructure;
 extern std::stack<SystemStruct::Elem> ParentBodyStack;
 extern std::shared_ptr<SystemStruct> CurrentSubSystem;
 
-void composite1(int argc, char const* argv[]);
+void composite1();
 
 #endif

@@ -81,7 +81,7 @@ string SystemInfoTable(SystemInfo Info)
 {
 	ostringstream os;
 	os << "| | |\n|:---|:---|\n";
-	string fmtstring = "| {} | {:." + to_string(_OUT_PRECISISION) + "g} |\n";
+	string fmtstring = "| {} | {:." + to_string(_OUT_PRECISION) + "g} |\n";
 	string ifmtstring = "| {} | {} |\n";
 	os << vformat(fmtstring, make_format_args("Age (Years)", Info.Age));
 	os << vformat(fmtstring, make_format_args("System mass (Kg)", Info.Mass));
@@ -119,7 +119,7 @@ string GHMarkDownOutput()
 
 /////////////////////////MAIN//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void composite(int argc, char const* argv[])
+void composite()
 {
 	cout << "Loading - Initializing object phase 2...\n";
 
