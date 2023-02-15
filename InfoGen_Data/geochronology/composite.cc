@@ -23,6 +23,9 @@ array<float64, MesozoicPhases> __Mesozoic_Era_Timeline;
 #define CenozoicPhases 12
 array<float64, CenozoicPhases> __Cenozoic_Era_Timeline;
 
+#define CivilPhases 10
+array<float64, CivilPhases> __Civilization_Timeline;
+
 float64 TotalAge;
 bool HasMoon = false;
 
@@ -147,6 +150,20 @@ string GHMD_Cenozoic(float64 Age)
 	return os.str();
 }
 
+string GHMD_Civil(float64 Age)
+{
+	ostringstream os;
+	for (size_t i = 0; i < CivilPhases; i++)
+	{
+		if (Age - __Civilization_Timeline[i] > 0)
+		{
+			string Event = vformat(__Civilization_Events[i], make_format_args());
+			os << vformat(" * **{:.0f} Yrs** : {}\n", make_format_args(__Civilization_Timeline[i], Event));
+		}
+	}
+	return os.str();
+}
+
 string GHMarkDownProcess(Object Target, Object Parent)
 {
 	ostringstream os;
@@ -179,6 +196,15 @@ string GHMarkDownProcess(Object Target, Object Parent)
 		{
 			os << GHMD_Cenozoic(TotalAge);
 		}
+		if (TotalAge > __Cenozoic_Era_Timeline[CenozoicPhases - 1])
+		{
+			os << "## History of technology on Planet " << Target.Name[0] << " (Years since Paleolithic)\n";
+			os << GHMD_Civil(TotalAge - __Cenozoic_Era_Timeline[CenozoicPhases - 1]);
+			if (TotalAge - __Cenozoic_Era_Timeline[CenozoicPhases - 1] > __Civilization_Timeline[CivilPhases - 1])
+			{
+				os << "\nCivilization on this planet maybe more-developed than Earth. But this generation can only reach this point.\n";
+			}
+		}
 	}
 
 	os << "## Reference\n";
@@ -206,6 +232,10 @@ void composite0geo(Object Target, Object Parent)
 	__Mesozoic_Era_Timeline = { 4288.098E6, 4290E6, 4295E6, 4315E6, 4320E6, 4335E6, 4338.6E6, 4345E6, 4370E6, 4385E6, 4395E6, 4405E6, 4450E6 };
 	float64 __EC1 = random.uniform(4474E6, 4474.001E6);
 	__Cenozoic_Era_Timeline = { 4474E6, 4474E6, __EC1, 4480E6, 4485E6, 4490E6, 4505E6, 4516.97E6, 4530E6, 4533.5E6, 4536E6, 4536.7E6 };
+	float64 __C1 = random.uniform(3280000, 3285000);
+	float64 __C2 = random.uniform(3294700, 3295300);
+	float64 __C3 = random.uniform(3296700, 3296825);
+	__Civilization_Timeline = { 0, 720000, __C1, 3288000, __C2, __C3, 3299760, 3299870, 3299947, 3300016 };
 
 	TotalAge = FindAge(Target, Parent);
 

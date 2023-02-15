@@ -96,4 +96,18 @@ static const std::string __Cenozoic_Era_Events[] =
 	"**[First civilizations]**"
 };
 
+static const std::string __Civilization_Events[] =
+{
+	"Paleolithic - First stone tools.",
+	std::vformat("**[Quaternary Period]** - at {} years since the planet forms.", std::make_format_args(4537420000)),
+	"Mesolithic - Appearance of tools made for purely intellectual or artistic pursuits.",
+	"Neolithic - stone remained the predominant material for toolmaking, although copper and arsenic bronze were developed towards the end of this period.",
+	"Bronze Age - The beginning of bronze-smelting.",
+	"Iron Age - The Late Bronze Age collapse occurs, followed by the beginning of the Iron Age.",
+	"1st Industrial Revolution - Mechanized textile production, First Steam engine, Factory system, Iron production increase.",
+	"2nd Industrial Revolution - The enormous expansion of rail and telegraph lines culminated in a new wave of globalization. First electrical power and telephones.",
+	"3rd Industrial Revolution - Widespread use of digital logic, MOSFETs (MOS transistors), integrated circuit (IC) chips, and their derived technologies, including computers, microprocessors, digital cellular phones, and the Internet.",
+	"4th Industrial Revolution - ..."
+};
+
 #endif
