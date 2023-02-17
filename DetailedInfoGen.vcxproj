@@ -78,6 +78,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ExternalIncludePath>E:\Projects\C艹\CSpaceEngine\Headers;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
     <LibraryPath>E:\Projects\C艹\CSpaceEngine\Libraries;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <TargetName>InfoGen</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -118,7 +119,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>CSE.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>CSE-Debug.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -157,6 +158,13 @@
       <ProgramDataBaseFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)vc$(PlatformToolsetVersion)_geo.pdb</ProgramDataBaseFileName>
       <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_geo</XMLDocumentationFileName>
       <SourceDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_geo</SourceDependenciesFile>
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_geo</AssemblerListingLocation>
+      <ModuleOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_geo</ModuleOutputFile>
+      <ModuleDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_geo</ModuleDependenciesFile>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)composite_geo</ObjectFileName>
+      <ProgramDataBaseFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)vc$(PlatformToolsetVersion)_geo.pdb</ProgramDataBaseFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_geo</XMLDocumentationFileName>
+      <SourceDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_geo</SourceDependenciesFile>
     </ClCompile>
     <ClCompile Include="InfoGen_Data\geochronology\final.cc">
       <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_geo</AssemblerListingLocation>
