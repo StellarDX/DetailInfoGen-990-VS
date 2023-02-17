@@ -4,7 +4,7 @@
 
 上一个详细信息生成器链接：[百度贴吧搬运链接，SE论坛的原链接不知去向](https://tieba.baidu.com/p/4458618242)
 
-这个工程为上述版本的C++重写，基于[CSpaceEngine](https://github.com/StellarDX/CSpaceEngine-Project)，
+详细信息生成器最初为SE官方论坛的用户Amwhere所作，这个工程为上述版本的C++重写，适配0.990以上版本，基于[CSpaceEngine](https://github.com/StellarDX/CSpaceEngine-Project)，
 输出格式为Github Markdown(.md)，因为作者不会网页前端，不过以后可能会支持。
 
 (这还是一个究极不完整的版本)
