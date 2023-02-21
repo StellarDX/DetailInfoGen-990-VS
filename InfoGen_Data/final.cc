@@ -26,6 +26,7 @@
 #include <yvals_core.h> // STD version header
 
 #include "geochronology/final.h"
+#include "minerals/final.h"
 
 using namespace std;
 using namespace cse;
@@ -83,24 +84,30 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 	if (argc == 1)
 	{
 		cout << "Usage: \n";
-		cout << "InfoGen <filename> <args...>\n\n";
+		cout << "\033[1m\t\033[35mInfoGen \033[36m<filename> \033[31m<args...>\n\033[0m\n";
 
-		cout << "Additional arguments: \n";
-		cout << "-outformat=<fmt> : Specify output format, supports Github Markdown(md).\n";
-		cout << "-encoding=<encod> : Specify encoding, use numbers of codepage, e.g. -encoding=0 -> ANSI.\n";
-		cout << "-out <filename> : Specify output file name.\n";
+		cout << "Additional arguments: \n\n";
+		cout << "\t\033[32m-outformat=<fmt> \033[0m: Specify output format, supports Github Markdown(md).\n";
+		cout << "\t\033[32m-encoding=<encod> \033[0m: Specify encoding, use numbers of codepage, e.g. -encoding=0 -> ANSI.\n";
+		cout << "\t\033[32m-out <filename> \033[0m: Specify output file name.\n";
+		cout << "\t\033[32m-genseed=<seed> \033[0m: Specify seed of random generator, using Hexadecimal(0 - FFFFFFFF), it will randomly generated when argument is missing.\n";
 
-		cout << "-minorplanetsort=<char> : Generate a list of minor planets(include dwarf planets) that are exceptional in some way. The following values are valid:\n";
-		cout << "\tdiameter - IRAS standard, asteroids with a diameter greater than 120 Km (This is default option when argument is missing or invalid.)\n";
-		cout << "\tmass - Asteroids with nominal mass > 1E+18 kg\n";
-		cout << "\tslowrotator - slowest-rotating known minor planets with a period of at least 1000 hours\n";
-		cout << "\tfastrotator - fastest-rotating minor planets with a period of less than 100 seconds\n";
-		cout << "\tretrograde - Minor planets with orbital inclinations greater than 90 deg\n";
-		cout << "\thighinclined - Minor planets with orbital inclinations greater than 10 deg and smaller than 90 deg\n";
-
-		cout << "-geochronology : Generate timeline of the evolutionary history of a life planet, the following additional arguments are needed.\n";
-		cout << "\t-target <ObjectName> : Specify target object.\n";
-		cout << "\t-parent <ObjectName> : Specify parent body, it will automatically detected when missing.\n";
+		cout << "\t\033[32m-minorplanetsort=<char> \033[0m: Generate a list of minor planets(include dwarf planets) that are exceptional in some way. The following values are valid:\n";
+		cout << "\t\t\033[33mdiameter \033[0m- IRAS standard, asteroids with a diameter greater than 120 Km (This is default option when argument is missing or invalid.)\n";
+		cout << "\t\t\033[33mmass \033[0m- Asteroids with nominal mass > 1E+18 kg\n";
+		cout << "\t\t\033[33mslowrotator \033[0m- slowest-rotating known minor planets with a period of at least 1000 hours\n";
+		cout << "\t\t\033[33mfastrotator \033[0m- fastest-rotating minor planets with a period of less than 100 seconds\n";
+		cout << "\t\t\033[33mretrograde \033[0m- Minor planets with orbital inclinations greater than 90 deg\n";
+		cout << "\t\t\033[33mhighinclined \033[0m- Minor planets with orbital inclinations greater than 10 deg and smaller than 90 deg\n";
+		cout << "\t(Only mass and diameter is valid when proccessing mode is switched to mineral generation.)\n";
+		cout << "\n";
+		cout << "\t\033[32m-geochronology \033[0m: Generate timeline of the evolutionary history of a life planet, the following options are needed.\n";
+		cout << "\t\t\033[33m-target <ObjectName> \033[0m: Specify target object.\n";
+		cout << "\t\t\033[33m-parent <ObjectName> \033[0m: Specify parent body, it will automatically detected when missing.\n";
+		cout << "\n";
+		cout << "\t\033[32m-minerals \033[0m: Generate mineral distribution of all the rocky objects in this system, the following options are needed.\n";
+		cout << "\t\t\033[33m-oredict <filename> \033[0m: Specify custom ore dictionary file, program will use default ore dictionary when this argument is missing.\n";
+		cout << "\t\t\033[33m-oredictencod=<encod> \033[0m: Specify file encoding of custom ore dictionary, default is 65001(UTF-8).\n";
 
 		return 0x7FFFFFFF;
 	}
@@ -113,6 +120,16 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 
 	if (find(args.begin(), args.end(), "-outformat=html") != args.end()) { OFormat = HTML; }
 	else if (find(args.begin(), args.end(), "-outformat=md") != args.end()) { OFormat = MD; }
+
+	for (size_t i = 0; i < args.size(); i++)
+	{
+		if (args[i].substr(0, 9) == "-genseed=")
+		{
+			string encodstr = args[i];
+			random.seed(stoull(encodstr.substr(9, encodstr.size() - 9), nullptr, 16));
+			break;
+		}
+	}
 
 	// Parse File
 
@@ -135,6 +152,7 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 	// Processing
 
 	if (find(args.begin(), args.end(), "-geochronology") != args.end()) { geochronology(SystemIn, args); }
+	else if (find(args.begin(), args.end(), "-minerals") != args.end()) { minerals(SystemIn, args); }
 	else { NormalProcess(SystemIn, args); }
 
 	// Transcode

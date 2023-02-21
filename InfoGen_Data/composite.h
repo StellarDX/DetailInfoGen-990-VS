@@ -15,6 +15,8 @@
 extern std::map<std::string, std::vector<size_t>> TypeIndices;
 extern std::map<std::string, std::vector<size_t>> Companions;
 
+ObjectBuffer::iterator FindSystemBarycenter(ObjectBuffer& Sys);
+
 void SortSystemType(ObjectBuffer Sys);
 void SortParentBody(ObjectBuffer Sys);
 std::string SystemInfoTable(SystemInfo Info);

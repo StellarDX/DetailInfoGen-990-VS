@@ -1,0 +1,1667 @@
+// Tutorial of making ore dictionary:
+// Ore dictionaries are usually saved in ".tbl" format,
+// 1 mineral name per line and double slash for comments(not loaded into program.)
+
+// List of minerals
+// https://en.wikipedia.org/wiki/List_of_minerals
+
+// A
+Abelsonite
+Abenakiite-(Ce)
+Abernathyite
+Abhurite
+Abramovite
+Abswurmbachite
+Acanthite
+Achavalite
+Actinolite
+Acuminite
+Adamite
+Adamsite-(Y)
+Adelite
+Admontite
+Aegirine
+Aenigmatite
+Aerinite
+Aerugite
+Aeschynite-(Ce)
+Aeschynite-(Nd)
+Aeschynite-(Y)
+Afghanite
+Afwillite
+Agardite
+Agrellite
+Agrinierite
+Aguilarite
+Aheylite
+Ahlfeldite
+Aikinite
+Ajoite
+Akaganeite
+Akatoreite
+Akdalaite
+Akermanite
+Akhtenskite
+Akimotoite
+Akrochordite
+Aksaite
+Aktashite
+Alabandite
+Alacranite
+Alamosite
+Alarsite
+Albite
+Albrechtschraufite
+Aldermanite
+Aleksite
+Alforsite
+Algodonite
+Aliettite
+Allabogdanite
+Allactite
+Allanite
+Allanpringite
+Allargentum
+Alleghanyite
+Alloclasite
+Alluaivite
+Alluaudite
+Almandine
+Almarudite
+Alsakharovite-Zn
+Alstonite
+Altaite
+Althausite
+Althupite
+Altisite
+Alum-(K)
+Aluminite
+Aluminium
+Alunite
+Alunogen
+Amakinite
+Amarantite
+Amblygonite
+Ameghinite
+Amesite
+Amicite
+Amphibole // mineral group
+Analcime // analcite
+Anandite
+Anapaite
+Anatase
+Ancylite // mineral group
+Andalusite
+Andersonite
+Andesine
+Andorite // IV/VI
+Andradite
+Andyrobertsite
+Anglesite
+Anhydrite
+Ankerite
+Annabergite
+Annite
+Anorthite
+Anorthoclase
+Antarcticite
+Anthonyite
+Anthophyllite
+Antigorite
+Antimony
+Antitaenite
+Antlerite
+Apachite
+Apatite // mineral group
+Aphthitalite
+Apophyllite
+Aragonite
+Arcanite
+Archerite
+Arctite
+Arcubisite
+Ardaite
+Arfvedsonite
+Argentite
+Argutite
+Argyrodite
+Armalcolite
+Arsendescloizite
+Arsenic
+Arseniosiderite
+Arsenoclasite
+Arsenolite
+Arsenopyrite
+Arthurite
+Artinite
+Artroeite
+Asbecasite
+Ashburtonite
+Ashoverite
+Asisite
+Astrophyllite
+Atacamite
+Athabascaite
+Atheneite
+Aubertite
+Augelite
+Augite
+Aurichalcite
+Auricupride
+Aurostibite
+Austinite
+Autunite
+Avicennite
+Avogadrite
+Awaruite
+Axinite // mineral group
+Azurite
+
+// A.Varieties
+Adamantine spar // variety of corundum
+Agate // variety of chalcedony and quartz
+Alabaster // variety of gypsum
+Alexandrite // variety of chrysoberyl
+//Allingite // synonym of amber
+Alum
+Amazonite // variety of microcline
+Amethyst // purple variety of quartz
+Ametrine // variety of quartz
+Ammolite // organic; also a gemstone
+Amosite // asbestiform grunerite
+Antozonite // variety of fluorite
+Anyolite // metamorphic rock - zoisite, ruby, and hornblende
+Aquamarine // light blue variety of beryl
+Argentite // high temperature form of acanthite
+Asbestos // fibrous serpentine- or amphibole minerals
+Auerlite // variety of thorite
+Avalite // chromian variety of illite
+Aventurine // variety of quartz
+
+// B
+Babefphite
+Babingtonite
+Baddeleyite
+Bakerite
+Balangeroite
+Banalsite
+Bannisterite
+Baotite
+Bararite
+Baratovite
+Barrerite
+Barstowite
+Baryte // barite
+Barytocalcite
+Bassanite
+Bastnasite // mineral group
+Baumhauerite
+Bavenite
+Bayldonite
+Bayleyite
+Bazzite
+Becquerelite
+Benitoite
+Benstonite
+Bentorite
+Beraunite
+Berborite
+Bergenite
+Berlinite
+Berryite
+Berthierite
+Bertrandite
+Beryl
+Beryllonite
+Beudantite
+Bicchulite
+Biehlite
+Bilibinskite
+Bilinite
+Billietite
+Billwiseite
+Biotite
+Birnessite
+Bischofite
+Bismite
+Bismuth
+Bismuthinite
+Bismutite
+Bityite
+Bixbyite
+Blodite
+Blossite
+Bobfergusonite
+Boehmite
+Boleite
+Boltwoodite
+Bonaccordite
+Boracite
+Borax
+Bornite
+Botallackite
+Botryogen
+Boulangerite
+Bournonite
+Boussingaultite
+Bowieite
+Braggite
+Brassite
+Braunite
+Brazilianite
+Breithauptite
+Brewsterite // series of zeolites
+Brezinaite
+Brianite
+Brianyoungite
+Briartite
+Bridgmanite
+Brochantite
+Brockite
+Bromargyrite
+Bromellite
+Bronzite
+Brookite
+Brownleeite
+Brownmillerite
+Brucite
+Brushite
+Buddingtonite
+Bukovite
+Bukovskyite
+Bultfonteinite
+Bunsenite
+Bustamite
+Bystrite
+
+// B.Varieties
+Barbertonite // polytype of stichtite
+Bauxite // aluminium ore
+//Beckerite // natural resin
+Bentonite // mixture of montmorillonite and other clays
+Bixbite // red gem variety of beryl
+Bowenite // variety of antigorite
+Brammallite // variety of illite
+Brokenhillite // not approved by IMA
+Buergerite // renamed to fluor-buergerite
+Bursaite // not approved by IMA
+Bytownite // variety of anorthite
+
+// C
+Cabalzarite
+Cabriite
+Cacoxenite
+Cadmium
+Cadmoindite
+Cadmoselite
+Cadwaladerite
+Cafarsite
+Cafetite
+Cahnite
+Calaverite
+Calciborite
+Calcite
+Calderite
+Caledonite
+Calomel
+Calumetite
+Campigliaite
+Canasite
+Canavesite
+Cancrinite
+Canfieldite
+Carletonite
+Carlosruizite
+Carlsbergite
+Carminite
+Carnallite
+Carnotite
+Carobbiite
+Carpathite
+Carpholite
+Carrollite
+Caryopilite
+Cassiterite
+Cattierite
+Cavansite
+Celadonite
+Celestine
+Celsian
+Cerite
+Cerium
+Cerussite
+Cervandonite-(Ce)
+Cervantite
+Cesanite
+Cesbronite
+Chabazite // series of zeolites
+Chaidamuite
+Chalcanthite
+Chalcocite
+Chalconatronite
+Chalcophyllite
+Chalcopyrite
+Challacolloite
+Chambersite
+Chamosite
+Changbaiite
+Changesite-(Y)
+Chaoite
+Chapmanite
+Charlesite
+Charoite
+Chatkalite
+Chesterite
+Chibaite
+Childrenite
+Chiolite
+Chlorargyrite
+Chlorite // mineral group
+Chloritoid
+Chlormayenite
+Chlorocalcite
+Chloroxiphite
+Chondrodite
+Chrisstanleyite
+Christite
+Chromite
+Chromium
+Chrysoberyl
+Chrysocolla
+Chrysotile
+Chvaleticeite
+Cinnabar
+Clarkeite
+Claudetite
+Clausthalite
+Clearcreekite
+Cleusonite
+Clinoclase
+Clinohedrite
+Clinohumite
+Clinoptilolite
+Clinozoisite
+Clintonite
+Cobaltite
+Coccinite
+Coconinoite
+Coesite
+Coffinite
+Cohenite
+Colemanite
+Colimaite
+Collinsite
+Coloradoite
+Columbite // mineral group
+Combeite
+Conichalcite
+Connellite
+Cooperite
+Copiapite
+Copper
+Corderoite
+Cordierite
+Corkite
+Cornubite
+Cornwallite
+Corundum
+Cotunnite
+Covellite
+Coyoteite
+Creedite
+Cristobalite
+Crocoite
+Cronstedtite
+Crookesite
+Crossite // not approved by IMA
+Cryolite
+Cryptomelane
+Cubanite
+Cumengeite
+Cummingtonite
+Cupalite
+Cuprite
+Cuprosklodowskite
+Cuprospinel
+Curite
+Cuspidine
+Cyanotrichite
+Cylindrite
+Cymrite
+Cyrilovite
+
+// C.Varieties
+Campylite // variety of mimetite
+Carnelian // variety of quartz
+Cementite // synthetic cohenite
+Ceylonite // variety of spinel
+Chalcedony // cryptocrystalline variety of quartz and moganite
+Chiastolite // variety of andalusite
+Chlorastrolite // variety of pumpellyite-(Mg)
+Chrysoprase // green nickel bearing chalcedony
+Chrysotile // group name - asbestiform serpentine
+Citrine // yellow variety of quartz
+Cleveite // variety of uraninite
+Clinochrysotile // polytype of chrysotile
+Coltan // short for minerals of the columbite group
+Crocidolite // asbestiform riebeckite
+Cymophane // variety of chrysoberyl
+
+// D
+Danalite
+Danburite
+Datolite
+Daubreeite
+Daubreelite
+Davemaoite
+Davidite
+Dawsonite
+Delafossite
+Delvauxite
+Demesmaekerite
+Derriksite
+Descloizite
+Devilline
+Diaboleite
+Diadochite
+Diamond
+Diaspore
+Dickite
+Digenite
+Dimorphite
+Diopside
+Dioptase
+Djerfisherite
+Djurleite
+Dmitryivanovite
+Dollaseite-(Ce)
+Dolomite
+Domeykite
+Donnayite-(Y)
+Doyleite
+Dresserite
+Drysdallite
+Duftite
+Dumortierite
+Dundasite
+Dypingite
+Dyscrasite
+Dzhalindite
+
+// D.Varieties
+Delessite // magnesian chamosite
+Diallage // a junction between augite and diopside
+
+// E
+Edenite
+Edingtonite
+Edscottite
+Efremovite
+Ekanite
+Elaliite
+Elbaite // type of multicoloured tourmaline
+Elkinstantonite
+Emmonsite
+Empressite
+Enargite
+Enstatite
+Eosphorite
+Ephesite
+Epidote
+Epsomite
+Ericssonite
+Erionite // series of zeolites
+Erythrite
+Eskolaite
+Esperite
+Ettringite
+Euchlorine
+Euchroite
+Euclase
+Eucryptite
+Eudialyte
+Eudialyte group
+Euxenite-(Y)
+Eveite
+Evenkite
+Eveslogite
+
+// E.Varieties
+
+Elsmoreite // pure hydrokenoelsmoreite
+Emerald // green gem variety of beryl
+
+// F
+Fabianite
+Farneseite
+Faujasite // subgroup of zeolites
+Faustite
+Fayalite // olivine group
+Feldspar // mineral group
+Feldspathoid // mineral group
+Felsobanyaite
+Ferberite
+Fergusonite // mineral group
+Feroxyhyte
+Ferrierite // subgroup of zeolite minerals
+Ferrihydrite
+Ferrimolybdite
+Ferro-actinolite
+Ferrogedrite
+Ferrohortonolite // olivine group
+Ferronigerite-2N1S
+Ferropericlase
+Ferroselite
+Fettelite
+Fichtelite
+Fingerite
+Fletcherite
+Fluckite
+Fluellite
+Fluoborite
+Fluocerite
+Fluor-buergerite
+Fluor-liddicoatite
+Fluor-uvite
+Fluorapatite // apatite group
+Fluorapophyllite-(K)
+Fluorcanasite
+Fluorcaphite
+Fluorellestadite
+Fluorite
+Fluororichterite // amphibole group
+Fontarnauite
+Fornacite
+Forsterite // olivine group
+Fougerite // layered double hydroxide
+Fourmarierite
+Fraipontite
+Francevillite
+Franckeite
+Frankamenite
+Frankdicksonite
+Frankhawthorneite
+Franklinite // spinel group
+Franklinphilite
+Freibergite
+Freieslebenite
+Fukuchilite
+
+// F.Varieties
+Fassaite // variety of augite
+Ferrocolumbite // synonym of columbite-(Fe)
+Ferrotantalite // synonym of tantalite-(Fe)
+Fluorspar // synonym of fluorite
+Francolite // variety of fluorapatite
+
+// G
+Gabrielite
+Gadolinite // mineral group
+Gagarinite-(Ce)
+Gahnite
+Galaxite
+Galena
+Galkhaite
+Gananite
+Ganophyllite
+Garnet // mineral group
+Gaspeite
+Gatehouseite
+Gaylussite
+Gedrite
+Geerite
+Gehlenite
+Geigerite
+Geikielite
+Gembone
+Geocronite
+Georgerobinsonite
+Germanite
+Gersdorffite
+Getchellite
+Gibbsite
+Gilalite
+Gismondine
+Glauberite
+Glaucochroite
+Glaucodot
+Glauconite
+Glaucophane
+Gmelinite
+Godovikovite
+Goethite
+Gold
+Goldmanite
+Gonnardite
+Gordaite
+Gormanite
+Goslarite
+Graftonite
+Grandidierite
+Grandreefite
+Graphite
+Gratonite
+Greenalite
+Greenockite
+Gregoryite
+Greifensteinite
+Greigite
+Grossite
+Grossular
+Groutite
+Grunerite
+Guettardite
+Gugiaite
+Guilleminite
+Gunningite
+Guyanaite
+Gwihabaite
+Gypsum
+
+// G.Varieties
+Garnierite // a nickel ore
+//Gedanite // fossilized resin
+//Glessite // natural resin
+Goshenite // colorless variety of beryl
+
+// H
+Hafnon
+Hagendorfite
+Haggertyite
+Haidingerite
+Haiweeite
+Haleniusite-(La)
+Halite
+Halloysite
+Halotrichite
+Hambergite
+Hanksite
+Hapkeite
+Hardystonite
+Harmotome
+Hauerite
+Hausmannite
+Hauyne
+Hawleyite
+Haxonite
+Hazenite
+Heazlewoodite
+Hectorite
+Hedenbergite
+Hellyerite
+Hematite
+Hemihedrite
+Hemimorphite
+Hemusite
+Hendricksite
+Heptasartorite
+Herbertsmithite
+Hercynite
+Herderite
+Hermannjahnite
+Hessite
+Heulandite // series of zeolites
+Hexaferrum
+Hiarneite
+Hibonite
+Hidalgoite
+Hilgardite
+Hisingerite
+Hodgkinsonite
+Hoelite
+Hollandite
+Holmquistite
+Homilite
+Hopeite
+Hornblende // series of amphiboles
+Howlite
+Hsianghualite
+Hubeite
+Hubnerite
+Huemulite
+Humite
+Huntite
+Hureaulite
+Hutchinsonite
+Huttonite
+Hydroboracite
+Hydrogrossular // series of garnets
+Hydrohalite
+Hydrokenoelsmoreite
+Hydromagnesite
+Hydrotalcite
+Hydroxylapatite
+Hydrozincite
+
+// H.Varieties
+Hatchettite // a paraffin wax
+Heliodor // greenish-yellow variety of beryl
+Heliotrope // variety of chalcedony
+Hessonite // variety of grossular
+Hiddenite // variety of spodumene
+Hyalite // variety of opal
+Hyalophane // synonym of jaloallofane
+Hypersthene // synonym of enstatite or ferrosilite, or mid-way member of the enstatite–ferrosilite series, not approved by IMA
+
+// I
+Ianbruceite
+Ichnusaite
+Icosahedrite
+Idrialite
+Ikaite
+Illite
+Ilmenite
+Ilsemannite
+Ilvaite
+Imogolite
+Inderite
+Indite
+Indium
+Inesite
+Inyoite
+Iodargyrite
+Iranite
+Iridium
+Iron
+Ixiolite
+
+// I.Varieties
+Idocrase // synonym of vesuvianite
+Iolite // a gem-quality variety of cordierite
+
+// J
+Jacobsite
+Jadarite
+Jadeite
+Jaffeite
+Jalpaite
+Jamesonite
+Janggunite
+Jarosewichite
+Jarosite
+Jennite
+Jeremejevite
+Jerrygibbsite
+Jimthompsonite
+Johannite
+Johannsenite
+Jokokuite
+Jolliffeite
+Jonesite
+Jordanite
+Julgoldite
+Junitoite
+Jurbanite
+
+// J.Varieties
+Jade // tough, green mineral either jadeite or nephrite amphibole
+Jasper // variety of quartz
+Jeffersonite // variety of augite
+
+// K
+Kaatialaite
+Kadyrelite
+Kaersutite
+Kainite
+Kainosite-(Y)
+Kalininite
+Kalinite
+Kalsilite
+Kamacite
+Kambaldaite
+Kamiokite
+Kampfite
+Kankite
+Kanoite
+Kaolinite
+Karlite
+Kasolite
+Kassite
+Katayamalite
+Kazakovite
+Kegelite
+Keilite
+Kenhsuite
+Kermesite
+Kernite
+Kesterite
+Keyite
+Khatyrkite
+Kidwellite
+Kieserite
+Kinoite
+Kleinite
+Knebelite
+Knorringite
+Kobellite
+Kochite
+Kogarkoite
+Kolbeckite
+Kornerupine
+Kosmochlor
+Kostovite
+Kottigite
+Kovdorskite
+Kratochvilite
+Kremersite
+Krennerite
+Krieselite
+Krohnkite
+Krotite
+Krut'aite
+Krutovite
+Kukharenkoite-(Ce)
+Kuratite
+Kurnakovite
+Kutnohorite
+Kyanite
+
+// K.Varieties
+Keilhauite // variety of titanite
+Kerolite // variety of talc, not approved by IMA
+//Krantzite // natural resin
+Kunzite // variety of spodumene
+
+// L
+Labradorite
+Lanarkite
+Langbeinite
+Langite
+Lansfordite
+Lanthanite // group of rare earth carbonates
+Laplandite-(Ce)
+Larnite
+Laumontite
+Laurionite
+Laurite
+Lautenthalite
+Lautite
+Lavendulan
+Lawsonite
+Lazulite
+Lazurite
+Lead
+Leadhillite
+Legrandite
+Leifite
+Leightonite
+Lepidocrocite
+Lepidolite
+Letovicite
+Leucite
+Leucophanite
+Leucophoenicite
+Levyne // series of zeolites
+Libethenite
+Liebigite
+Linarite
+Lindgrenite
+Linnaeite
+Lipscombite
+Liroconite
+Litharge
+Lithiophilite
+Livingstonite
+Lizardite
+Loellingite
+Lonsdaleite
+Loparite-(Ce)
+Lopezite
+Lorandite
+Lorenzenite
+Loveringite
+Ludlamite
+Ludwigite
+Lulzacite
+Lyonsite
+
+// L.Varieties
+Larimar // blue variety of pectolite
+//Lignite // a type of coal
+Lodestone // a synonym of magnetite
+Lublinite // variety of calcite
+
+// M
+Macaulayite
+Macdonaldite
+Mackinawite
+Madocite
+Magadiite
+Maghemite
+Magnesioferrite
+Magnesiohastingsite
+Magnesiopascoite
+Magnesite
+Magnetite
+Majorite
+Malachite
+Malayaite
+Manganite
+Manganophyllite
+Manganosite
+Manganvesuvianite
+Mansfieldite
+Marcasite
+Margaritasite
+Margarite
+Marialite
+Maricite
+Marrite
+Marthozite
+Mascagnite
+Massicot
+Masuyite
+Mathesiusite
+Matlockite
+Maucherite
+Mawsonite
+Mckelveyite-(Y)
+Meionite
+Melanophlogite
+Melanterite
+Melilite
+Mellite
+Melonite
+Mendipite
+Mendozite
+Meneghinite
+Mercury // as solid
+Mereheadite
+Merenskyite
+Meridianiite
+Merrillite
+Mesolite
+Messelite
+Metacinnabar
+Metatorbernite
+Metazeunerite
+Meyerhofferite
+Miargyrite
+Mica // a group of silicate minerals
+Microcline
+Microlite
+Miguelromeroite
+Millerite
+Millosevichite
+Mimetite
+Minium
+Minnesotaite
+Minyulite
+Mirabilite
+Mixite
+Moganite
+Mohite
+Mohrite
+Moissanite
+Molybdenite
+Molybdite
+Monazite
+Monohydrocalcite
+Monticellite
+Montmorillonite // clay mineral
+Mooihoekite
+Moolooite
+Mordenite
+Moschellandsbergite
+Mosesite
+Mottramite
+Motukoreaite
+Mullite
+Mundite
+Murdochite
+Muscovite
+Musgravite // magnesiotaaffeite-6N'3S
+
+// M.Varieties
+Magnesia
+Magnesiocummingtonite // magnesium-rich variety of cummingtonite
+Malacolite // synonym of diopside
+Manganocolumbite // synonym of columbite-(Mn)
+Manganotantalite // synonym of tantalite-(Mn)
+Mariposite // variety of phengite/muscovite
+Meerschaum // variety of sepiolite
+Melanite // variety of andradite
+Menilite // variety of opal
+Milky quartz // a cloudy white quartz
+Morganite // a pink beryl
+
+// N
+Nabalamprophyllite
+Nabesite
+Nacrite
+Nadorite
+Nagyagite
+Nahcolite
+Naldrettite
+Nambulite
+Narsarsukite
+Natrolite
+Natron
+Natrophilite
+Nekrasovite
+Nelenite
+Nenadkevichite
+Nepheline
+Nepouite
+Neptunite
+Nichromite
+Nickel
+Nickeline
+Niedermayrite
+Niningerite
+Nissonite
+Niter
+Nitratine
+Nobleite
+Nontronite
+Norbergite
+Normandite
+Northupite
+Nosean
+Nsutite
+Nuragheite
+Nyerereite
+
+// N.Varieties
+Nephrite // variety of tremolite/actinolite
+Niobite // synonym of columbite
+Niobite-tantalite // synonym of columbite-tantalite
+
+// O
+Okenite
+Oldhamite
+Olgite
+Olivenite
+Olivine // a group of silicate minerals
+Olmiite
+Omphacite
+Oneillite
+Oosterboschite
+Oppenheimerite
+Ordonezite
+Oregonite
+Orpiment
+Orthoclase
+Osarizawaite
+Osmium
+Osumilite
+Otavite
+Ottrelite
+Otwayite
+
+// O.Varieties
+Oligoclase // a mixture of albite and anorthite
+Onyx // a monochromatic banded variety of chalcedony
+Orthochrysotile // a polytype of chrysotile
+
+// P
+Paakkonenite
+Pabstite
+Painite
+Palladium
+Palygorskite
+Panethite
+Panguite
+Papagoite
+Paragonite
+Paralaurionite
+Paramelaconite
+Pararealgar
+Paravauxite
+Pargasite
+Parisite-(Ce)
+Parsonsite
+Partheite
+Pascoite
+Patronite
+Paulingite // series of zeolites
+Paulscherrerite
+Pearceite
+Pecoraite
+Pectolite
+Penfieldite
+Penikisite
+Penroseite
+Pentagonite
+Pentlandite
+Perhamite
+Periclase
+Perite
+Perovskite
+Petalite
+Petrovite
+Petzite
+Pezzottaite
+Pharmacolite
+Pharmacosiderite
+Phenakite
+Phillipsite // series of zeolites
+Phlogopite
+Phoenicochroite
+Phosgenite
+Phosphophyllite
+Phosphosiderite
+Phosphuranylite
+Pickeringite
+Picropharmacolite
+Piemontite
+Pigeonite
+Pinalite
+Pinnoite
+Piypite
+Plagioclase // Na-Ca feldspar series
+Plancheite
+Platinum
+Plattnerite
+Playfairite
+Plumbogummite
+Polarite
+Pollucite
+Polybasite
+Polycrase
+Polydymite
+Polyhalite
+Portlandite
+Posnjakite
+Poudretteite
+Povondraite
+Powellite
+Prehnite
+Proustite
+Pseudobrookite
+Pseudomalachite
+Pseudowollastonite
+Pumpellyite // group of sorosilicates
+Purpurite
+Putnisite
+Pyrargyrite
+Pyrite
+Pyrochlore // mineral group
+Pyrolusite
+Pyromorphite
+Pyrope
+Pyrophanite
+Pyrophyllite
+Pyroxene // group of silicate minerals
+Pyroxferroite
+Pyroxmangite
+Pyrrhotite
+
+// P.Varieties
+Parachrysotile // a polytype of chrysotile
+Pelagosite // variety of aragonite
+Pericline // variety of albite
+Peridot // gem-quality olivine
+Perlite // volcanic glass
+Phengite // variety of muscovite
+Phosphorite // name given to impure, massive apatite.
+Pimelite // not approved by IMA
+Pitchblende // a massive impure form of uraninite
+Plessite // mixture of kamacite and taenite
+Potassium alum // (potash alum) as a mineral, is called alum-(K)
+
+// Q
+Qingsongite
+Quartz
+Quenstedtite
+Quetzalcoatlite
+Quintinite
+Qusongite
+
+// R
+Rakovanite
+Rambergite
+Rameauite
+Rammelsbergite
+Rapidcreekite
+Raslakite
+Raspite
+Rastsvetaevite
+Realgar
+Reederite-(Y)
+Reedmergnerite
+Reidite
+Reinerite
+Renierite
+Rheniite
+Rhodium
+Rhodochrosite
+Rhodonite
+Rhodplumsite
+Rhomboclase
+Richterite
+Rickardite
+Riebeckite
+Ringwoodite
+Roaldite
+Robertsite
+Rodalquilarite
+Romanechite
+Romeite
+Rosasite
+Roscoelite
+Roselite
+Rosenbergite
+Rosickyite
+Routhierite
+Rozenite
+Rubicline
+Ruizite
+Russellite
+Ruthenium
+Rutherfordine
+Rutile
+Rynersonite
+
+// R.Varieties
+Rashleighite // variety of turquoise
+Rhodolite // variety of pyrope
+Rock crystal // quartz
+Rose quartz // pink variety of quartz
+//Roumanite // amber
+Ruby // red gem corundum
+
+// S
+Sabatierite
+Sabieite
+Sabinaite
+Sacrofanite
+Safflorite
+Sal ammoniac
+Saleeite
+Saliotite
+Salzburgite
+Samarskite-(Y)
+Sampleite
+Samsonite
+Samuelsonite
+Sanbornite
+Saneroite
+Sanidine // orthoclase variety
+Santabarbaraite
+Santite
+Saponite // clay mineral
+Sapphirine
+Sarabauite
+Sarcolite
+Sarkinite
+Sassolite
+Satterlyite
+Sauconite
+Sborgite
+Scapolite // a group of silicate minerals
+Schaferite
+Scheelite
+Schizolite
+Schmiederite
+Schoepite
+Schorl // black tourmaline
+Schreibersite
+Schreyerite
+Schrockingerite
+Schwertmannite
+Scolecite
+Scorodite
+Scorzalite
+Scotlandite
+Scrutinyite
+Seamanite
+Searlesite
+Seeligerite
+Segelerite
+Seifertite
+Sekaninaite
+Selenium
+Seligmannite
+Sellaite
+Semseyite
+Senarmontite
+Sengierite
+Sepiolite
+Serandite
+Serendibite
+Serpentine group
+Serpierite
+Sewardite
+Shandite
+Shattuckite
+Shigaite
+Shortite
+Siderite
+Siderophyllite
+Siderotil
+Siegenite
+Silicate perovskite
+Silicon
+Sillimanite
+Silver
+Simonellite
+Simpsonite
+Sincosite
+Sinkankasite
+Sinoite
+Skaergaardite
+Sklodowskite
+Skutterudite
+Smaltite
+Smectite // a group of clay minerals
+Smithsonite
+Sodalite
+Soddyite
+Sonolite
+Sperrylite
+Spertiniite
+Spessartine
+Sphalerite
+Spherocobaltite
+Spinel
+Spodumene
+Spurrite
+Stannite
+Stannoidite
+Staurolite
+Steacyite
+Stellerite
+Stephanite
+Stercorite
+Stibarsen
+Stibiconite
+Stibiopalladinite
+Stibnite
+Stichtite
+Stilbite // series of zeolites
+Stilleite
+Stillwaterite
+Stillwellite-(Ce)
+Stilpnomelane
+Stishovite
+Stolzite
+Strashimirite
+Strengite
+Stromeyerite
+Strontianite
+Struvite
+Studenitsite
+Studtite
+Sturmanite
+Stutzite
+Suanite
+Suessite
+Sugilite
+Sulfur
+Sursassite
+Susannite
+Sussexite
+Svanbergite
+Sweetite
+Switzerite
+Sylvanite
+Sylvite
+Synchysite-(Ce)
+Syngenite
+Szenicsite
+
+// S.Varieties
+Sapphire // gem corundum of any color except red, especially blue varieties
+Sard // a variety of chalcedony/quartz
+Satinspar // a variety of gypsum
+Selenite // a variety of gypsum
+//Simetite // a variety of amber
+Smoky quartz // a brown or black variety of quartz
+Soda niter // synonym of nitratine
+Spectrolite // a variety of labradorite
+Spessartite // synonym of spessartine
+Sphene // synonym of titanite
+//Stantienite // a variety of amber
+Stibiconite // grandfathered by IMA
+Sunstone // a variety of either oligoclase or orthoclase
+
+// T
+Taaffeite
+Tachyhydrite
+Taenite
+Taikanite
+Talc
+Talmessite
+Talnakhite
+Tamarugite
+Tangeite
+Tantalite
+Tantite
+Tapiolite // mineral series
+Taranakite
+Tarapacaite
+Tarbuttite
+Tausonite
+Teallite
+Tellurite
+Tellurium
+Tellurobismuthite
+Temagamite
+Tennantite
+Tenorite
+Tephroite
+Terlinguaite
+Teruggite
+Tetradymite
+Tetrahedrite
+Tetrataenite
+Thaumasite
+Thenardite
+Thermonatrite
+Thiospinel group
+Thomasclarkite-(Y)
+Thomsenolite
+Thomsonite // series of zeolites
+Thorianite
+Thorite
+Thortveitite
+Tiemannite
+Tienshanite
+Tin
+Tinaksite
+Tincalconite
+Titanite
+Titanium
+Titanowodginite
+Tobermorite
+Todorokite
+Tokyoite
+Tongbaite
+Topaz
+Torbernite
+Tourmaline // group of silicate minerals
+Tranquillityite
+Tremolite
+Trevorite
+Tridymite
+Triphylite
+Triplite
+Triploidite
+Tripuhyite
+Troilite
+Trona
+Tschermakite
+Tschermigite
+Tsumcorite
+Tsumebite
+Tugtupite
+Tungsten
+Tungstite
+Tuperssuatsiaite
+Turquoise
+Tusionite
+Tyrolite
+Tyrrellite
+Tyuyamunite
+
+// T.Varieties
+Tanzanite // variety of zoisite
+Thulite // variety of zoisite
+Thuringite // variety of chamosite
+Travertine // form of calcium carbonate
+Tsavorite // gem variety of grossularite garnet
+
+// U
+Uralite // alteration actinolite
+Uchucchacuaite
+Uklonskovite
+Ulexite
+Ullmannite
+Ulrichite
+Ulvospinel
+Umangite
+Umbite
+Umohoite
+Upalite
+Uraninite
+Uranocircite-II
+Uranophane
+Uranopilite
+Urea
+Uricite
+Urusovite
+Ussingite
+Utahite
+Uvarovite
+Uytenbogaardtite
+
+// V
+Vaesite
+Valentinite
+Valleriite
+Vanadinite
+Vanadiocarpholite
+Vanadium
+Vandenbrandeite
+Vantasselite
+Vanuralite
+Variscite
+Vaterite
+Vauquelinite
+Vauxite
+Veatchite
+Vermiculite
+Vesuvianite
+Villiaumite
+Violarite
+Vishnevite
+Vivianite
+Vladimirite
+Vlasovite
+Volborthite
+Vuagnatite
+Vulcanite
+
+// W
+Wadsleyite
+Wagnerite
+Wairakite
+Wakabayashilite
+Wakefieldite
+Walfordite
+Wardite
+Warikahnite
+Warwickite
+Wassonite
+//Water // as solid
+Wattersite
+Wavellite
+Weddellite
+Weeksite
+Weilite
+Weissite
+Weloganite
+Whewellite
+Whiteite // group of minerals
+Whitlockite
+Willemite
+Wiluite
+Witherite
+Wodginite
+Wolframite
+Wollastonite
+Woodhouseite
+Wohlerite
+Wulfenite
+Wurtzite
+Wustite
+Wyartite
+
+// X
+Xanthiosite
+Xanthoconite
+Xanthoxenite
+Xenophyllite
+Xenotime
+Xiangjiangite
+Xieite
+Xifengite
+Xilingolite
+Ximengite
+Xingzhongite
+Xitieshanite
+Xocolatlite
+Xocomecatlite
+Xonotlite
+
+// Y
+Ye'elimite
+Yingjiangite
+Yoshiokaite
+Yttrialite
+Yttrogummite
+Yttropyrochlore-(Y) // obruchevite
+Yugawaralite
+Yuksporite
+
+// Y.Varieties
+Yttrocerite // variety of fluorite
+Yttrocolumbite // variety of columbite
+
+// Z
+Zabuyelite
+Zaccagnaite
+Zaherite
+Zairite
+Zakharovite
+Zanazziite
+Zaratite
+Zavaritskite
+Zektzerite
+Zellerite
+Zemannite
+Zeolite // group of silicate minerals
+Zeunerite
+Zhanghengite
+Zhangpeishanite
+Zharchikhite
+Zhemchuzhnikovite
+Ziesite
+Zimbabweite
+Zincite
+Zinclipscombite
+Zincmelanterite
+Zincobotryogen
+Zincochromite
+Zincolivenite
+Zinkenite
+Zinnwaldite
+Zippeite
+Zircon
+Zirconolite
+Zircophyllite
+Zirkelite
+Znucalite
+Zoisite
+Zorite
+Zunyite
+Zussmanite
+Zykaite
+
+// Z.Varieties
+Zajacite-(Ce) // name changed to gagarinite-(Ce)
+Zhonghuacerite-(Ce) // considered to be kukharenkoite-(Ce) or huanghoite-(Ce)
+Zinalsite // synonym of fraipontite
+
+// Total: 1554 minerals

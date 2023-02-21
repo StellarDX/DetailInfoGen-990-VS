@@ -2,7 +2,6 @@
 #include "composite1.h"
 #include "composite2.h"
 #include "final.h"
-#include <CSE/Object.h>
 
 #include "sorting.h"
 
@@ -17,7 +16,7 @@ void __DFS_SearchMinorPlanets(ostream& os, shared_ptr<SystemStruct> SysTree, fun
 	if (SysTree == nullptr) { return; }
 	for (size_t i = 0; i < SysTree->Catalog.size(); i++)
 	{
-		if ((SysTree->Catalog[i].Pointer->Type == "Asteroid" || SysTree->Catalog[i].Pointer->Type == "DwarfPlanet") && _PFunc(SysTree->Catalog[i].Pointer)) 
+		if ((SysTree->Catalog[i].Pointer->Type == "Asteroid" || SysTree->Catalog[i].Pointer->Type == "DwarfPlanet" || SysTree->Catalog[i].Pointer->Type == "Comet") && _PFunc(SysTree->Catalog[i].Pointer))
 		{
 			MinorPlanetBuffer.push_back(SysTree->Catalog[i].Pointer);
 		}

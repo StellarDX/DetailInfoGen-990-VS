@@ -79,6 +79,11 @@
     <ExternalIncludePath>E:\Projects\C艹\CSpaceEngine\Headers;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
     <LibraryPath>E:\Projects\C艹\CSpaceEngine\Libraries;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
     <TargetName>InfoGen</TargetName>
+    <OutDir>$(SolutionDir)</OutDir>
+    <CopyLocalDeploymentContent>true</CopyLocalDeploymentContent>
+    <CopyLocalProjectReference>true</CopyLocalProjectReference>
+    <CopyLocalDebugSymbols>true</CopyLocalDebugSymbols>
+    <CopyCppRuntimeToOutputDir>true</CopyCppRuntimeToOutputDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -182,6 +187,38 @@
       <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_geo</XMLDocumentationFileName>
       <SourceDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_geo</SourceDependenciesFile>
     </ClCompile>
+    <ClCompile Include="InfoGen_Data\minerals\composite.cc">
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_min</AssemblerListingLocation>
+      <ModuleOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_min</ModuleOutputFile>
+      <ModuleDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_min</ModuleDependenciesFile>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)composite_min</ObjectFileName>
+      <ProgramDataBaseFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)vc$(PlatformToolsetVersion)_min.pdb</ProgramDataBaseFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_min</XMLDocumentationFileName>
+      <SourceDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_min</SourceDependenciesFile>
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_min</AssemblerListingLocation>
+      <ModuleOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_min</ModuleOutputFile>
+      <ModuleDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_min</ModuleDependenciesFile>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)composite_min</ObjectFileName>
+      <ProgramDataBaseFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)vc$(PlatformToolsetVersion)_min.pdb</ProgramDataBaseFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_min</XMLDocumentationFileName>
+      <SourceDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_min</SourceDependenciesFile>
+    </ClCompile>
+    <ClCompile Include="InfoGen_Data\minerals\final.cc">
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_min</AssemblerListingLocation>
+      <ModuleOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_min</ModuleOutputFile>
+      <ModuleDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_min</ModuleDependenciesFile>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)final_min</ObjectFileName>
+      <ProgramDataBaseFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)vc$(PlatformToolsetVersion)_min.pdb</ProgramDataBaseFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_min</XMLDocumentationFileName>
+      <SourceDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_min</SourceDependenciesFile>
+      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_min</AssemblerListingLocation>
+      <ModuleOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_min</ModuleOutputFile>
+      <ModuleDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_min</ModuleDependenciesFile>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)final_min</ObjectFileName>
+      <ProgramDataBaseFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)vc$(PlatformToolsetVersion)_min.pdb</ProgramDataBaseFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_min</XMLDocumentationFileName>
+      <SourceDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_min</SourceDependenciesFile>
+    </ClCompile>
     <ClCompile Include="InfoGen_Data\sorting.cc" />
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +233,9 @@
     <ClInclude Include="InfoGen_Data\gbuffer_water.h" />
     <ClInclude Include="InfoGen_Data\geochronology\composite.h" />
     <ClInclude Include="InfoGen_Data\geochronology\final.h" />
+    <ClInclude Include="InfoGen_Data\minerals\composite.h" />
+    <ClInclude Include="InfoGen_Data\minerals\final.h" />
+    <ClInclude Include="InfoGen_Data\minerals\OreDict.tbl" />
     <ClInclude Include="InfoGen_Data\sorting.h" />
   </ItemGroup>
   <ItemGroup>

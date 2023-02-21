@@ -26,4 +26,6 @@ extern std::string Final;
 using ObjectBuffer = std::vector<cse::Object>;
 extern ObjectBuffer System;
 
+void Transcode(std::string& arg, int encoding);
+
 #endif
