@@ -84,11 +84,19 @@
     <ClInclude Include="InfoGen_Data\sorting.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InfoGen_Data\geochronology\final.h" />
     <ClInclude Include="InfoGen_Data\geochronology\COMMON.INL" />
-    <ClInclude Include="InfoGen_Data\geochronology\composite.h" />
     <ClInclude Include="InfoGen_Data\mineralogy\OreDict.tbl" />
-    <ClInclude Include="InfoGen_Data\mineralogy\final.h" />
-    <ClInclude Include="InfoGen_Data\mineralogy\composite.h" />
+    <ClInclude Include="InfoGen_Data\mineralogy\final.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InfoGen_Data\geochronology\final.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InfoGen_Data\mineralogy\composite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InfoGen_Data\geochronology\composite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
