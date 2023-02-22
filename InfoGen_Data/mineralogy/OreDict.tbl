@@ -1,6 +1,7 @@
 // Tutorial of making ore dictionary:
 // Ore dictionaries are usually saved in ".tbl" format,
 // 1 mineral name per line and double slash for comments(not loaded into program.)
+// Don't worry about duplications, they will be ignored when loading.
 
 // List of minerals
 // https://en.wikipedia.org/wiki/List_of_minerals
