@@ -187,7 +187,7 @@
       <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_geo</XMLDocumentationFileName>
       <SourceDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_geo</SourceDependenciesFile>
     </ClCompile>
-    <ClCompile Include="InfoGen_Data\minerals\composite.cc">
+    <ClCompile Include="InfoGen_Data\mineralogy\composite.cc">
       <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_min</AssemblerListingLocation>
       <ModuleOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_min</ModuleOutputFile>
       <ModuleDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_min</ModuleDependenciesFile>
@@ -203,7 +203,7 @@
       <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_min</XMLDocumentationFileName>
       <SourceDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_min</SourceDependenciesFile>
     </ClCompile>
-    <ClCompile Include="InfoGen_Data\minerals\final.cc">
+    <ClCompile Include="InfoGen_Data\mineralogy\final.cc">
       <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_min</AssemblerListingLocation>
       <ModuleOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_min</ModuleOutputFile>
       <ModuleDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_min</ModuleDependenciesFile>
@@ -233,9 +233,9 @@
     <ClInclude Include="InfoGen_Data\gbuffer_water.h" />
     <ClInclude Include="InfoGen_Data\geochronology\composite.h" />
     <ClInclude Include="InfoGen_Data\geochronology\final.h" />
-    <ClInclude Include="InfoGen_Data\minerals\composite.h" />
-    <ClInclude Include="InfoGen_Data\minerals\final.h" />
-    <ClInclude Include="InfoGen_Data\minerals\OreDict.tbl" />
+    <ClInclude Include="InfoGen_Data\mineralogy\composite.h" />
+    <ClInclude Include="InfoGen_Data\mineralogy\final.h" />
+    <ClInclude Include="InfoGen_Data\mineralogy\OreDict.tbl" />
     <ClInclude Include="InfoGen_Data\sorting.h" />
   </ItemGroup>
   <ItemGroup>

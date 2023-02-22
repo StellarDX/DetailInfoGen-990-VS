@@ -1,4 +1,5 @@
 ﻿#include "composite.h"
+#include "final.h"
 
 #include "../gbuffer_planet.h"
 #include "../composite.h"
@@ -82,7 +83,16 @@ set<string> SelectMinerals(const vector<string>& Dict, size_t N)
 
 string RandMineralStr(size_t N)
 {
-	set<string> Buf = SelectMinerals(OreDict, random.randint(0, N));
+	vector<string> OreD2;
+	auto it0 = OreDict.begin();
+	auto end0 = OreDict.end();
+	while (it0 != end0)
+	{
+		OreD2.push_back(*it0);
+		++it0;
+	}
+
+	set<string> Buf = SelectMinerals(OreD2, random.randint(0, N));
 	ostringstream os;
 	auto it = Buf.begin();
 	auto end = Buf.end();

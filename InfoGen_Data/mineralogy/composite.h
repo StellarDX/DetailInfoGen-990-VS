@@ -7,8 +7,6 @@
 #include <CSE/Object.h>
 #include <CSE/Random.h>
 
-extern std::vector<std::string> OreDict;
-
 void composite0min();
 
 #endif

@@ -26,7 +26,7 @@
 #include <yvals_core.h> // STD version header
 
 #include "geochronology/final.h"
-#include "minerals/final.h"
+#include "mineralogy/final.h"
 
 using namespace std;
 using namespace cse;
@@ -105,7 +105,7 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		cout << "\t\t\033[33m-target <ObjectName> \033[0m: Specify target object.\n";
 		cout << "\t\t\033[33m-parent <ObjectName> \033[0m: Specify parent body, it will automatically detected when missing.\n";
 		cout << "\n";
-		cout << "\t\033[32m-minerals \033[0m: Generate mineral distribution of all the rocky objects in this system, the following options are needed.\n";
+		cout << "\t\033[32m-mineralogy \033[0m: Generate mineral distribution of all the rocky objects in this system, the following options are needed.\n";
 		cout << "\t\t\033[33m-oredict <filename> \033[0m: Specify custom ore dictionary file, program will use default ore dictionary when this argument is missing.\n";
 		cout << "\t\t\033[33m-oredictencod=<encod> \033[0m: Specify file encoding of custom ore dictionary, default is 65001(UTF-8).\n";
 
@@ -152,7 +152,7 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 	// Processing
 
 	if (find(args.begin(), args.end(), "-geochronology") != args.end()) { geochronology(SystemIn, args); }
-	else if (find(args.begin(), args.end(), "-minerals") != args.end()) { minerals(SystemIn, args); }
+	else if (find(args.begin(), args.end(), "-mineralogy") != args.end()) { minerals(SystemIn, args); }
 	else { NormalProcess(SystemIn, args); }
 
 	// Transcode

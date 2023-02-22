@@ -46,10 +46,10 @@
     <ClCompile Include="InfoGen_Data\geochronology\composite.cc">
       <Filter>Src</Filter>
     </ClCompile>
-    <ClCompile Include="InfoGen_Data\minerals\final.cc">
+    <ClCompile Include="InfoGen_Data\mineralogy\final.cc">
       <Filter>Src</Filter>
     </ClCompile>
-    <ClCompile Include="InfoGen_Data\minerals\composite.cc">
+    <ClCompile Include="InfoGen_Data\mineralogy\composite.cc">
       <Filter>Src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -87,8 +87,8 @@
     <ClInclude Include="InfoGen_Data\geochronology\final.h" />
     <ClInclude Include="InfoGen_Data\geochronology\COMMON.INL" />
     <ClInclude Include="InfoGen_Data\geochronology\composite.h" />
-    <ClInclude Include="InfoGen_Data\minerals\OreDict.tbl" />
-    <ClInclude Include="InfoGen_Data\minerals\final.h" />
-    <ClInclude Include="InfoGen_Data\minerals\composite.h" />
+    <ClInclude Include="InfoGen_Data\mineralogy\OreDict.tbl" />
+    <ClInclude Include="InfoGen_Data\mineralogy\final.h" />
+    <ClInclude Include="InfoGen_Data\mineralogy\composite.h" />
   </ItemGroup>
 </Project>

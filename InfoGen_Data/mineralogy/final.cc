@@ -11,9 +11,9 @@
 using namespace std;
 using namespace cse;
 
-vector<string> OreDict;
+set<string> OreDict;
 
-void ParseOreDict(string Filename, vector<string>* Dest, int encod = 65001)
+void ParseOreDict(string Filename, set<string>* Dest, int encod = 65001)
 {
 	cout << "Loading ore dictionary...\n";
 	ifstream fin(Filename);
@@ -36,7 +36,7 @@ void ParseOreDict(string Filename, vector<string>* Dest, int encod = 65001)
 
 		Transcode(buf, encod);
 
-		if (!buf.empty()) { OreDict.push_back(buf); }
+		if (!buf.empty()) { OreDict.insert(buf); }
 	}
 	cout << vformat("{} Minerals loaded.\n", make_format_args(OreDict.size()));
 }
@@ -59,7 +59,7 @@ void LoadSystem(ISCStream& SystemIn)
 void minerals(ISCStream& SystemIn, vector<string> args)
 {
 	bool CustomOreDict = false;
-	string OreDictPath = "InfoGen_Data/minerals/OreDict.tbl";
+	string OreDictPath = "InfoGen_Data/mineralogy/OreDict.tbl";
 
 	for (size_t i = 0; i < args.size(); i++)
 	{
