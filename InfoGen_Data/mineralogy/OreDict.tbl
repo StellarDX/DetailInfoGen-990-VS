@@ -1666,24 +1666,16 @@ Zinalsite // synonym of fraipontite
 // Minerals discovered by China listed in IMA Database
 // https://rruff.info/ima/
 
-Aeschynite-(Nd)
-Anduoite
-Antimonselite
-Argentotetrahedrite-(Hg)
-Arsenoveszelyite
-Badengzhuite
-Bafertisite
-Balipholite
-Baotite
-Calcioancylite-(La)
-Carboborite
-Cebaite-(Ce)
-Chaidamuite
-Changbaiite
-Changchengite
-Chengdeite
-Chenguodaite
-Chiluite
+Poirierite
+Asimowite
+Elgoresyite
+Gupeiite
+Hiroseite
+Lingunite
+Shenzhuangite
+Tuite
+Xieite
+Xifengite
 Chrombismite
 Chromium
 Chukochenite
@@ -1706,17 +1698,19 @@ Fluorannite
 Fluorcalciopyrochlore
 Fluorluanshiweiite
 Fluornatropyrochlore
-Fluorokinoshitalite
 Fluoro-nyboite
 Fluoro-taramite
+Fluorokinoshitalite
 Fluorotetraferriphlogopite
 Fluorsigaiite
 Furongite
+Anduoite
 Gananite
 Gaotaiite
 Gugiaite
 Gysinite-(La)
 Haitaite-(La)
+Antimonselite
 Hanjiangite
 Hemleyite
 Hezuolinite
@@ -1735,6 +1729,7 @@ Jianshuiite
 Jingsuiite
 Jingwenite-(Y)
 Jinshajiangite
+Argentotetrahedrite-(Hg)
 Kangjinlaite
 Kaolinite
 Kenoargentotetrahedrite-(Zn)
@@ -1742,6 +1737,7 @@ Kenorozhdestvenskayaite-(Fe)
 Laihunite
 Lanmuchangite
 Leadamalgam
+Arsenoveszelyite
 Liberite
 Liguowuite
 Lingbaoite
@@ -1764,16 +1760,21 @@ Maoniupingite-(Ce)
 Mayingite
 Meifuite
 Mengxianminite
+Aeschynite-(Nd)
 Mianningite
 Minjiangite
 Moxuanxueite
 Nanlingite
 Nanpingite
 Naquite
+Badengzhuite
+Bafertisite
 Omeiite
+Balipholite
 Orthobrannerite
 Ottensite
 Oxynatromicrolite
+Baotite
 Pengite
 Pingguite
 Potassic-hastingsite
@@ -1818,18 +1819,30 @@ Yingjiangite
 Yixunite
 Yuanfuliite
 Yuanjiangite
-Elgoresyite
-Gupeiite
-Hiroseite
-Lingunite
-Shenzhuangite
-Tuite
-Xieite
-Xifengite
-Poirierite
-Asimowite
+Zabuyelite
+Zangboite
+Zhanghengite
+Zhangpeishanite
+Zhengminghuaite
+Zheshengite
+Zhiqinite
+Zincobotryogen
+Zincocopiapite
+Zinconigerite-2N1S
+Zinconigerite-6N6S
+Zincospiroffite
+Zincovoltaite
+Calcioancylite-(La)
+Carboborite
+Cebaite-(Ce)
+Chaidamuite
+Changbaiite
+Changchengite
+Chengdeite
+Chenguodaite
+Chiluite
 
 // New mineral discovered by China on the Moon
 Changesite-(Y)
 
-// Total: 1691 minerals (except duplication)
+// Total: 1700 minerals (except duplication)
