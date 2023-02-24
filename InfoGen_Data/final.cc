@@ -106,11 +106,11 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		cout << "\n";
 		cout << "\t\033[32m-astrobiology \033[0m: Calculate ESI and Habitabilities for rocky planets and report will be displayed on the bottom of the file.\n";
 		cout << "\n";
-		cout << "\t\033[32m-geochronology \033[0m: Generate timeline of the evolutionary history of a life planet, the following options are needed.\n";
+		cout << "\t\033[32m-geochronology \033[0m: Generate timeline of the evolutionary history of a life planet, the following options are available.\n";
 		cout << "\t\t\033[33m-target <ObjectName> \033[0m: Specify target object.\n";
 		cout << "\t\t\033[33m-parent <ObjectName> \033[0m: Specify parent body, it will automatically detected when missing.\n";
 		cout << "\n";
-		cout << "\t\033[32m-mineralogy \033[0m: Generate mineral distribution of all the rocky objects in this system, the following options are needed.\n";
+		cout << "\t\033[32m-mineralogy \033[0m: Generate mineral distribution of all the rocky objects in this system, the following options are available.\n";
 		cout << "\t\t\033[33m-oredict <filename> \033[0m: Specify custom ore dictionary file, program will use default ore dictionary when this argument is missing.\n";
 		cout << "\t\t\033[33m-oredictencod=<encod> \033[0m: Specify file encoding of custom ore dictionary, default is 65001(UTF-8).\n";
 
