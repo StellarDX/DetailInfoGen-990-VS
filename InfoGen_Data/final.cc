@@ -37,6 +37,7 @@ string Final;
 
 enum OutputFormat OFormat = MD;
 bool Astrobiology = false;
+uint32_t _OUT_PRECISION = 12;
 
 void Transcode(string& arg, int encoding)
 {
@@ -94,6 +95,7 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		cout << "\t\033[32m-encoding=<encod> \033[0m: Specify encoding, use numbers of codepage, e.g. -encoding=0 -> ANSI.\n";
 		cout << "\t\033[32m-out <filename> \033[0m: Specify output file name.\n";
 		cout << "\t\033[32m-genseed=<seed> \033[0m: Specify seed of random generator, using Hexadecimal(0 - FFFFFFFF), it will randomly generated when argument is missing.\n";
+		cout << "\t\033[32m-precision=<int> \033[0m: Specify output precision, default is 12.\n";
 
 		cout << "\t\033[32m-minorplanetsort=<char> \033[0m: Generate a list of minor planets(include dwarf planets) that are exceptional in some way. The following values are valid:\n";
 		cout << "\t\t\033[33mdiameter \033[0m- IRAS standard, asteroids with a diameter greater than 120 Km (This is default option when argument is missing or invalid.)\n";
@@ -123,15 +125,28 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		args.push_back(argv[i]);
 	}
 
+	// Output format
 	if (find(args.begin(), args.end(), "-outformat=html") != args.end()) { OFormat = HTML; }
 	else if (find(args.begin(), args.end(), "-outformat=md") != args.end()) { OFormat = MD; }
 
+	// Seed
 	for (size_t i = 0; i < args.size(); i++)
 	{
 		if (args[i].substr(0, 9) == "-genseed=")
 		{
 			string encodstr = args[i];
 			random.seed(stoull(encodstr.substr(9, encodstr.size() - 9), nullptr, 16));
+			break;
+		}
+	}
+
+	// Output precision
+	for (size_t i = 0; i < args.size(); i++)
+	{
+		if (args[i].substr(0, 11) == "-precision=")
+		{
+			string encodstr = args[i];
+			_OUT_PRECISION = stoi(encodstr.substr(11, encodstr.size() - 11));
 			break;
 		}
 	}

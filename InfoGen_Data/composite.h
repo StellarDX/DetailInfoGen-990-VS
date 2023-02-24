@@ -10,7 +10,7 @@
 
 #include "gbuffer_basic.h"
 
-#define _OUT_PRECISION 12
+extern uint32_t _OUT_PRECISION;
 
 extern std::map<std::string, std::vector<size_t>> TypeIndices;
 extern std::map<std::string, std::vector<size_t>> Companions;
