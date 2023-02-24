@@ -457,6 +457,7 @@ string GHMarkDownProcPlanet(shared_ptr<Object> Obj)
 		Temperatures += Obj->Atmosphere.Greenhouse;
 	}
 	os << vformat(tfmtstring, make_format_args(Temperatures.x, Temperatures.y, Temperatures.z));
+	Obj->Teff = Temperatures.y;
 
 	if (!Obj->NoAtmosphere)
 	{

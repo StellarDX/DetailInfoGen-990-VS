@@ -8,6 +8,8 @@ float64 ParentLumBuffer;
 vector<float64> ParentLumBufferVec;
 vector<OrbitParam> ParentOrbitBufferVec;
 
+#include "COMMON.inl"
+
 string GenPlanetType(shared_ptr<Object> Obj)
 {
 	if (Obj->Class == "Ferria") { return "Iron planet"; }
@@ -43,6 +45,31 @@ string GenPlanetType(shared_ptr<Object> Obj)
 	if (Obj->Class == "Chthonia") { return "Helium Planet"; }
 	if (Obj->Class == "Asteroid") { return "Minor Planet"; }
 	return "Planet";
+}
+
+float64 EarthSimIndex_RRhoVT(shared_ptr<Object> Target)
+{
+	// Weight exponents reference: https://phl.upr.edu/projects/earth-similarity-index-esi
+	static constexpr auto RadiusWeightExp = 0.57;
+	static constexpr auto DensityWeightExp = 1.07;
+	static constexpr auto EscVelWeightExp = 0.70;
+	static constexpr auto TemperatureWeightExp = 5.58;
+
+	static float64 EarthDensity = __StelCSE_Earth.Mass / ((4. / 3.) * CSE_PI * (__StelCSE_Earth.Dimensions.x / 2.) * (__StelCSE_Earth.Dimensions.y / 2.) * (__StelCSE_Earth.Dimensions.z / 2.));
+	static float64 EarthEscVel = cse::sqrt((2. * GravConstant * __StelCSE_Earth.Mass) / (__StelCSE_Earth.Dimensions.x / 2.));
+
+	float64 Volume = (4. / 3.) * CSE_PI * (Target->Dimensions.x / 2.) * (Target->Dimensions.y / 2.) * (Target->Dimensions.z / 2.);
+	float64 MDensity = Target->Mass / Volume;
+	float64 MaxDiam = max(Target->Dimensions.x, Target->Dimensions.z);
+	float64 EscVel = cse::sqrt((2. * GravConstant * Target->Mass) / (MaxDiam / 2.));
+
+	float64 R0 = 1. - cse::abs((Target->Radius() - __StelCSE_Earth.Radius()) / (Target->Radius() + __StelCSE_Earth.Radius()));
+	float64 Rho0 = 1. - cse::abs((MDensity - EarthDensity) / (MDensity + EarthDensity));
+	float64 V0 = 1. - cse::abs((EscVel - EarthEscVel) / (EscVel + EarthEscVel));
+	float64 T0 = 1. - cse::abs((Target->Teff - __StelCSE_Earth.Teff) / (Target->Teff + __StelCSE_Earth.Teff));
+
+	return cse::pow(R0, RadiusWeightExp / 4.) * cse::pow(Rho0, DensityWeightExp / 4.) *
+		cse::pow(V0, EscVelWeightExp / 4.) * cse::pow(T0, TemperatureWeightExp / 4.);
 }
 
 PlanetParams gbuffer_planet(shared_ptr<Object> Companion)

@@ -32,6 +32,7 @@ struct PlanetParams
 };
 
 std::string GenPlanetType(std::shared_ptr<cse::Object> Obj);
+cse::float64 EarthSimIndex_RRhoVT(std::shared_ptr<cse::Object> Target);
 
 PlanetParams gbuffer_planet(std::shared_ptr<cse::Object> Companion);
 

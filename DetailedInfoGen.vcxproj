@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="InfoGen_Data\composite3.cc" />
     <ClCompile Include="InfoGen_Data\composite.cc" />
     <ClCompile Include="InfoGen_Data\composite1.cc" />
     <ClCompile Include="InfoGen_Data\composite2.cc" />
@@ -225,6 +226,7 @@
     <ClInclude Include="InfoGen_Data\composite.h" />
     <ClInclude Include="InfoGen_Data\composite1.h" />
     <ClInclude Include="InfoGen_Data\composite2.h" />
+    <ClInclude Include="InfoGen_Data\composite3.h" />
     <ClInclude Include="InfoGen_Data\final.h" />
     <ClInclude Include="InfoGen_Data\gbuffer_atmosphere.h" />
     <ClInclude Include="InfoGen_Data\gbuffer_basic.h" />
@@ -239,9 +241,12 @@
     <ClInclude Include="InfoGen_Data\sorting.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="InfoGen_Data\geochronology\COMMON.INL">
+    <ClInclude Include="InfoGen_Data\geochronology\COMMON.inl">
       <FileType>Document</FileType>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="InfoGen_Data\COMMON.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

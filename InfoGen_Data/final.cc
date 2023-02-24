@@ -21,6 +21,7 @@
 #include "composite.h"
 #include "composite1.h"
 #include "composite2.h"
+#include "composite3.h"
 #include "final.h"
 #include <fstream>
 #include <yvals_core.h> // STD version header
@@ -35,6 +36,7 @@ ObjectBuffer System;
 string Final;
 
 enum OutputFormat OFormat = MD;
+bool Astrobiology = false;
 
 void Transcode(string& arg, int encoding)
 {
@@ -71,6 +73,7 @@ void NormalProcess(ISCStream& SystemIn, vector<string> args)
 	composite();
 	composite1();
 	composite2(args);
+	if (Astrobiology){composite3();}
 }
 
 /////////////////////////MAIN//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -100,6 +103,8 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		cout << "\t\t\033[33mretrograde \033[0m- Minor planets with orbital inclinations greater than 90 deg\n";
 		cout << "\t\t\033[33mhighinclined \033[0m- Minor planets with orbital inclinations greater than 10 deg and smaller than 90 deg\n";
 		cout << "\t(Only mass and diameter is valid when proccessing mode is switched to mineral generation.)\n";
+		cout << "\n";
+		cout << "\t\033[32m-astrobiology \033[0m: Calculate ESI and Habitabilities for rocky planets and report will be displayed on the bottom of the file.\n";
 		cout << "\n";
 		cout << "\t\033[32m-geochronology \033[0m: Generate timeline of the evolutionary history of a life planet, the following options are needed.\n";
 		cout << "\t\t\033[33m-target <ObjectName> \033[0m: Specify target object.\n";
@@ -153,7 +158,11 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 
 	if (find(args.begin(), args.end(), "-geochronology") != args.end()) { geochronology(SystemIn, args); }
 	else if (find(args.begin(), args.end(), "-mineralogy") != args.end()) { minerals(SystemIn, args); }
-	else { NormalProcess(SystemIn, args); }
+	else
+	{
+		if (find(args.begin(), args.end(), "-astrobiology") != args.end()) { Astrobiology = true; }
+		NormalProcess(SystemIn, args);
+	}
 
 	// Transcode
 
