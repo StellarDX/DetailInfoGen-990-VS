@@ -147,6 +147,11 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		{
 			string encodstr = args[i];
 			_OUT_PRECISION = stoi(encodstr.substr(11, encodstr.size() - 11));
+			if (_OUT_PRECISION > 32)
+			{
+				cout << "Precision is too high to output.\n";
+				abort();
+			}
 			break;
 		}
 	}
