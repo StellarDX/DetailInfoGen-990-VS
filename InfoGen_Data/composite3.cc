@@ -25,10 +25,13 @@ void __DFS_FindRockyObj(shared_ptr<SystemStruct> SysTree)
 	}
 }
 
+enum HabRank{ACE, SSS, SS, S, A, B, C, D};
+static const string HabRankStr[8]{ "ACE", "SSS", "SS", "S", "A", "B", "C", "D" };
+
 string GHMDAstrobiology()
 {
 	ostringstream os;
-	os << "## Astrobiology\n";
+	os << vformat("# Habitability of rocky objects in \"{}\" System.\n", make_format_args(SystemBarycenter));
 	os << "| Object Name | Parent | ESI |\n|:---|:---|:---|\n";
 	string FmtString = "| {} | {} | {:." + to_string(_OUT_PRECISION) + "g} |\n";
 	for (size_t i = 0; i < RockyObjBuf.size(); i++)

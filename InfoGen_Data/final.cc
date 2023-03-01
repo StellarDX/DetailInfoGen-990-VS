@@ -204,7 +204,7 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 	switch (OFormat)
 	{
 	case HTML:
-		OutputFileName = args[1].substr(0, args[1].size() - 3) + ".html";
+		OutputFileName = args[1].substr(0, args[1].size() - 5) + ".html";
 		break;
 	case MD:
 	default:

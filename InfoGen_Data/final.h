@@ -20,6 +20,8 @@ enum OutputFormat
 	MD
 };
 
+extern bool Astrobiology;
+
 extern OutputFormat OFormat;
 extern std::string Final;
 

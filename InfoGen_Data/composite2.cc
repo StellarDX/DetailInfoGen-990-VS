@@ -255,7 +255,10 @@ void composite2(vector<string> args)
 		break;
 	case MD:
 	default:
-		Final += GHMarkDownMPList();
+		if (!Astrobiology)
+		{
+			Final += GHMarkDownMPList();
+		}
 		break;
 	}
 }

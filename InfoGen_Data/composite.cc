@@ -28,6 +28,7 @@ using namespace cse;
 // Indices
 map<string, vector<size_t>> TypeIndices;
 map<string, vector<size_t>> Companions;
+string SystemBarycenter;
 
 void SortSystemType(ObjectBuffer Sys)
 {
@@ -100,8 +101,8 @@ string SystemInfoTable(SystemInfo Info)
 
 string GHMarkDownOutput()
 {
-	ObjectBuffer::iterator SystemBarycenter;
-	try { SystemBarycenter = FindSystemBarycenter(System); }
+	ObjectBuffer::iterator SystemBarycen;
+	try { SystemBarycen = FindSystemBarycenter(System); }
 	catch (exception e)
 	{
 		cout << e.what();
@@ -109,10 +110,11 @@ string GHMarkDownOutput()
 	}
 
 	ostringstream fout;
-	fout << vformat("# {}\n", make_format_args(SystemBarycenter->Name[0]));
+	fout << vformat("# {}\n", make_format_args(SystemBarycen->Name[0]));
 
 	SystemInfo Info = gbuffer_basic(System, TypeIndices);
 	fout << "\n## System Information\n" << SystemInfoTable(Info);
+	SystemBarycenter = SystemBarycen->Name[0];
 
 	return fout.str();
 }
@@ -134,7 +136,8 @@ void composite()
 		break;
 	case MD:
 	default:
-		Final = GHMarkDownOutput();
+		if (!Astrobiology){Final = GHMarkDownOutput();}
+		else { GHMarkDownOutput(); }
 		break;
 	}
 }

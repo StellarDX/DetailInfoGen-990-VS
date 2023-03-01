@@ -620,7 +620,8 @@ void Proccess(shared_ptr<Object> Obj)
 		break;
 	case MD:
 	default:
-		Final += GHMarkDownProc(Obj);
+		if (!Astrobiology){Final += GHMarkDownProc(Obj);}
+		else { GHMarkDownProc(Obj); }
 		break;
 	}
 }
@@ -704,7 +705,10 @@ void composite1()
 		break;
 	case MD:
 	default:
-		Final += "\n## Objects\n";
+		if (!Astrobiology)
+		{
+			Final += "\n## Objects\n";
+		}
 		break;
 	}
 

@@ -1,4 +1,5 @@
-﻿#include "sorting.h"
+﻿#include <algorithm>
+#include "sorting.h"
 
 using namespace std;
 using namespace cse;

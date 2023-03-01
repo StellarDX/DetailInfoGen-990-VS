@@ -14,6 +14,7 @@ extern uint32_t _OUT_PRECISION;
 
 extern std::map<std::string, std::vector<size_t>> TypeIndices;
 extern std::map<std::string, std::vector<size_t>> Companions;
+extern std::string SystemBarycenter;
 
 ObjectBuffer::iterator FindSystemBarycenter(ObjectBuffer& Sys);
 
