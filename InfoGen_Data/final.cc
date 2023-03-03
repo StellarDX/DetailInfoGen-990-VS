@@ -114,7 +114,7 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		cout << "\t\033[32m-astrobiology \033[0m: Calculate ESI and Habitabilities for rocky planets.\n";
 		cout << "\n";
 		cout << "\t\033[32m-geochronology \033[0m: Generate timeline of the evolutionary history of a life planet, the following options are available.\n";
-		cout << "\t\t\033[33m-target <ObjectName> \033[0m: Specify target object.\n";
+		cout << "\t\t\033[33m-target <ObjectName> \033[0m: Specify target object. (This argument is required under geochronology mode.)\n";
 		cout << "\t\t\033[33m-parent <ObjectName> \033[0m: Specify parent body, it will automatically detected when missing.\n";
 		cout << "\n";
 		cout << "\t\033[32m-mineralogy \033[0m: Generate mineral distribution of all the rocky objects in this system, the following options are available.\n";
