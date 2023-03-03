@@ -206,6 +206,11 @@ string GHMarkDownGenOrbit(shared_ptr<Object> Obj)
 			SynodicPeriodBuffer = (Obj->Orbit.Period * OrbitParent.Period) / (OrbitParent.Period - Obj->Orbit.Period);
 			os << vformat(fmtstring, make_format_args("Orbital period (synodic) (s)", SynodicPeriodBuffer));
 		}
+		if (Astrobiology)
+		{
+			Obj->Orbit.Period = OrbitParent.Period;
+			Obj->Rotation.Obliquity = Obj->Orbit.Inclination;
+		}
 	}
 
 	os << vformat(fmtstring, make_format_args("Mean anomaly", Obj->Orbit.MeanAnomaly));

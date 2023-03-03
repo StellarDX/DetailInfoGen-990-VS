@@ -5,7 +5,7 @@
 
 #include <CSE/Object.h>
 
-static const cse::Object __StelCSE_Earth
+static const cse::Object __StelCSE_Earth // An Earth scale model.
 {
 	.Type          = "Planet",
 	.Name          = {"Earth"},

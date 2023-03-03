@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 // Ambient air quality standards
 // https://www.mee.gov.cn/ywgz/fgbz/bz/bzwb/dqhjbh/dqhjzlbz/201203/t20120302_224165.shtml
@@ -15,7 +15,7 @@ inline constexpr cse::float64 MolarVolume(cse::float64 Temperature, cse::float64
 	return (GasConstant * Temperature) / Pressure;
 }
 
-inline int __GB3095_SO2(cse::AtmParam Atmosphere, cse::float64 Temperature, char Base = 'y')
+inline int __GB3095_SO2(cse::AtmParam Atmosphere, char Base = 'y')
 {
 	if (Atmosphere.Composition.find("SO2") == Atmosphere.Composition.end()) { return 1; }
 
@@ -37,15 +37,15 @@ inline int __GB3095_SO2(cse::AtmParam Atmosphere, cse::float64 Temperature, char
 		break;
 	}
 
-	cse::float64 L1M = MolarVolume(Temperature, Atmosphere.Pressure) * (L1 / (CSEM_SO2 / 1000.));
-	cse::float64 L2M = MolarVolume(Temperature, Atmosphere.Pressure) * (L2 / (CSEM_SO2 / 1000.));
+	cse::float64 L1M = MolarVolume(273, StdAtm) * (L1 / (CSEM_SO2 / 1000.));
+	cse::float64 L2M = MolarVolume(273, StdAtm) * (L2 / (CSEM_SO2 / 1000.));
 	cse::float64 SO2Percent = Atmosphere.Composition.find("SO2")->second / 100.;
 	if (L1M > SO2Percent) { return 1; }
 	else if (L1M <= SO2Percent && L2M > SO2Percent) { return 2; }
 	else { return 0; }
 }
 
-inline int __GB3095_CO(cse::AtmParam Atmosphere, cse::float64 Temperature, char Base = 'd')
+inline int __GB3095_CO(cse::AtmParam Atmosphere, char Base = 'd')
 {
 	if (Atmosphere.Composition.find("CO") == Atmosphere.Composition.end()) { return 1; }
 
@@ -61,7 +61,7 @@ inline int __GB3095_CO(cse::AtmParam Atmosphere, cse::float64 Temperature, char 
 		break;
 	}
 
-	cse::float64 L1M = MolarVolume(Temperature, Atmosphere.Pressure) * (L1 / (CSEM_CO / 1000.));
+	cse::float64 L1M = MolarVolume(273, StdAtm) * (L1 / (CSEM_CO / 1000.));
 	cse::float64 COPercent = Atmosphere.Composition.find("CO")->second / 100.;
 	if (L1M > COPercent) { return 1; }
 	else { return 0; }

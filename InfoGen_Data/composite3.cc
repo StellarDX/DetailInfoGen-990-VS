@@ -5,28 +5,26 @@
 #include "composite2.h"
 #include "final.h"
 
-#include <vector>
-
 using namespace std;
 using namespace cse;
 
 vector<shared_ptr<Object>> RockyObjBuf;
+
+bool IsRockyPlanet(shared_ptr<Object> Obj);
 
 void __DFS_FindRockyObj(shared_ptr<SystemStruct> SysTree)
 {
 	if (SysTree == nullptr) { return; }
 	for (size_t i = 0; i < SysTree->Catalog.size(); i++)
 	{
-		if (SysTree->Catalog[i].Pointer->Type == "Planet" || SysTree->Catalog[i].Pointer->Type == "DwarfPlanet" || SysTree->Catalog[i].Pointer->Type == "Moon")
+		if ((SysTree->Catalog[i].Pointer->Type == "Planet" || SysTree->Catalog[i].Pointer->Type == "DwarfPlanet" 
+			|| SysTree->Catalog[i].Pointer->Type == "Moon") && IsRockyPlanet(SysTree->Catalog[i].Pointer))
 		{
 			RockyObjBuf.push_back(SysTree->Catalog[i].Pointer);
 		}
 		__DFS_FindRockyObj(SysTree->Catalog[i].SubSystem);
 	}
 }
-
-enum HabRank{ACE, SSS, SS, S, A, B, C, D};
-static const string HabRankStr[8]{ "ACE", "SSS", "SS", "S", "A", "B", "C", "D" };
 
 string GHMDAstrobiology()
 {

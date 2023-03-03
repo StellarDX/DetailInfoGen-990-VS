@@ -55,6 +55,9 @@
     <ClCompile Include="InfoGen_Data\composite3.cc">
       <Filter>Src</Filter>
     </ClCompile>
+    <ClCompile Include="InfoGen_Data\composite4.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InfoGen_Data\composite.h">
@@ -102,8 +105,13 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="InfoGen_Data\composite3.h" />
+    <ClInclude Include="InfoGen_Data\composite4.h" />
+    <ClInclude Include="InfoGen_Data\astrobiology\GB16297-1996.inl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="InfoGen_Data\COMMON.inl" />
+    <None Include="InfoGen_Data\astrobiology\GB3095_2012.inl" />
+    <None Include="InfoGen_Data\astrobiology\DB23T_1791_2021.inl" />
+    <None Include="InfoGen_Data\astrobiology\GB14554_93.inl" />
   </ItemGroup>
 </Project>

@@ -22,6 +22,7 @@
 #include "composite1.h"
 #include "composite2.h"
 #include "composite3.h"
+#include "composite4.h"
 #include "final.h"
 #include <fstream>
 #include <yvals_core.h> // STD version header
@@ -74,7 +75,11 @@ void NormalProcess(ISCStream& SystemIn, vector<string> args)
 	composite();
 	composite1();
 	composite2(args);
-	if (Astrobiology){composite3();}
+	if (Astrobiology)
+	{
+		composite3();
+		composite4();
+	}
 }
 
 /////////////////////////MAIN//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -106,7 +111,7 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		cout << "\t\t\033[33mhighinclined \033[0m- Minor planets with orbital inclinations greater than 10 deg and smaller than 90 deg\n";
 		cout << "\t(Only mass and diameter is valid when proccessing mode is switched to mineral generation.)\n";
 		cout << "\n";
-		cout << "\t\033[32m-astrobiology \033[0m: Calculate ESI and Habitabilities for rocky planets and report will be displayed on the bottom of the file.\n";
+		cout << "\t\033[32m-astrobiology \033[0m: Calculate ESI and Habitabilities for rocky planets.\n";
 		cout << "\n";
 		cout << "\t\033[32m-geochronology \033[0m: Generate timeline of the evolutionary history of a life planet, the following options are available.\n";
 		cout << "\t\t\033[33m-target <ObjectName> \033[0m: Specify target object.\n";
