@@ -28,6 +28,8 @@ extern std::string Final;
 using ObjectBuffer = std::vector<cse::Object>;
 extern ObjectBuffer System;
 
+extern std::map<std::string, std::string> LocStrings;
+
 void Transcode(std::string& arg, int encoding);
 
 #endif

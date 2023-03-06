@@ -39,6 +39,8 @@ string Final;
 enum OutputFormat OFormat = MD;
 bool Astrobiology = false;
 uint32_t _OUT_PRECISION = 12;
+string LcID = "1033";
+map<string, string> LocStrings;
 
 void Transcode(string& arg, int encoding)
 {
@@ -58,10 +60,45 @@ void Transcode(string& arg, int encoding)
 	delete[] wszUtf8;
 }
 
+void ParseLocalStringsSysInfo(string LCID, UINT CP)
+{
+	ISCStream LCIS = ParseFile("./" + LCID + "/SystemInfo.cfg", CP);
+
+	string InternationalName = sc::GetAs<string>(LCIS, "InternationalName");
+	string LocalName = sc::GetAs<string>(LCIS, "LocalName");
+	cout << "Enabled localization: " + LocalName + '(' + InternationalName + ')' + '\n';
+
+	auto it = LCIS->find("Translations");
+	if (it == LCIS->end())
+	{
+		cout << "Invalid localization file.\n";
+		abort();
+	}
+
+	auto Translations = it->SubTable;
+	for (size_t i = 0; i < Translations->Catalogue.size(); i++)
+	{
+		LocStrings.insert({ Translations->Catalogue[i].Key, sc::GetAs<string>(Translations, Translations->Catalogue[i].Key) });
+	}
+}
+
 void NormalProcess(ISCStream& SystemIn, vector<string> args)
 {
-	cout << "Loading - Initializing object phase 1...\n";
+	UINT LCodePage = 65001;
+	for (size_t i = 0; i < args.size(); i++)
+	{
+		if (args[i].substr(0, 8) == "-lchset=")
+		{
+			string lccp = args[i];
+			LCodePage = stoul(lccp.substr(8, lccp.size() - 8));
+			break;
+		}
+	}
 
+	cout << "Loading localizations...\n";
+	ParseLocalStringsSysInfo(LcID, LCodePage);
+
+	cout << "Loading - Initializing object phase 1...\n";
 	auto it = SystemIn->begin();
 	auto end = SystemIn->end();
 	while (it != end)
@@ -121,6 +158,11 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		cout << "\t\033[32m-mineralogy \033[0m: Generate mineral distribution of all the rocky objects in this system, the following options are available.\n";
 		cout << "\t\t\033[33m-oredict <filename> \033[0m: Specify custom ore dictionary file, program will use default ore dictionary when this argument is missing.\n";
 		cout << "\t\t\033[33m-oredictencod=<encod> \033[0m: Specify file encoding of custom ore dictionary, default is 65001(UTF-8).\n";
+		cout << "\n";
+
+		cout << "Localizations: \n\n";
+		cout << "\t\033[32m-lcid=<ID> \033[0m: Locale ID, e.g. -lcid=1033 -> en_us.\n";
+		cout << "\t\033[32m-lchset=<encod> \033[0m: Encoding of localization file.\n";
 
 		return 0x7FFFFFFF;
 	}
@@ -142,6 +184,17 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		{
 			string encodstr = args[i];
 			random.seed(stoull(encodstr.substr(6, encodstr.size() - 6), nullptr, 16));
+			break;
+		}
+	}
+
+	// Localization
+	for (size_t i = 0; i < args.size(); i++)
+	{
+		if (args[i].substr(0, 6) == "-lcid=")
+		{
+			string lcstr = args[i];
+			LcID = lcstr.substr(6, lcstr.size() - 6);
 			break;
 		}
 	}

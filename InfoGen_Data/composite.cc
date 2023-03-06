@@ -25,10 +25,26 @@
 using namespace std;
 using namespace cse;
 
+// Default Localization strings
+static string C0_Title1   = "System Information";
+static string C0_Age      = "Age (Years)";
+static string C0_Mass     = "System mass (Kg)";
+static string C0_SMAOP    = "Semi-major axis of outer known planet (m)";
+static string C0_Stars    = "Stars";
+static string C0_Planets  = "Known planets";
+static string C0_DPlanets = "Known dwarf planets";
+static string C0_NSatel   = "Known natural satellites";
+static string C0_MPs      = "Known minor planets";
+static string C0_Comets   = "Known comets";
+static string C0_RSatel   = "Identified rounded satellites";
+static string C0_SpType   = "Spectral type";
+
 // Indices
 map<string, vector<size_t>> TypeIndices;
 map<string, vector<size_t>> Companions;
 string SystemBarycenter;
+
+// -------------------- Functions-------------------- //
 
 void SortSystemType(ObjectBuffer Sys)
 {
@@ -84,17 +100,17 @@ string SystemInfoTable(SystemInfo Info)
 	os << "| | |\n|:---|:---|\n";
 	string fmtstring = "| {} | {:." + to_string(_OUT_PRECISION) + "g} |\n";
 	string ifmtstring = "| {} | {} |\n";
-	os << vformat(fmtstring, make_format_args("Age (Years)", Info.Age));
-	os << vformat(fmtstring, make_format_args("System mass (Kg)", Info.Mass));
-	os << vformat(fmtstring, make_format_args("Semi-major axis of outer known planet (m)", Info.DistOutPlanet));
-	os << vformat(ifmtstring, make_format_args("Stars", Info.NStars));
-	os << vformat(ifmtstring, make_format_args("Known planets", Info.NPlanets));
-	os << vformat(ifmtstring, make_format_args("Known dwarf planets", Info.NDPlanets));
-	os << vformat(ifmtstring, make_format_args("Known natural satellites", Info.NSatellites));
-	os << vformat(ifmtstring, make_format_args("Known minor planets", Info.NMPlanets));
-	os << vformat(ifmtstring, make_format_args("Known comets", Info.NComets));
-	os << vformat(ifmtstring, make_format_args("Identified rounded satellites", Info.NRSatellites));
-	os << vformat(ifmtstring, make_format_args("Spectral type", Info.SpType));
+	os << vformat(fmtstring, make_format_args(C0_Age, Info.Age));
+	os << vformat(fmtstring, make_format_args(C0_Mass, Info.Mass));
+	os << vformat(fmtstring, make_format_args(C0_SMAOP, Info.DistOutPlanet));
+	os << vformat(ifmtstring, make_format_args(C0_Stars, Info.NStars));
+	os << vformat(ifmtstring, make_format_args(C0_Planets, Info.NPlanets));
+	os << vformat(ifmtstring, make_format_args(C0_DPlanets, Info.NDPlanets));
+	os << vformat(ifmtstring, make_format_args(C0_NSatel, Info.NSatellites));
+	os << vformat(ifmtstring, make_format_args(C0_MPs, Info.NMPlanets));
+	os << vformat(ifmtstring, make_format_args(C0_Comets, Info.NComets));
+	os << vformat(ifmtstring, make_format_args(C0_RSatel, Info.NRSatellites));
+	os << vformat(ifmtstring, make_format_args(C0_SpType, Info.SpType));
 
 	return os.str();
 }
@@ -113,16 +129,40 @@ string GHMarkDownOutput()
 	fout << vformat("# {}\n", make_format_args(SystemBarycen->Name[0]));
 
 	SystemInfo Info = gbuffer_basic(System, TypeIndices);
-	fout << "\n## System Information\n" << SystemInfoTable(Info);
+	fout << "\n ## " + C0_Title1 + "\n" << SystemInfoTable(Info);
 	SystemBarycenter = SystemBarycen->Name[0];
 
 	return fout.str();
+}
+
+void GetLcString(string Key, string* Val)
+{
+	auto it = LocStrings.find(Key);
+	if (it == LocStrings.end()) { return; }
+	*Val = it->second;
+}
+
+void GetLocaleComp1()
+{
+	GetLcString("C0_Title",        &C0_Title1);
+	GetLcString("C0_Age",          &C0_Age);
+	GetLcString("C0_Mass",         &C0_Mass);
+	GetLcString("C0_SMAOP",        &C0_SMAOP);
+	GetLcString("C0_Stars",        &C0_Stars);
+	GetLcString("C0_Planets",      &C0_Planets);
+	GetLcString("C0_DwarfPlanets", &C0_DPlanets);
+	GetLcString("C0_Satellites",   &C0_NSatel);
+	GetLcString("C0_MinorPlanets", &C0_MPs);
+	GetLcString("C0_Comets",       &C0_Comets);
+	GetLcString("C0_RSatellites",  &C0_RSatel);
+	GetLcString("C0_SpecClass",    &C0_SpType);
 }
 
 /////////////////////////MAIN//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void composite()
 {
+	GetLocaleComp1();
 	cout << "Loading - Initializing object phase 2...\n";
 
 	SortSystemType(System);
