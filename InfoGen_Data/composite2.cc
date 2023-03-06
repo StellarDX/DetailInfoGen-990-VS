@@ -234,10 +234,10 @@ void composite2(vector<string> args)
 	string MPSStr = "diameter";
 	for (size_t i = 0; i < args.size(); i++)
 	{
-		if (args[i].substr(0, 17) == "-minorplanetsort=")
+		if (args[i].substr(0, 8) == "-mpsort=")
 		{
 			string encodstr = args[i];
-			MPSStr = encodstr.substr(17, encodstr.size() - 17);
+			MPSStr = encodstr.substr(8, encodstr.size() - 8);
 			break;
 		}
 	}

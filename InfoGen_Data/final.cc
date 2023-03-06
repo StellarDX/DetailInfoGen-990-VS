@@ -96,13 +96,14 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		cout << "\033[1m\t\033[35mInfoGen \033[36m<filename> \033[31m<args...>\n\033[0m\n";
 
 		cout << "Additional arguments: \n\n";
-		cout << "\t\033[32m-outformat=<fmt> \033[0m: Specify output format, supports Github Markdown(md).\n";
-		cout << "\t\033[32m-encoding=<encod> \033[0m: Specify encoding, use numbers of codepage, e.g. -encoding=0 -> ANSI.\n";
+		cout << "\t\033[32m-fmt=<fmt> \033[0m: Specify output format, supports Github Markdown(md).\n";
+		cout << "\t\033[32m-srccp=<encod> \033[0m: Specify Source file encoding, use numbers of codepage, e.g. -srccp=0 -> ANSI.\n";
+		cout << "\t\033[32m-outcp=<encod> \033[0m: Specify output file encoding.\n";
 		cout << "\t\033[32m-out <filename> \033[0m: Specify output file name.\n";
-		cout << "\t\033[32m-genseed=<seed> \033[0m: Specify seed of random generator, using Hexadecimal(0 - FFFFFFFF), it will randomly generated when argument is missing.\n";
-		cout << "\t\033[32m-precision=<int> \033[0m: Specify output precision, default is 12.\n";
+		cout << "\t\033[32m-seed=<seed> \033[0m: Specify seed of random generator, using Hexadecimal(0 - FFFFFFFF), it will randomly generated when argument is missing.\n";
+		cout << "\t\033[32m-prec=<int> \033[0m: Specify output precision, default is 12.\n";
 
-		cout << "\t\033[32m-minorplanetsort=<char> \033[0m: Generate a list of minor planets(include dwarf planets) that are exceptional in some way. The following values are valid:\n";
+		cout << "\t\033[32m-mpsort=<char> \033[0m: Generate a list of minor planets(include dwarf planets) that are exceptional in some way. The following values are valid:\n";
 		cout << "\t\t\033[33mdiameter \033[0m- IRAS standard, asteroids with a diameter greater than 120 Km (This is default option when argument is missing or invalid.)\n";
 		cout << "\t\t\033[33mmass \033[0m- Asteroids with nominal mass > 1E+18 kg\n";
 		cout << "\t\t\033[33mslowrotator \033[0m- slowest-rotating known minor planets with a period of at least 1000 hours\n";
@@ -131,16 +132,16 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 	}
 
 	// Output format
-	if (find(args.begin(), args.end(), "-outformat=html") != args.end()) { OFormat = HTML; }
-	else if (find(args.begin(), args.end(), "-outformat=md") != args.end()) { OFormat = MD; }
+	if (find(args.begin(), args.end(), "-fmt=html") != args.end()) { OFormat = HTML; }
+	else if (find(args.begin(), args.end(), "-fmt=md") != args.end()) { OFormat = MD; }
 
 	// Seed
 	for (size_t i = 0; i < args.size(); i++)
 	{
-		if (args[i].substr(0, 9) == "-genseed=")
+		if (args[i].substr(0, 6) == "-seed=")
 		{
 			string encodstr = args[i];
-			random.seed(stoull(encodstr.substr(9, encodstr.size() - 9), nullptr, 16));
+			random.seed(stoull(encodstr.substr(6, encodstr.size() - 6), nullptr, 16));
 			break;
 		}
 	}
@@ -148,10 +149,10 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 	// Output precision
 	for (size_t i = 0; i < args.size(); i++)
 	{
-		if (args[i].substr(0, 11) == "-precision=")
+		if (args[i].substr(0, 6) == "-prec=")
 		{
 			string encodstr = args[i];
-			_OUT_PRECISION = stoi(encodstr.substr(11, encodstr.size() - 11));
+			_OUT_PRECISION = stoi(encodstr.substr(6, encodstr.size() - 6));
 			if (_OUT_PRECISION > 32)
 			{
 				cout << "Precision is too high to output.\n";
@@ -165,6 +166,16 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 
 	cout << "Loading File...\n";
 
+	int srcencoding = 65001; // Default encoding is UTF-8
+	for (size_t i = 0; i < args.size(); i++)
+	{
+		if (args[i].substr(0, 7) == "-srccp=")
+		{
+			string encodstr = args[i];
+			srcencoding = stoi(encodstr.substr(7, encodstr.size() - 7));
+			break;
+		}
+	}
 	//string FileName = "RS 0-5-21663-1051-3833-8-4038573-225";
 	ISCStream SystemIn;
 	//try{SystemIn = ParseFile(FileName + ".sc");}
@@ -172,7 +183,7 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 	{
 		args[1] += ".sc";
 	}
-	try {SystemIn = ParseFile(args[1]); }
+	try {SystemIn = ParseFile(args[1], srcencoding); }
 	catch (exception e)
 	{
 		cout << e.what();
@@ -191,17 +202,17 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 
 	// Transcode
 
-	int encoding = 65001; // Default encoding is UTF-8
+	int outencoding = 65001; // Default encoding is UTF-8
 	for (size_t i = 0; i < args.size(); i++)
 	{
-		if (args[i].substr(0, 10) == "-encoding=")
+		if (args[i].substr(0, 7) == "-outcp=")
 		{
 			string encodstr = args[i];
-			encoding = stoi(encodstr.substr(10, encodstr.size() - 10));
+			outencoding = stoi(encodstr.substr(7, encodstr.size() - 7));
 			break;
 		}
 	}
-	Transcode(Final, encoding);
+	Transcode(Final, outencoding);
 
 	// Output file
 

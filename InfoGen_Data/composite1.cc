@@ -92,7 +92,15 @@ shared_ptr<SystemStruct> BuildTree(map<string, vector<size_t>> CompanionBuffer)
 			throw exception(("ParentBody \"" + it->first + "\" is nof found.").c_str());
 		}
 
-		ParentIndices.insert(pair(ParentIdx, it->second));
+		if (ParentIndices.find(ParentIdx) != ParentIndices.end())
+		{
+			auto it2 = ParentIndices.find(ParentIdx);
+			for (size_t i = 0; i < it->second.size(); i++)
+			{
+				it2->second.push_back(it->second[i]);
+			}
+		}
+		else { ParentIndices.insert(pair(ParentIdx, it->second)); }
 		++it;
 	}
 
