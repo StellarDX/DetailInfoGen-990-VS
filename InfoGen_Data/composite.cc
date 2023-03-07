@@ -26,18 +26,23 @@ using namespace std;
 using namespace cse;
 
 // Default Localization strings
-static string C0_Title1   = "System Information";
-static string C0_Age      = "Age (Years)";
-static string C0_Mass     = "System mass (Kg)";
-static string C0_SMAOP    = "Semi-major axis of outer known planet (m)";
-static string C0_Stars    = "Stars";
-static string C0_Planets  = "Known planets";
-static string C0_DPlanets = "Known dwarf planets";
-static string C0_NSatel   = "Known natural satellites";
-static string C0_MPs      = "Known minor planets";
-static string C0_Comets   = "Known comets";
-static string C0_RSatel   = "Identified rounded satellites";
-static string C0_SpType   = "Spectral type";
+namespace Localization
+{
+	static string C0_Title1   = "System Information";
+	static string C0_Age      = "Age (Years)";
+	static string C0_Mass     = "System mass (Kg)";
+	static string C0_SMAOP    = "Semi-major axis of outer known planet (m)";
+	static string C0_Stars    = "Stars";
+	static string C0_Planets  = "Known planets";
+	static string C0_DPlanets = "Known dwarf planets";
+	static string C0_NSatel   = "Known natural satellites";
+	static string C0_MPs      = "Known minor planets";
+	static string C0_Comets   = "Known comets";
+	static string C0_RSatel   = "Identified rounded satellites";
+	static string C0_SpType   = "Spectral type";
+}
+
+using namespace Localization;
 
 // Indices
 map<string, vector<size_t>> TypeIndices;
@@ -138,11 +143,15 @@ string GHMarkDownOutput()
 void GetLcString(string Key, string* Val)
 {
 	auto it = LocStrings.find(Key);
-	if (it == LocStrings.end()) { return; }
+	if (it == LocStrings.end())
+	{
+		cout << vformat("String \"{}\"(Default Value = \"{}\") is not found in localization file, using default value.\n", make_format_args(Key, *Val));
+		return;
+	}
 	*Val = it->second;
 }
 
-void GetLocaleComp1()
+void GetLocaleComp0()
 {
 	GetLcString("C0_Title",        &C0_Title1);
 	GetLcString("C0_Age",          &C0_Age);
@@ -162,7 +171,7 @@ void GetLocaleComp1()
 
 void composite()
 {
-	GetLocaleComp1();
+	GetLocaleComp0();
 	cout << "Loading - Initializing object phase 2...\n";
 
 	SortSystemType(System);

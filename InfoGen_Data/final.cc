@@ -62,7 +62,16 @@ void Transcode(string& arg, int encoding)
 
 void ParseLocalStringsSysInfo(string LCID, UINT CP)
 {
-	ISCStream LCIS = ParseFile("./" + LCID + "/SystemInfo.cfg", CP);
+	ISCStream LCIS;
+	bool FileExist = true;
+	try{ LCIS = ParseFile("./" + LCID + "/SystemInfo.cfg", CP); }
+	catch (const std::exception&)
+	{
+		cout << "Localization is not specified or file not exist, using default strings.\n";
+		FileExist = false;
+	}
+
+	if (!FileExist) { return; }
 
 	string InternationalName = sc::GetAs<string>(LCIS, "InternationalName");
 	string LocalName = sc::GetAs<string>(LCIS, "LocalName");

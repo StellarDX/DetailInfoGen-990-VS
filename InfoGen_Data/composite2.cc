@@ -8,6 +8,27 @@
 using namespace std;
 using namespace cse;
 
+namespace Localization
+{
+	static string C2_Title3    = "List of exceptional asteroids";
+	static string C2_Sort0     = "Largest by diameter";
+	static string C2_Sort1     = "Most massive";
+	static string C2_Sort2     = "Fastest rotators";
+	static string C2_Sort3     = "Slowest rotators";
+	static string C2_Sort4     = "Retrograde";
+	static string C2_Sort5     = "Highly inclined";
+	static string C2_AstName   = "Name";
+	static string C2_AstParent = "Parent";
+	static string C2_AstDiam   = "Diameter (m) (geometric mean)";
+	static string C2_AstDim    = "Dimensions";
+	static string C2_AstDist   = "Mean distance from parent (m)";
+	static string C2_AstMass   = "Mass";
+	static string C2_AstRotate = "Rotation period (s)";
+	static string C2_AstIncl   = "Inclination";
+}
+
+using namespace Localization;
+
 MPSArg MinorPlanetSortArg;
 vector<shared_ptr<Object>> MinorPlanetBuffer;
 
@@ -113,7 +134,7 @@ string GHMarkDownMPIncl(shared_ptr<Object> Obj)
 	));
 }
 
-// Sort engine caller and compareing functions
+// Sort engine caller and comparing functions
 
 void _cdecl __Qsort_Objects(const vector<shared_ptr<Object>>::iterator First, const vector<shared_ptr<Object>>::iterator Last, function<bool(shared_ptr<Object>, shared_ptr<Object>)> Cmp)
 {
@@ -151,13 +172,13 @@ bool InclCmp(shared_ptr<Object> Left, shared_ptr<Object> Right)
 string GHMarkDownMPList()
 {
 	ostringstream os;
-	os << "## List of exceptional asteroids";
+	os << "## " + C2_Title3;
 	switch (MinorPlanetSortArg)
 	{
 	case MPS_Diam:
 	default:
-		os << " (Largest by diameter)\n";
-		os << "| Name | Parent | Diameter (m) (geometric mean) | Dimensions | Mean distance from parent (m) |\n";
+		os << " (" + C2_Sort0 + ")\n";
+		os << "| " + C2_AstName + " | " + C2_AstParent + " | " + C2_AstDiam + " | " + C2_AstDim + " | " + C2_AstDist + " |\n";
 		os << "|:---|:---|:---|:---|:---|\n";
 		__DFS_SearchMinorPlanets(os, SystemStructure, DiameterLargerThan120);
 		__Qsort_Objects(MinorPlanetBuffer.begin(), MinorPlanetBuffer.end(), DiameterCmp);
@@ -167,8 +188,8 @@ string GHMarkDownMPList()
 		}
 		break;
 	case MPS_Mass:
-		os << " (Most massive)\n";
-		os << "| Name | Parent | Mass |\n";
+		os << " (" + C2_Sort1 + ")\n";
+		os << "| " + C2_AstName + " | " + C2_AstParent + " | " + C2_AstMass + " |\n";
 		os << "|:---|:---|:---|\n";
 		__DFS_SearchMinorPlanets(os, SystemStructure, MassLargerThan1E18);
 		__Qsort_Objects(MinorPlanetBuffer.begin(), MinorPlanetBuffer.end(), MassCmp);
@@ -178,8 +199,8 @@ string GHMarkDownMPList()
 		}
 		break;
 	case MPS_FastRot:
-		os << " (Fastest rotators)\n";
-		os << "| Name | Rotation period (s) | Parent | Diameter (m) |\n";
+		os << " (" + C2_Sort2 + ")\n";
+		os << "| " + C2_AstName + " | " + C2_AstRotate + " | " + C2_AstParent + " | " + C2_AstDiam + " |\n";
 		os << "|:---|:---|:---|:---|\n";
 		__DFS_SearchMinorPlanets(os, SystemStructure, RPeriodLessThan100s);
 		__Qsort_Objects(MinorPlanetBuffer.begin(), MinorPlanetBuffer.end(), RotLessCmp);
@@ -189,8 +210,8 @@ string GHMarkDownMPList()
 		}
 		break;
 	case MPS_SlowRot:
-		os << " (Slowest rotators)\n";
-		os << "| Name | Rotation period (s) | Parent | Diameter (m) |\n";
+		os << " (" + C2_Sort3 + ")\n";
+		os << "| " + C2_AstName + " | " + C2_AstRotate + " | " + C2_AstParent + " | " + C2_AstDiam + " |\n";
 		os << "|:---|:---|:---|:---|\n";
 		__DFS_SearchMinorPlanets(os, SystemStructure, RPeriodGreaterThan1000h);
 		__Qsort_Objects(MinorPlanetBuffer.begin(), MinorPlanetBuffer.end(), RotGreaterCmp);
@@ -200,8 +221,8 @@ string GHMarkDownMPList()
 		}
 		break;
 	case MPS_Retro:
-		os << " (Retrograde)\n";
-		os << "| Name | Parent | Inclination |\n";
+		os << " (" + C2_Sort4 + ")\n";
+		os << "| " + C2_AstName + " | " + C2_AstParent + " | " + C2_AstIncl + " |\n";
 		os << "|:---|:---|:---|\n";
 		__DFS_SearchMinorPlanets(os, SystemStructure, IsRetrograde);
 		for (size_t i = 0; i < MinorPlanetBuffer.size(); i++)
@@ -210,8 +231,8 @@ string GHMarkDownMPList()
 		}
 		break;
 	case MPS_Incl:
-		os << "(Highly inclined)\n";
-		os << "| Name | Parent | Inclination |\n";
+		os << "(" + C2_Sort5 + ")\n";
+		os << "| " + C2_AstName + " | " + C2_AstParent + " | " + C2_AstIncl + " |\n";
 		os << "|:---|:---|:---|\n";
 		__DFS_SearchMinorPlanets(os, SystemStructure, IsHighInclined);
 		__Qsort_Objects(MinorPlanetBuffer.begin(), MinorPlanetBuffer.end(), InclCmp);
@@ -227,8 +248,31 @@ string GHMarkDownMPList()
 
 /////////////////////////MAIN//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void GetLcString(string Key, string* Val);
+
+void GetLocaleComp2()
+{
+	GetLcString("C2_Title3",    &C2_Title3);
+	GetLcString("C2_Sort0",     &C2_Sort0);
+	GetLcString("C2_Sort1",     &C2_Sort1);
+	GetLcString("C2_Sort2",     &C2_Sort2);
+	GetLcString("C2_Sort3",     &C2_Sort3);
+	GetLcString("C2_Sort4",     &C2_Sort4);
+	GetLcString("C2_Sort5",     &C2_Sort5);
+	GetLcString("C2_AstName",   &C2_AstName);
+	GetLcString("C2_AstParent", &C2_AstParent);
+	GetLcString("C2_AstDiam",   &C2_AstDiam);
+	GetLcString("C2_AstDim",    &C2_AstDim);
+	GetLcString("C2_AstDist",   &C2_AstDist);
+	GetLcString("C2_AstMass",   &C2_AstMass);
+	GetLcString("C2_AstRotate", &C2_AstRotate);
+	GetLcString("C2_AstIncl",   &C2_AstIncl);
+}
+
 void composite2(vector<string> args)
 {
+	GetLocaleComp2();
+
 	cout << "Generating minor planet list...\n";
 
 	string MPSStr = "diameter";
