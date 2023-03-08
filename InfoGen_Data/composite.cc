@@ -167,11 +167,16 @@ void GetLocaleComp0()
 	GetLcString("C0_SpecClass",    &C0_SpType);
 }
 
+void GetLocaleStar();
+void GetLocalePlanet();
+
 /////////////////////////MAIN//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void composite()
 {
 	GetLocaleComp0();
+	GetLocaleStar();
+	GetLocalePlanet();
 	cout << "Loading - Initializing object phase 2...\n";
 
 	SortSystemType(System);

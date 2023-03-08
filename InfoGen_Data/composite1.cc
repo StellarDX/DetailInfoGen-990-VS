@@ -99,6 +99,9 @@ namespace Localization
 	static string C1_Planet_Ocean    = "Ocean";
 	static string C1_Planet_OceanDep = "Depth (m)";
 	static string C1_Planet_OcComp   = "Composition by volume";
+	static string C1_SubSys_Title1   = "Compositions";
+	static string C1_SubSys_Title2   = "Sub-satellites";
+	static string C1_SubSys_Title3   = "Satellites";
 	static string C1_SubSys_Name     = "Name";
 	static string C1_SubSys_Diam     = "Diameter(m)";
 	static string C1_SubSys_Mass     = "Mass(Kg)";
@@ -341,9 +344,9 @@ string GHMarkDownGenSubSys(shared_ptr<Object> Obj)
 	ostringstream os;
 	if (CurrentSubSystem != nullptr)
 	{
-		if (Obj->Type == "Barycenter") { os << " * Compositions\n"; }
-		else if (Obj->Type == "Moon") { os << " * Sub-satellites\n"; }
-		else { os << " * Satellites\n"; }
+		if (Obj->Type == "Barycenter") { os << " * " + C1_SubSys_Title1 + "\n"; }
+		else if (Obj->Type == "Moon") { os << " * " + C1_SubSys_Title2 + "\n"; }
+		else { os << " * " + C1_SubSys_Title3 + "\n"; }
 		os << "| " + C1_SubSys_Name + " | " + C1_SubSys_Diam + " | " + C1_SubSys_Mass + 
 			" | " + C1_SubSys_a + " | " + C1_SubSys_P + " | " + C1_SubSys_i + " | " + C1_SubSys_e + 
 			" |\n|:---|:---|:---|:---|:---|:---|:---|\n";
@@ -860,6 +863,9 @@ void GetLocaleComp1()
 	GetLcString("C1_Planet_Ocean",    &C1_Planet_Ocean);
 	GetLcString("C1_Planet_OceanDep", &C1_Planet_OceanDep);
 	GetLcString("C1_Planet_OcComp",   &C1_Planet_OcComp);
+	GetLcString("C1_SubSys_Title1",   &C1_SubSys_Title1);
+	GetLcString("C1_SubSys_Title2",   &C1_SubSys_Title2);
+	GetLcString("C1_SubSys_Title3",   &C1_SubSys_Title3);
 	GetLcString("C1_SubSys_Name",     &C1_SubSys_Name);
 	GetLcString("C1_SubSys_Diam",     &C1_SubSys_Diam);
 	GetLcString("C1_SubSys_Mass",     &C1_SubSys_Mass);

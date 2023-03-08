@@ -10,41 +10,66 @@ vector<OrbitParam> ParentOrbitBufferVec;
 
 #include "COMMON.inl"
 
+namespace Localization
+{
+	static string IronPlanet   = "Iron planet";
+	static string RockyPlanet  = "Rocky planet";
+	static string OceanWorld   = "Ocean planet";
+	static string IcePlanet    = "Ice planet";
+	static string CarbonPlanet = "Carbon planet";
+	static string HotNeptune   = "Hoptune";
+	static string UltraHoptune = "Ultra-hot Neptune";
+	static string SuperNeptune = "Super-Neptune";
+	static string MiniNeptune  = "Gas dwarf";
+	static string IceGiant     = "Ice giant";
+	static string GasGiant1    = "Class I(Ammonia clouds) Gas giant";
+	static string GasGiant2    = "Class II(Water clouds) Gas giant";
+	static string GasGiant3    = "Class III(Cloudless) Gas giant";
+	static string GasGiant4    = "Class IV(Alkali metals) Gas giant";
+	static string GasGiant5    = "Class V(Silicate clouds) Gas giant";
+	static string GasGiant     = "Gas giant";
+	static string HeliumPlanet = "Helium planet";
+	static string MinorPlanet  = "Minor planet";
+	static string OtherPlanet  = "Planet";
+}
+
+using namespace Localization;
+
 string GenPlanetType(shared_ptr<Object> Obj)
 {
-	if (Obj->Class == "Ferria") { return "Iron planet"; }
-	if (Obj->Class == "Terra") { return "Rocky planet"; }
+	if (Obj->Class == "Ferria") { return IronPlanet; }
+	if (Obj->Class == "Terra") { return RockyPlanet; }
 	if (Obj->Class == "Aquaria")
 	{
 		if (!Obj->NoOcean && Obj->Ocean.Height > 15000)
 		{
-			return "Ocean planet";
+			return OceanWorld;
 		}
-		return "Ice planet";
+		return IcePlanet;
 	}
-	if (Obj->Class == "Carbonia") { return "Carbon planet"; }
+	if (Obj->Class == "Carbonia") { return CarbonPlanet; }
 	if (Obj->Class == "Neptune" || Obj->Class == "IceGiant")
 	{
-		if (Obj->Teff > 700 && Obj->Teff < 1800) { return "Hoptune"; }
-		if (Obj->Teff >= 1800) { return "Ultra-hot Neptune"; }
-		if (Obj->Radius() > 5. * RadEarth) { return "Super-Neptune"; }
-		if (Obj->Radius() < 3. * RadEarth) { return "Gas dwarf"; } // Mini-Neptune
-		return "Ice giant";
+		if (Obj->Teff > 700 && Obj->Teff < 1800) { return HotNeptune; }
+		if (Obj->Teff >= 1800) { return UltraHoptune; }
+		if (Obj->Radius() > 5. * RadEarth) { return SuperNeptune; }
+		if (Obj->Radius() < 3. * RadEarth) { return MiniNeptune; } // Mini-Neptune
+		return IceGiant;
 	}
 	if (Obj->Class == "Jupiter" || Obj->Class == "GasGiant")
 	{
 		// Gas Giants using Sudarsky's gas giant classification
 		// https://en.wikipedia.org/wiki/Sudarsky%27s_gas_giant_classification
-		if (Obj->Teff < 150) { return "Class I(Ammonia clouds) Gas giant"; }
-		if (Obj->Teff >= 150 && Obj->Teff < 250) { return "Class II(Water clouds) Gas giant"; }
-		if (Obj->Teff >= 250 && Obj->Teff < 800) { return "Class III(Cloudless) Gas giant"; }
-		if (Obj->Teff >= 800 && Obj->Teff < 1400) { return "Class IV(Alkali metals) Gas giant"; }
-		if (Obj->Teff >= 1400) { return "Class V(Silicate clouds) Gas giant"; }
-		return "Gas Giant";
+		if (Obj->Teff < 150) { return GasGiant1; }
+		if (Obj->Teff >= 150 && Obj->Teff < 250) { return GasGiant2; }
+		if (Obj->Teff >= 250 && Obj->Teff < 800) { return GasGiant3; }
+		if (Obj->Teff >= 800 && Obj->Teff < 1400) { return GasGiant4; }
+		if (Obj->Teff >= 1400) { return GasGiant5; }
+		return GasGiant;
 	}
-	if (Obj->Class == "Chthonia") { return "Helium Planet"; }
-	if (Obj->Class == "Asteroid") { return "Minor Planet"; }
-	return "Planet";
+	if (Obj->Class == "Chthonia") { return HeliumPlanet; }
+	if (Obj->Class == "Asteroid") { return MinorPlanet; }
+	return OtherPlanet;
 }
 
 float64 EarthSimIndex_RRhoVT(shared_ptr<Object> Target)
@@ -70,6 +95,31 @@ float64 EarthSimIndex_RRhoVT(shared_ptr<Object> Target)
 
 	return cse::pow(R0, RadiusWeightExp / 4.) * cse::pow(Rho0, DensityWeightExp / 4.) *
 		cse::pow(V0, EscVelWeightExp / 4.) * cse::pow(T0, TemperatureWeightExp / 4.);
+}
+
+void GetLcString(string Key, string* Val);
+
+void GetLocalePlanet()
+{
+	GetLcString("IronPlanet",   &IronPlanet);
+	GetLcString("RockyPlanet",  &RockyPlanet);
+	GetLcString("OceanWorld" ,  &OceanWorld);
+	GetLcString("IcePlanet",    &IcePlanet);
+	GetLcString("CarbonPlanet", &CarbonPlanet);
+	GetLcString("HotNeptune",   &HotNeptune);
+	GetLcString("UltraHoptune", &UltraHoptune);
+	GetLcString("SuperNeptune", &SuperNeptune);
+	GetLcString("MiniNeptune",  &MiniNeptune);
+	GetLcString("IceGiant",     &IceGiant);
+	GetLcString("GasGiant1",    &GasGiant1);
+	GetLcString("GasGiant2",    &GasGiant2);
+	GetLcString("GasGiant3",    &GasGiant3);
+	GetLcString("GasGiant4",    &GasGiant4);
+	GetLcString("GasGiant5",    &GasGiant5);
+	GetLcString("GasGiant",     &GasGiant);
+	GetLcString("HeliumPlanet", &HeliumPlanet);
+	GetLcString("MinorPlanet",  &MinorPlanet);
+	GetLcString("OtherPlanet",  &OtherPlanet);
 }
 
 PlanetParams gbuffer_planet(shared_ptr<Object> Companion)
