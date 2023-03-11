@@ -56,8 +56,26 @@ void LoadSystem(ISCStream& SystemIn)
 	cout << vformat("{} Objects loaded.\n", make_format_args(System.size()));
 }
 
+extern string LcID;
+void ParseLocalStrings(string FileName, string LCID, UINT CP);
+
 void minerals(ISCStream& SystemIn, vector<string> args)
 {
+	// Load localization
+	UINT LCodePage = 65001;
+	for (size_t i = 0; i < args.size(); i++)
+	{
+		if (args[i].substr(0, 8) == "-lchset=")
+		{
+			string lccp = args[i];
+			LCodePage = stoul(lccp.substr(8, lccp.size() - 8));
+			break;
+		}
+	}
+	cout << "Loading localizations...\n";
+	ParseLocalStrings("SystemInfo.cfg", LcID, LCodePage);
+	ParseLocalStrings("Mineralogy.cfg", LcID, LCodePage);
+
 	bool CustomOreDict = false;
 	string OreDictPath = "InfoGen_Data/mineralogy/OreDict.tbl";
 
