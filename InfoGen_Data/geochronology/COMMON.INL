@@ -99,7 +99,7 @@ static const std::string __Cenozoic_Era_Events[] =
 static const std::string __Civilization_Events[] =
 {
 	"Paleolithic - First stone tools.",
-	std::vformat("**[Quaternary Period]** - at {} years since the planet forms.", std::make_format_args(4537420000)),
+	"**[Quaternary Period]** - at {} years since the planet forms.",
 	"Mesolithic - Appearance of tools made for purely intellectual or artistic pursuits.",
 	"Neolithic - stone remained the predominant material for toolmaking, although copper and arsenic bronze were developed towards the end of this period.",
 	"Bronze Age - The beginning of bronze-smelting.",

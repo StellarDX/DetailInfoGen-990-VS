@@ -1,33 +1,51 @@
 ﻿#include "composite.h"
-
+#include "final.h"
 #include "../final.h"
+
+#include <map>
 
 using namespace std;
 using namespace cse;
 
-#define HadeanPhases 4
-array<float64, HadeanPhases> __Hadean_Eon_Timeline;
+vec2 __Hadean_Eon_Range(wrtval(POS_INF_DOUBLE));
+vec2 __Archean_Eon_Range(wrtval(POS_INF_DOUBLE));
+vec2 __Proterozoic_Eon_Range(wrtval(POS_INF_DOUBLE));
+vec2 __Phanerozoic_Eon_Start(wrtval(POS_INF_DOUBLE));
+vec2 __Palaeozoic_Era_Range(wrtval(POS_INF_DOUBLE));
+vec2 __Mesozoic_Era_Range(wrtval(POS_INF_DOUBLE));
+vec2 __Cenozoic_Era_Begin(wrtval(POS_INF_DOUBLE));
 
-#define ArcheanPhases 3
-array<float64, ArcheanPhases> __Archean_Eon_Timeline;
+map<float64, string> __Hadean_Eon_Timeline;
+map<float64, string> __Archean_Eon_Timeline;
+map<float64, string> __Proterozoic_Eon_Timeline;
+map<float64, string> __Palaeozoic_Era_Timeline;
+map<float64, string> __Mesozoic_Era_Timeline;
+map<float64, string> __Cenozoic_Era_Timeline;
+map<float64, string> __Civilization_Timeline;
 
-#define ProterozoicPhases 5
-array<float64, ProterozoicPhases> __Proterozoic_Eon_Timeline;
-
-#define PalaeozoicPhases 21
-array<float64, PalaeozoicPhases> __Palaeozoic_Era_Timeline;
-
-#define MesozoicPhases 13
-array<float64, MesozoicPhases> __Mesozoic_Era_Timeline;
-
-#define CenozoicPhases 12
-array<float64, CenozoicPhases> __Cenozoic_Era_Timeline;
-
-#define CivilPhases 10
-array<float64, CivilPhases> __Civilization_Timeline;
+float64 EndYear = 0;
+float64 EndCivil = 0;
+string EndStr = "Civilization on this planet maybe more-developed than Earth. But this generation can only reach this point.";
 
 float64 TotalAge;
 bool HasMoon = false;
+
+namespace Localization
+{
+	string Geo_Title       = "Timeline of the evolutionary history of life on {}";
+	string Geo_Age         = "Total age";
+	string Geo_Present     = "present";
+	string Geo_Hadean      = "Hadean Eon";
+	string Geo_Archean     = "Archean Eon";
+	string Geo_Proterozoic = "Proterozoic Eon";
+	string Geo_Phanerozoic = "Phanerozoic Eon";
+	string Geo_Paleozoic   = "Paleozoic Era";
+	string Geo_Mesozoic    = "Mesozoic Era";
+	string Geo_Cenozoic    = "Cenozoic Era";
+	string Geo_CvTitle     = "History of technology on Planet {} (Years since Paleolithic)";
+}
+
+using namespace Localization;
 
 float64 FindAge(Object Target, Object Parent)
 {
@@ -47,104 +65,25 @@ float64 FindAge(Object Target, Object Parent)
 	}
 }
 
-string GHMD_Hadean(Object Target, Object Parent, float64 Age)
+string GHMD_General(Object Target, Object Parent, float64 Age, string Title, size_t TitleLvl, vec2 Range, map<float64, string> Timeline, function<bool(size_t)> Func = nullptr)
 {
 	ostringstream os;
-	os << "## Hadean Eon ";
-	os << vformat("({} - {} Yrs)\n", make_format_args(0, 540E6));
+	string LvStr;
+	for (size_t i = 0; i < TitleLvl; i++) { LvStr += '#'; }
+	LvStr += ' ';
+	os << LvStr + Title + " ";
+	if (isinf(Range.y)) { os << vformat("({} Yrs - {})\n", make_format_args(Range.x, Geo_Present)); }
+	else { os << vformat("({} - {} Yrs)\n", make_format_args(Range.x, Range.y)); }
 
-	for (size_t i = 0; i < HadeanPhases; i++)
+	auto it = Timeline.begin();
+	auto end = Timeline.end();
+	for (size_t i = 0; it != end; ++it, ++i)
 	{
-		if (Age - __Hadean_Eon_Timeline[i] > 0)
+		if (Age - it->first > 0)
 		{
-			if (i == 1 && !HasMoon) { continue; }
-			string Event = vformat(__Hadean_Eon_Events[i], make_format_args(Target.Name[0], Parent.Name[0]));
-			os << vformat(" * **{:.0f} Yrs** : {}\n", make_format_args(__Hadean_Eon_Timeline[i], Event));
-		}
-	}
-	return os.str();
-}
-
-string GHMD_Archean(float64 Age)
-{
-	ostringstream os;
-	os << "## Archean Eon ";
-	os << vformat("({} - {} Yrs)\n", make_format_args(540E6, 2040E6));
-
-	for (size_t i = 0; i < ArcheanPhases; i++)
-	{
-		if (Age - __Archean_Eon_Timeline[i] > 0)
-		{
-			string Event = vformat(__Archean_Eon_Events[i], make_format_args());
-			os << vformat(" * **{:.0f} Yrs** : {}\n", make_format_args(__Archean_Eon_Timeline[i], Event));
-		}
-	}
-	return os.str();
-}
-
-string GHMD_Proterozoic(float64 Age)
-{
-	ostringstream os;
-	os << "## Proterozoic Eon ";
-	os << vformat("({} - {} Yrs)\n", make_format_args(2040E6, 4001E6));
-
-	for (size_t i = 0; i < ProterozoicPhases; i++)
-	{
-		if (Age - __Proterozoic_Eon_Timeline[i] > 0)
-		{
-			string Event = vformat(__Proterozoic_Eon_Events[i], make_format_args());
-			os << vformat(" * **{:.0f} Yrs** : {}\n", make_format_args(__Proterozoic_Eon_Timeline[i], Event));
-		}
-	}
-	return os.str();
-}
-
-string GHMD_Paleozoic(Object Target, float64 Age)
-{
-	ostringstream os;
-	os << "### Paleozoic Era ";
-	os << vformat("({} - {} Yrs)\n", make_format_args(4001.2E6, 4288.1E6));
-
-	for (size_t i = 0; i < PalaeozoicPhases; i++)
-	{
-		if (Age - __Palaeozoic_Era_Timeline[i] > 0)
-		{
-			string Event = vformat(__Palaeozoic_Era_Events[i], make_format_args(Target.Name[0]));
-			os << vformat(" * **{:.0f} Yrs** : {}\n", make_format_args(__Palaeozoic_Era_Timeline[i], Event));
-		}
-	}
-	return os.str();
-}
-
-string GHMD_Mesozoic(float64 Age)
-{
-	ostringstream os;
-	os << "### Mesozoic Era ";
-	os << vformat("({} - {} Yrs)\n", make_format_args(4288.1E6, 4474E6));
-
-	for (size_t i = 0; i < MesozoicPhases; i++)
-	{
-		if (Age - __Mesozoic_Era_Timeline[i] > 0)
-		{
-			string Event = vformat(__Mesozoic_Era_Events[i], make_format_args());
-			os << vformat(" * **{:.0f} Yrs** : {}\n", make_format_args(__Mesozoic_Era_Timeline[i], Event));
-		}
-	}
-	return os.str();
-}
-
-string GHMD_Cenozoic(float64 Age)
-{
-	ostringstream os;
-	os << "### Cenozoic Era ";
-	os << vformat("({} Yrs - {})\n", make_format_args(4474E6, "present"));
-
-	for (size_t i = 0; i < CenozoicPhases; i++)
-	{
-		if (Age - __Cenozoic_Era_Timeline[i] > 0)
-		{
-			string Event = vformat(__Cenozoic_Era_Events[i], make_format_args());
-			os << vformat(" * **{:.0f} Yrs** : {}\n", make_format_args(__Cenozoic_Era_Timeline[i], Event));
+			if (Func && Func(i)) { continue; }
+			string Event = vformat(it->second, make_format_args(Target.Name[0], Parent.Name[0]));
+			os << vformat(" * **{:.0f} Yrs** : {}\n", make_format_args(it->first, Event));
 		}
 	}
 	return os.str();
@@ -153,56 +92,59 @@ string GHMD_Cenozoic(float64 Age)
 string GHMD_Civil(float64 Age)
 {
 	ostringstream os;
-	for (size_t i = 0; i < CivilPhases; i++)
+	auto it = __Civilization_Timeline.begin();
+	auto end = __Civilization_Timeline.end();
+	for (; it != end; ++it)
 	{
-		if (Age - __Civilization_Timeline[i] > 0)
+		if (Age - it->first > 0)
 		{
-			string Event = vformat(__Civilization_Events[i], make_format_args());
-			os << vformat(" * **{:.0f} Yrs** : {}\n", make_format_args(__Civilization_Timeline[i], Event));
+			string Event = vformat(it->second, make_format_args(__Cenozoic_Era_Timeline.rbegin()->first + it->first));
+			os << vformat(" * **{:.0f} Yrs** : {}\n", make_format_args(it->first, Event));
 		}
 	}
 	return os.str();
 }
 
-string GHMarkDownProcess(Object Target, Object Parent)
+string GHMarkDownProcessEarth(Object Target, Object Parent) // For earth model
 {
 	ostringstream os;
 
-	os << "# Timeline of the evolutionary history of life on " << Target.Name[0] << '\n';
-	os << vformat("Total age: {}\n", make_format_args(TotalAge));
+	os << vformat("# " + Geo_Title + "\n", make_format_args(Target.Name[0]));
+	os << vformat(Geo_Age + ": {}\n", make_format_args(TotalAge));
 
-	os << GHMD_Hadean(Target, Parent, TotalAge);
-	if (TotalAge > __Archean_Eon_Timeline[0])
+	os << GHMD_General(Target, Parent, TotalAge, Geo_Hadean, 2, __Hadean_Eon_Range, __Hadean_Eon_Timeline,
+		(function<bool(size_t)>)[=](size_t i)->bool {return i == 1 && !HasMoon;});
+	if (!__Archean_Eon_Timeline.empty() && TotalAge > __Archean_Eon_Timeline.begin()->first)
 	{
-		os << GHMD_Archean(TotalAge);
+		os << GHMD_General(Target, Parent, TotalAge, Geo_Archean, 2, __Archean_Eon_Range, __Archean_Eon_Timeline);
 	}
-	if (TotalAge > __Proterozoic_Eon_Timeline[0])
+	if (!__Proterozoic_Eon_Timeline.empty() && TotalAge > __Proterozoic_Eon_Timeline.begin()->first)
 	{
-		os << GHMD_Proterozoic(TotalAge);
+		os << GHMD_General(Target, Parent, TotalAge, Geo_Proterozoic, 2, __Proterozoic_Eon_Range, __Proterozoic_Eon_Timeline);
 	}
-	if (TotalAge > __Proterozoic_Eon_Timeline[ProterozoicPhases - 1])
+	if (!__Proterozoic_Eon_Timeline.empty() && TotalAge > __Proterozoic_Eon_Timeline.rbegin()->first)
 	{
-		os << "## Phanerozoic Eon ";
-		os << vformat("({} Yrs - {})\n", make_format_args(4001E6, "present"));
-		if (TotalAge > __Palaeozoic_Era_Timeline[0])
+		os << "## " + Geo_Phanerozoic + " ";
+		os << vformat("({} Yrs - {})\n", make_format_args(__Phanerozoic_Eon_Start.x, Geo_Present));
+		if (!__Palaeozoic_Era_Timeline.empty() && TotalAge > __Palaeozoic_Era_Timeline.begin()->first)
 		{
-			os << GHMD_Paleozoic(Target, TotalAge);
+			os << GHMD_General(Target, Parent, TotalAge, Geo_Paleozoic, 3, __Palaeozoic_Era_Range, __Palaeozoic_Era_Timeline);
 		}
-		if (TotalAge > __Mesozoic_Era_Timeline[0])
+		if (!__Mesozoic_Era_Timeline.empty() && TotalAge > __Mesozoic_Era_Timeline.begin()->first)
 		{
-			os << GHMD_Mesozoic(TotalAge);
+			os << GHMD_General(Target, Parent, TotalAge, Geo_Mesozoic, 3, __Mesozoic_Era_Range, __Mesozoic_Era_Timeline);
 		}
-		if (TotalAge > __Cenozoic_Era_Timeline[0])
+		if (!__Cenozoic_Era_Timeline.empty() && TotalAge > __Cenozoic_Era_Timeline.begin()->first)
 		{
-			os << GHMD_Cenozoic(TotalAge);
+			os << GHMD_General(Target, Parent, TotalAge, Geo_Cenozoic, 3, __Cenozoic_Era_Begin, __Cenozoic_Era_Timeline);
 		}
-		if (TotalAge > __Cenozoic_Era_Timeline[CenozoicPhases - 1])
+		if (!__Cenozoic_Era_Timeline.empty() && TotalAge > __Cenozoic_Era_Timeline.rbegin()->first)
 		{
-			os << "## History of technology on Planet " << Target.Name[0] << " (Years since Paleolithic)\n";
-			os << GHMD_Civil(TotalAge - __Cenozoic_Era_Timeline[CenozoicPhases - 1]);
-			if (TotalAge - __Cenozoic_Era_Timeline[CenozoicPhases - 1] > __Civilization_Timeline[CivilPhases - 1])
+			os << vformat("## " + Geo_CvTitle + "\n", make_format_args(Target.Name[0]));
+			os << GHMD_Civil(TotalAge - __Cenozoic_Era_Timeline.rbegin()->first);
+			if (TotalAge - __Cenozoic_Era_Timeline.rbegin()->first > __Civilization_Timeline.rbegin()->first)
 			{
-				os << "\nCivilization on this planet maybe more-developed than Earth. But this generation can only reach this point.\n";
+				os << "\n" + EndStr + "\n";
 			}
 		}
 	}
@@ -216,26 +158,186 @@ string GHMarkDownProcess(Object Target, Object Parent)
 	return os.str();
 }
 
-void composite0geo(Object Target, Object Parent)
+string GHMarkDownProcess(Object Target, Object Parent)
 {
-	// Initialize
+	ostringstream os;
+
+	os << vformat("# " + Geo_Title + "\n", make_format_args(Target.Name[0]));
+	os << vformat(Geo_Age + ": {}\n", make_format_args(TotalAge));
+
+	os << GHMD_General(Target, Parent, TotalAge, Geo_Hadean, 2, __Hadean_Eon_Range, __Hadean_Eon_Timeline);
+	if (!__Archean_Eon_Timeline.empty() && TotalAge > __Archean_Eon_Timeline.begin()->first)
+	{
+		os << GHMD_General(Target, Parent, TotalAge, Geo_Archean, 2, __Archean_Eon_Range, __Archean_Eon_Timeline);
+	}
+	if (!__Proterozoic_Eon_Timeline.empty() && TotalAge > __Proterozoic_Eon_Timeline.begin()->first)
+	{
+		os << GHMD_General(Target, Parent, TotalAge, Geo_Proterozoic, 2, __Proterozoic_Eon_Range, __Proterozoic_Eon_Timeline);
+	}
+	if (!__Proterozoic_Eon_Timeline.empty() && TotalAge > __Proterozoic_Eon_Timeline.rbegin()->first)
+	{
+		os << "## " + Geo_Phanerozoic + " ";
+		if (isinf(__Phanerozoic_Eon_Start.y)) { os << vformat("({} Yrs - {})\n", make_format_args(__Phanerozoic_Eon_Start.x, Geo_Present)); }
+		else { os << vformat("({} Yrs - {})\n", make_format_args(__Phanerozoic_Eon_Start.x, __Phanerozoic_Eon_Start.y)); }
+		if (!__Palaeozoic_Era_Timeline.empty() && TotalAge > __Palaeozoic_Era_Timeline.begin()->first)
+		{
+			os << GHMD_General(Target, Parent, TotalAge, Geo_Paleozoic, 3, __Palaeozoic_Era_Range, __Palaeozoic_Era_Timeline);
+		}
+		if (!__Mesozoic_Era_Timeline.empty() && TotalAge > __Mesozoic_Era_Timeline.begin()->first)
+		{
+			os << GHMD_General(Target, Parent, TotalAge, Geo_Mesozoic, 3, __Mesozoic_Era_Range, __Mesozoic_Era_Timeline);
+		}
+		if (!__Cenozoic_Era_Timeline.empty() && TotalAge > __Cenozoic_Era_Timeline.begin()->first)
+		{
+			os << GHMD_General(Target, Parent, TotalAge, Geo_Cenozoic, 3, __Cenozoic_Era_Begin, __Cenozoic_Era_Timeline);
+		}
+		if (!__Cenozoic_Era_Timeline.empty() && TotalAge > __Cenozoic_Era_Timeline.rbegin()->first)
+		{
+			os << vformat("## " + Geo_CvTitle + "\n", make_format_args(Target.Name[0]));
+			os << GHMD_Civil(TotalAge - __Cenozoic_Era_Timeline.rbegin()->first);
+		}
+	}
+
+	if (TotalAge > EndYear)
+	{
+		os << "\n" + EndStr + "\n";
+	}
+
+	return os.str();
+}
+
+void _DefInit()
+{
+	__Hadean_Eon_Range = vec2(0, 540E6);
+	__Archean_Eon_Range = vec2(540E6, 2040E6);
+	__Proterozoic_Eon_Range = vec2(2040E6, 4001E6);
+	__Phanerozoic_Eon_Start = vec2(4001E6, wrtval(POS_INF_DOUBLE));
+	__Palaeozoic_Era_Range = vec2(4001.2E6, 4288.1E6);
+	__Mesozoic_Era_Range = vec2(4288.1E6, 4474E6);
+	__Cenozoic_Era_Begin = vec2(4474E6, wrtval(POS_INF_DOUBLE));
+
 	float64 __H1 = random.uniform(260E6, 770E6);
-	__Hadean_Eon_Timeline = { 0, 30E6, 136E6, __H1 };
+	__Hadean_Eon_Timeline = 
+	{
+		{0,     __Hadean_Eon_Events[0]},
+		{30E6,  __Hadean_Eon_Events[1]},
+		{136E6, __Hadean_Eon_Events[2]},
+		{__H1,  __Hadean_Eon_Events[3]}
+	};
 	float64 __A1 = random.uniform(770E6, 1040E6);
-	__Archean_Eon_Timeline = { __H1, __A1, 1540E6 };
+	__Archean_Eon_Timeline = 
+	{
+		{__H1,   __Archean_Eon_Events[0]},
+		{__A1,   __Archean_Eon_Events[1]},
+		{1540E6, __Archean_Eon_Events[2]}
+	};
 	float64 __P1 = random.uniform(3960E6, 4001E6);
-	__Proterozoic_Eon_Timeline = { 2040E6, 2690E6, 3540E6, 3790E6, __P1 };
+	__Proterozoic_Eon_Timeline = 
+	{
+		{2040E6, __Proterozoic_Eon_Events[0]},
+		{2690E6, __Proterozoic_Eon_Events[1]},
+		{3540E6, __Proterozoic_Eon_Events[2]},
+		{3790E6, __Proterozoic_Eon_Events[3]},
+		{__P1,   __Proterozoic_Eon_Events[4]}
+	};
 	float64 __EP1 = random.uniform(4205E6, 4215E6);
 	float64 __EP2 = random.uniform(4215E6, 4220E6);
 	float64 __EP3 = random.uniform(4288.1E6, 4288.6E6);
-	__Palaeozoic_Era_Timeline = { 4001.2E6, 4005E6, 4010E6, 4054.6E6, 4055E6, 4096.2E6, 4100E6, 4120E6, 4120.8E6, 4145E6, 4165E6, 4177E6, 4180E6, 4181.1E6, 4190E6, __EP1, __EP2, 4235E6, 4241.1E6, 4260E6, __EP3 };
-	__Mesozoic_Era_Timeline = { 4288.098E6, 4290E6, 4295E6, 4315E6, 4320E6, 4335E6, 4338.6E6, 4345E6, 4370E6, 4385E6, 4395E6, 4405E6, 4450E6 };
+	__Palaeozoic_Era_Timeline = 
+	{
+		{4001.2E6, __Palaeozoic_Era_Events[0]},
+		{4005E6,   __Palaeozoic_Era_Events[1]},
+		{4010E6,   __Palaeozoic_Era_Events[2]},
+		{4054.6E6, __Palaeozoic_Era_Events[3]},
+		{4055E6,   __Palaeozoic_Era_Events[4]},
+		{4096.2E6, __Palaeozoic_Era_Events[5]},
+		{4100E6,   __Palaeozoic_Era_Events[6]},
+		{4120E6,   __Palaeozoic_Era_Events[7]},
+		{4120.8E6, __Palaeozoic_Era_Events[8]},
+		{4145E6,   __Palaeozoic_Era_Events[9]},
+		{4165E6,   __Palaeozoic_Era_Events[10]},
+		{4177E6,   __Palaeozoic_Era_Events[11]},
+		{4180E6,   __Palaeozoic_Era_Events[12]},
+		{4181.1E6, __Palaeozoic_Era_Events[13]},
+		{4190E6,   __Palaeozoic_Era_Events[14]},
+		{__EP1,    __Palaeozoic_Era_Events[15]},
+		{__EP2,    __Palaeozoic_Era_Events[16]},
+		{4235E6,   __Palaeozoic_Era_Events[17]},
+		{4241.1E6, __Palaeozoic_Era_Events[18]},
+		{4260E6,   __Palaeozoic_Era_Events[19]},
+		{__EP3,    __Palaeozoic_Era_Events[20]}
+	};
+	__Mesozoic_Era_Timeline = 
+	{
+		{4288.098E6, __Mesozoic_Era_Events[0]},
+		{4290E6,     __Mesozoic_Era_Events[1]},
+		{4295E6,     __Mesozoic_Era_Events[2]},
+		{4315E6,     __Mesozoic_Era_Events[3]},
+		{4320E6,     __Mesozoic_Era_Events[4]},
+		{4335E6,     __Mesozoic_Era_Events[5]},
+		{4338.6E6,   __Mesozoic_Era_Events[6]},
+		{4345E6,     __Mesozoic_Era_Events[7]},
+		{4370E6,     __Mesozoic_Era_Events[8]},
+		{4385E6,     __Mesozoic_Era_Events[9]},
+		{4395E6,     __Mesozoic_Era_Events[10]},
+		{4405E6,     __Mesozoic_Era_Events[11]},
+		{4450E6,     __Mesozoic_Era_Events[12]}
+	};
 	float64 __EC1 = random.uniform(4474E6, 4474.001E6);
-	__Cenozoic_Era_Timeline = { 4474E6, 4474E6, __EC1, 4480E6, 4485E6, 4490E6, 4505E6, 4516.97E6, 4530E6, 4533.5E6, 4536E6, 4536.7E6 };
+	__Cenozoic_Era_Timeline = 
+	{
+		{4474E6,    __Cenozoic_Era_Events[0]},
+		{4474E6,    __Cenozoic_Era_Events[1]},
+		{__EC1,     __Cenozoic_Era_Events[2]},
+		{4480E6,    __Cenozoic_Era_Events[3]},
+		{4485E6,    __Cenozoic_Era_Events[4]},
+		{4490E6,    __Cenozoic_Era_Events[5]},
+		{4505E6,    __Cenozoic_Era_Events[6]},
+		{4516.97E6, __Cenozoic_Era_Events[7]},
+		{4530E6,    __Cenozoic_Era_Events[8]},
+		{4533.5E6,  __Cenozoic_Era_Events[9]},
+		{4536E6,    __Cenozoic_Era_Events[10]},
+		{4536.7E6,  __Cenozoic_Era_Events[11]}
+	};
 	float64 __C1 = random.uniform(3280000, 3285000);
 	float64 __C2 = random.uniform(3294700, 3295300);
 	float64 __C3 = random.uniform(3296700, 3296825);
-	__Civilization_Timeline = { 0, 720000, __C1, 3288000, __C2, __C3, 3299760, 3299870, 3299947, 3300016 };
+	__Civilization_Timeline = 
+	{
+		{0,       __Civilization_Events[0]},
+		{720000,  __Civilization_Events[1]},
+		{__C1,    __Civilization_Events[2]},
+		{3288000, __Civilization_Events[3]},
+		{__C2,    __Civilization_Events[4]},
+		{__C3,    __Civilization_Events[5]},
+		{3299760, __Civilization_Events[6]},
+		{3299870, __Civilization_Events[7]},
+		{3299947, __Civilization_Events[8]},
+		{3300016, __Civilization_Events[9]}
+	};
+}
+
+void GetLcString(string Key, string* Val);
+void GeoLoadLocStr()
+{
+	GetLcString("Geo_Title",       &Geo_Title);
+	GetLcString("Geo_Age",         &Geo_Age);
+	GetLcString("Geo_Present",     &Geo_Present);
+	GetLcString("Geo_Hadean",      &Geo_Hadean);
+	GetLcString("Geo_Archean",     &Geo_Archean);
+	GetLcString("Geo_Proterozoic", &Geo_Proterozoic);
+	GetLcString("Geo_Phanerozoic", &Geo_Phanerozoic);
+	GetLcString("Geo_Paleozoic",   &Geo_Paleozoic);
+	GetLcString("Geo_Mesozoic",    &Geo_Mesozoic);
+	GetLcString("Geo_Cenozoic",    &Geo_Cenozoic);
+	GetLcString("Geo_CvTitle",     &Geo_CvTitle);
+}
+
+void composite0geo(Object Target, Object Parent)
+{
+	// Initialize
+	if (!CustomModel) { _DefInit(); }
+	GeoLoadLocStr();
 
 	TotalAge = FindAge(Target, Parent);
 
@@ -262,7 +364,8 @@ void composite0geo(Object Target, Object Parent)
 		break;
 	case MD:
 	default:
-		Final = GHMarkDownProcess(Target, Parent);
+		if (CustomModel) { Final = GHMarkDownProcess(Target, Parent); }
+		else { Final = GHMarkDownProcessEarth(Target, Parent); }
 		break;
 	}
 }

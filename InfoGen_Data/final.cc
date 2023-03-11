@@ -60,11 +60,11 @@ void Transcode(string& arg, int encoding)
 	delete[] wszUtf8;
 }
 
-void ParseLocalStringsSysInfo(string LCID, UINT CP)
+void ParseLocalStrings(string FileName, string LCID, UINT CP)
 {
 	ISCStream LCIS;
 	bool FileExist = true;
-	try{ LCIS = ParseFile("./" + LCID + "/SystemInfo.cfg", CP); }
+	try{ LCIS = ParseFile("./" + LCID + "/" + FileName, CP); }
 	catch (const std::exception&)
 	{
 		cout << "Localization is not specified or file not exist, using default strings.\n";
@@ -105,7 +105,7 @@ void NormalProcess(ISCStream& SystemIn, vector<string> args)
 	}
 
 	cout << "Loading localizations...\n";
-	ParseLocalStringsSysInfo(LcID, LCodePage);
+	ParseLocalStrings("SystemInfo.cfg", LcID, LCodePage);
 
 	cout << "Loading - Initializing object phase 1...\n";
 	auto it = SystemIn->begin();
@@ -163,6 +163,8 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		cout << "\t\033[32m-geochronology \033[0m: Generate timeline of the evolutionary history of a life planet, the following options are available.\n";
 		cout << "\t\t\033[33m-target <ObjectName> \033[0m: Specify target object. (This argument is required under geochronology mode.)\n";
 		cout << "\t\t\033[33m-parent <ObjectName> \033[0m: Specify parent body, it will automatically detected when missing.\n";
+		cout << "\t\t\033[33m-evmdl <File> \033[0m: Specify custom evolution model.\n";
+		cout << "\t\t\033[33m-evmcp=<encod> \033[0m: Specify file encoding of custom evolution model.\n";
 		cout << "\n";
 		cout << "\t\033[32m-mineralogy \033[0m: Generate mineral distribution of all the rocky objects in this system, the following options are available.\n";
 		cout << "\t\t\033[33m-oredict <filename> \033[0m: Specify custom ore dictionary file, program will use default ore dictionary when this argument is missing.\n";
