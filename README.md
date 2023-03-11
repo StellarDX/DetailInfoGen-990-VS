@@ -1,4 +1,4 @@
-# SpaceEngine 0.990 详细信息生成器
+# SpaceEngine 0.990 详细信息生成器《星示昭明》
 
 协议：本体使用[GPLv2](https://www.gnu.org/licenses/licenses.html)，部分存放字符串的文件为[CC BY-SA 4.0](https://creativecommons.org/licenses)
 
