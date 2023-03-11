@@ -18,6 +18,27 @@ using namespace cse;
 enum HabRank { ACE, SSS, SS, S, A, B, C, D };
 static const string HabRankStr[8]{ "ACE", "SSS", "SS", "S", "A", "B", "C", "D" };
 
+namespace Localization
+{
+	string Asb_Rating     = "Overall rating";
+	string AsB_SurfGrav   = "Surface Gravity";
+	string AsB_SurfGravL1 = "Too low";
+	string AsB_SurfGravL2 = "Moderate";
+	string AsB_SurfGravL3 = "Too high";
+	string AsB_SPeriod    = "Synodic rotation period";
+	string AsB_SPeriodL6  = "Tidal locked";
+	string AsB_TSurf      = "Mean surface temperature";
+	string Asb_HighAxT    = "High axial tilt";
+	string Asb_NoAtm      = "No Atmosphere";
+	string Asb_ToxicAtm   = "Toxic atmosphere";
+	string Asb_UAtm1      = "Unbreathable atmosphere: Lack of oxygen.";
+	string Asb_UAtm2      = "Unbreathable atmosphere: Excessive oxygen.";
+	string Asb_BAtm       = "Breathable atmosphere";
+	string Asb_Pressure   = "Atmosphere pressure";
+}
+
+using namespace Localization;
+
 // Reference: 
 // https://en.wikipedia.org/wiki/Planetary_habitability
 // https://en.wikipedia.org/wiki/Superhabitable_planet
@@ -38,12 +59,12 @@ static const float64 MaxHabitGrav = GravConstant * (5. * MassEarth) / cse::pow(1
 // Rotation using standard of previous version(possible values), both web source and New Bing are failed to produce better standard.
 static const uint64 RotationLevels = 5;
 static const float64 RotationStd[] = {0, 10, 20, 35, 50};
-static const string RotationStr[] = { "Very short", "Short", "Moderate", "Long", "Very long" };
+string RotationStr[] = { "Very short", "Short", "Moderate", "Long", "Very long" };
 
 // SE standard temperature lines
 static const uint64 TempLevels = 7;
 static const float64 TempStd[] = { 0, 90, 170, 250, 330, 500, 1000 };
-static const string TempStr[] = { "Frigid", "Cold", "Cool", "Temperate", "Warm", "Hot", "Torrid"};
+string TempStr[] = { "Frigid", "Cold", "Cool", "Temperate", "Warm", "Hot", "Torrid"};
 
 // Pressure lines
 // Reference:
@@ -52,15 +73,15 @@ static const string TempStr[] = { "Frigid", "Cold", "Cool", "Temperate", "Warm",
 // https://space.stackexchange.com/questions/32640/what-is-the-maximum-atmospheric-pressure-a-human-can-tolerate
 static const uint64 PressureLevels = 7;
 static const float64 PressureStd[] = {0, 6250, 38300, 47500, 30*StdAtm, 60*StdAtm , 100*StdAtm };
-static const string PressureStr[] = { "Extremely Low", "Very low", "Low", "Moderate", "High", "Very high", "Extremely high"};
+string PressureStr[] = { "Extremely Low", "Very low", "Low", "Moderate", "High", "Very high", "Extremely high"};
 
 string GHMDProcPlanHabGrav(shared_ptr<Object> Obj)
 {
 	float64 Grav = (GravConstant * Obj->Mass) / cse::pow(Obj->Radius(), 2);
-	string FmtStr = " * **Surface Gravity**: " + PrecStr + " m/s^2 - {}\n";
-	if (Grav < MinHabitGrav) { return vformat(FmtStr, make_format_args(Grav, "Too low")); }
-	else if (Grav > MaxHabitGrav) { return vformat(FmtStr, make_format_args(Grav, "Too high")); }
-	else { return vformat(FmtStr, make_format_args(Grav, "Moderate")); }
+	string FmtStr = " * **" + AsB_SurfGrav + "**: " + PrecStr + " m/s^2 - {}\n";
+	if (Grav < MinHabitGrav) { return vformat(FmtStr, make_format_args(Grav, AsB_SurfGravL1)); }
+	else if (Grav > MaxHabitGrav) { return vformat(FmtStr, make_format_args(Grav, AsB_SurfGravL3)); }
+	else { return vformat(FmtStr, make_format_args(Grav, AsB_SurfGravL2)); }
 }
 
 string GHMDProcPlanHabRotation(shared_ptr<Object> Obj)
@@ -73,8 +94,8 @@ string GHMDProcPlanHabRotation(shared_ptr<Object> Obj)
 	}
 	else { SynodicPeriod = (Obj->Orbit.Period * Obj->Rotation.RotationPeriod) / (Obj->Orbit.Period - Obj->Rotation.RotationPeriod); }
 	
-	string FmtStr = " * **Synodic rotation period**: " + PrecStr + " sec - {}\n";
-	if (isinf(SynodicPeriod)) { return vformat(FmtStr, make_format_args(SynodicPeriod, "Tidal locked")); }
+	string FmtStr = " * **" + AsB_SPeriod + "**: " + PrecStr + " sec - {}\n";
+	if (isinf(SynodicPeriod)) { return vformat(FmtStr, make_format_args(SynodicPeriod, AsB_SPeriodL6)); }
 	for (size_t i = 0; i < RotationLevels - 1; i++)
 	{
 		if (3600. * RotationStd[i] < cse::abs(SynodicPeriod) && cse::abs(SynodicPeriod) < 3600. * RotationStd[i + 1])
@@ -89,7 +110,7 @@ string GHMDProcPlanHabRotation(shared_ptr<Object> Obj)
 		(Obj->Rotation.Obliquity < 240 && Obj->Rotation.Obliquity > 300) || 
 		(Obj->Rotation.Obliquity < -240 && Obj->Rotation.Obliquity > -300))
 	{
-		fstr += " * **High axial tilt**\n";
+		fstr += " * **" + Asb_HighAxT + "**\n";
 	}
 
 	return fstr;
@@ -97,7 +118,7 @@ string GHMDProcPlanHabRotation(shared_ptr<Object> Obj)
 
 string GHMDProcPlanHabMST(shared_ptr<Object> Obj)
 {
-	string FmtStr = " * **Mean surface temperature**: " + PrecStr + " °K - {}\n";
+	string FmtStr = " * **" + AsB_TSurf + "**: " + PrecStr + " °K - {}\n";
 	for (size_t i = 0; i < TempLevels - 1; i++)
 	{
 		if (TempStd[i] < Obj->Teff && Obj->Teff < TempStd[i + 1])
@@ -110,7 +131,7 @@ string GHMDProcPlanHabMST(shared_ptr<Object> Obj)
 
 string GHMDProcPlanHabAtm(shared_ptr<Object> Obj)
 {
-	if (Obj->NoAtmosphere) { return " * **No Atmosphere**\n"; }
+	if (Obj->NoAtmosphere) { return " * **" + Asb_NoAtm + "**\n"; }
 	set<string> Exceeds; // Used to analyze toxic atmosphere
 	if (!__GB3095_SO2(Obj->Atmosphere)) { Exceeds.insert("SO2"); }
 	if (!__GB3095_CO(Obj->Atmosphere)) { Exceeds.insert("CO"); }
@@ -121,7 +142,7 @@ string GHMDProcPlanHabAtm(shared_ptr<Object> Obj)
 
 	if (!Exceeds.empty())
 	{
-		string out = "* **Toxic atmosphere**: ";
+		string out = "* **" + Asb_ToxicAtm + "**: ";
 		auto it = Exceeds.begin();
 		auto end = Exceeds.end();
 		int i = 0;
@@ -141,13 +162,13 @@ string GHMDProcPlanHabAtm(shared_ptr<Object> Obj)
 	case 0:
 	case 1:
 	default:
-		return "* **Unbreathable atmosphere**: Lack of oxygen.\n";
+		return "* **" + Asb_UAtm1 + "**\n";
 		break;
 	case 2:
-		return "* **Breathable atmosphere**\n";
+		return "* **" + Asb_BAtm + "**\n";
 		break;
 	case 3:
-		return "* **Unbreathable atmosphere**: Excessive oxygen.\n";
+		return "* **" + Asb_UAtm2 + "**\n";
 		break;
 	}
 
@@ -157,7 +178,7 @@ string GHMDProcPlanHabAtm(shared_ptr<Object> Obj)
 string GHMDProcPlanHabAtmPressure(shared_ptr<Object> Obj)
 {
 	if (Obj->NoAtmosphere) { return ""; }
-	string FmtStr = " * **Atmosphere pressure**: " + PrecStr + " Pa - {}\n";
+	string FmtStr = " * **" + Asb_Pressure + "**: " + PrecStr + " Pa - {}\n";
 	for (size_t i = 0; i < PressureLevels - 1; i++)
 	{
 		if (PressureStd[i] < Obj->Atmosphere.Pressure && Obj->Atmosphere.Pressure < PressureStd[i + 1])
@@ -172,7 +193,7 @@ string GHMDProcPlanHab(shared_ptr<Object> Obj)
 {
 	ostringstream os;
 	os << vformat("\n### {} - {}\n", make_format_args(Obj->Name[0], GenPlanetType(Obj)));
-	os << vformat("*Overall rating : {}*\n", make_format_args("Incompleted"));
+	os << vformat("*" + Asb_Rating + " : {}*\n", make_format_args("Incompleted"));
 	os << GHMDProcPlanHabGrav(Obj);
 	os << GHMDProcPlanHabRotation(Obj);
 	os << GHMDProcPlanHabMST(Obj);
@@ -192,8 +213,50 @@ string GHMDHabOut()
 	return os.str();
 }
 
+void GetLcString(string Key, string* Val);
+
+void GetLocalAsB2()
+{
+	GetLcString("Asb_Rating",     &Asb_Rating);
+	GetLcString("AsB_SurfGrav",   &AsB_SurfGrav);
+	GetLcString("AsB_SurfGravL1", &AsB_SurfGravL1);
+	GetLcString("AsB_SurfGravL2", &AsB_SurfGravL2);
+	GetLcString("AsB_SurfGravL3", &AsB_SurfGravL3);
+	GetLcString("AsB_SPeriod",    &AsB_SPeriod);
+	GetLcString("AsB_SPeriodL1",  &RotationStr[0]);
+	GetLcString("AsB_SPeriodL2",  &RotationStr[1]);
+	GetLcString("AsB_SPeriodL3",  &RotationStr[2]);
+	GetLcString("AsB_SPeriodL4",  &RotationStr[3]);
+	GetLcString("AsB_SPeriodL5",  &RotationStr[4]);
+	GetLcString("AsB_SPeriodL6",  &AsB_SPeriodL6);
+	GetLcString("AsB_TSurf",      &AsB_TSurf);
+	GetLcString("AsB_TSurfL1",    &TempStr[0]);
+	GetLcString("AsB_TSurfL2",    &TempStr[1]);
+	GetLcString("AsB_TSurfL3",    &TempStr[2]);
+	GetLcString("AsB_TSurfL4",    &TempStr[3]);
+	GetLcString("AsB_TSurfL5",    &TempStr[4]);
+	GetLcString("AsB_TSurfL6",    &TempStr[5]);
+	GetLcString("AsB_TSurfL7",    &TempStr[6]);
+	GetLcString("Asb_HighAxT",    &Asb_HighAxT);
+	GetLcString("Asb_NoAtm",      &Asb_NoAtm);
+	GetLcString("Asb_ToxicAtm",   &Asb_ToxicAtm);
+	GetLcString("Asb_UAtm1",      &Asb_UAtm1);
+	GetLcString("Asb_UAtm2",      &Asb_UAtm2);
+	GetLcString("Asb_BAtm",       &Asb_BAtm);
+	GetLcString("Asb_Pressure",   &Asb_Pressure);
+	GetLcString("Asb_PressureL1", &PressureStr[0]);
+	GetLcString("Asb_PressureL2", &PressureStr[1]);
+	GetLcString("Asb_PressureL3", &PressureStr[2]);
+	GetLcString("Asb_PressureL4", &PressureStr[3]);
+	GetLcString("Asb_PressureL5", &PressureStr[4]);
+	GetLcString("Asb_PressureL6", &PressureStr[5]);
+	GetLcString("Asb_PressureL7", &PressureStr[6]);
+}
+
 void composite4()
 {
+	GetLocalAsB2();
+
 	switch (OFormat)
 	{
 	case HTML:

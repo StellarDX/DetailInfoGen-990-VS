@@ -10,6 +10,16 @@ using namespace cse;
 
 vector<shared_ptr<Object>> RockyObjBuf;
 
+namespace Localization
+{
+	string Asb_Title  = "Habitability of rocky objects in \"{}\" System.";
+	string Asb_Name   = "Object Name";
+	string Asb_Parent = "Parent";
+	string Asb_ESI    = "ESI";
+}
+
+using namespace Localization;
+
 bool IsRockyPlanet(shared_ptr<Object> Obj);
 
 void __DFS_FindRockyObj(shared_ptr<SystemStruct> SysTree)
@@ -29,8 +39,8 @@ void __DFS_FindRockyObj(shared_ptr<SystemStruct> SysTree)
 string GHMDAstrobiology()
 {
 	ostringstream os;
-	os << vformat("# Habitability of rocky objects in \"{}\" System.\n", make_format_args(SystemBarycenter));
-	os << "| Object Name | Parent | ESI |\n|:---|:---|:---|\n";
+	os << vformat("# " + Asb_Title + "\n", make_format_args(SystemBarycenter));
+	os << "| " + Asb_Name + " | " + Asb_Parent + " | " + Asb_ESI + " |\n|:---|:---|:---|\n";
 	string FmtString = "| {} | {} | {:." + to_string(_OUT_PRECISION) + "g} |\n";
 	for (size_t i = 0; i < RockyObjBuf.size(); i++)
 	{
@@ -44,8 +54,36 @@ string GHMDAstrobiology()
 	return os.str();
 }
 
-void composite3()
+void GetLcString(string Key, string* Val);
+
+void GetLocalAsB1()
 {
+	GetLcString("Asb_Title",  &Asb_Title);
+	GetLcString("Asb_Name",   &Asb_Name);
+	GetLcString("Asb_Parent", &Asb_Parent);
+	GetLcString("Asb_ESI",    &Asb_ESI);
+}
+
+extern string LcID;
+void ParseLocalStrings(string FileName, string LCID, UINT CP);
+
+void composite3(vector<string> args)
+{
+	// Load localization
+	UINT LCodePage = 65001;
+	for (size_t i = 0; i < args.size(); i++)
+	{
+		if (args[i].substr(0, 8) == "-lchset=")
+		{
+			string lccp = args[i];
+			LCodePage = stoul(lccp.substr(8, lccp.size() - 8));
+			break;
+		}
+	}
+	cout << "Loading localizations...\n";
+	ParseLocalStrings("Astrobiology.cfg", LcID, LCodePage);
+
+	GetLocalAsB1();
 	__DFS_FindRockyObj(SystemStructure);
 
 	switch (OFormat)

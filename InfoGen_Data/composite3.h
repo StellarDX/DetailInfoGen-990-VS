@@ -8,6 +8,6 @@
 
 extern std::vector<std::shared_ptr<cse::Object>> RockyObjBuf;
 
-void composite3();
+void composite3(std::vector<std::string> args);
 
 #endif

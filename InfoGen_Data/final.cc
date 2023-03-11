@@ -123,7 +123,7 @@ void NormalProcess(ISCStream& SystemIn, vector<string> args)
 	composite2(args);
 	if (Astrobiology)
 	{
-		composite3();
+		composite3(args);
 		composite4();
 	}
 }
