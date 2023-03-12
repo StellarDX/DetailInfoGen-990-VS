@@ -43,6 +43,8 @@ uint32_t _OUT_PRECISION = 12;
 string LcID = "1033";
 map<string, string> LocStrings;
 
+string CSSPath;
+
 void Transcode(string& arg, int encoding)
 {
 	int len = MultiByteToWideChar(CP_ACP, 0, arg.c_str(), -1, NULL, 0);
@@ -163,12 +165,13 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		cout << "\033[1m\t\033[35mInfoGen \033[36m<filename> \033[31m<args...>\n\033[0m\n";
 
 		cout << "Additional arguments: \n\n";
-		cout << "\t\033[32m-fmt=<fmt> \033[0m: Specify output format, supports Github Markdown(md).\n";
+		cout << "\t\033[32m-fmt=<fmt> \033[0m: Specify output format, supports Github Markdown(md) and HTML(html).\n";
 		cout << "\t\033[32m-srccp=<encod> \033[0m: Specify Source file encoding, use numbers of codepage, e.g. -srccp=0 -> ANSI.\n";
 		cout << "\t\033[32m-outcp=<encod> \033[0m: Specify output file encoding.\n";
 		cout << "\t\033[32m-out <filename> \033[0m: Specify output file name.\n";
 		cout << "\t\033[32m-seed=<seed> \033[0m: Specify seed of random generator, using Hexadecimal(0 - FFFFFFFF), it will randomly generated when argument is missing.\n";
 		cout << "\t\033[32m-prec=<int> \033[0m: Specify output precision, default is 12.\n";
+		cout << "\t\033[32m-lnkcss <path> \033[0m: Linking css file, only available for html mode.\n";
 
 		cout << "\t\033[32m-mpsort=<char> \033[0m: Generate a list of minor planets(include dwarf planets) that are exceptional in some way. The following values are valid:\n";
 		cout << "\t\t\033[33mdiameter \033[0m- IRAS standard, asteroids with a diameter greater than 120 Km (This is default option when argument is missing or invalid.)\n";
@@ -244,6 +247,24 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 				abort();
 			}
 			break;
+		}
+	}
+
+	// Linking CSS
+	if (OFormat == HTML)
+	{
+		for (size_t i = 0; i < args.size(); i++)
+		{
+			if (args[i] == "-lnkcss" && i < args.size())
+			{
+				if (args[i + 1][0] == '-' || i == args.size() - 1)
+				{
+					cout << "Invalid css filename." << '\n';
+					abort();
+				}
+				CSSPath = args[i + 1];
+				break;
+			}
 		}
 	}
 

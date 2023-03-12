@@ -15,6 +15,10 @@ string MakeHTMLHead(string Title, string CSSPath)
 	}
 	os << "\t\t" << _Html_Tags::_meta << '\n';
 	os << "\t\t" << _Html_Tags::_title_begin << Title << _Html_Tags::_title_end << '\n';
+	if (!CSSPath.empty())
+	{
+		os << "\t\t" << "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + CSSPath + "\">" << '\n';
+	}
 	os << "\t" << _Html_Tags::_head_end << '\n';
 	return os.str();
 }

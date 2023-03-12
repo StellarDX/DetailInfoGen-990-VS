@@ -55,6 +55,8 @@ string HTMLhead;
 string HTMLcontent;
 string HTMLMenu;
 
+extern string CSSPath;
+
 // -------------------- Functions -------------------- //
 
 void SortSystemType(ObjectBuffer Sys)
@@ -131,7 +133,7 @@ string HTMLHeadOutput()
 	}
 
 	ostringstream fout;
-	fout << MakeHTMLHead(SystemBarycen->Name[0]);
+	fout << MakeHTMLHead(SystemBarycen->Name[0], CSSPath);
 	SystemBarycenter = SystemBarycen->Name[0];
 
 	return fout.str();
