@@ -18,6 +18,8 @@
 *
 ****/
 
+#include "gbuffer_html.h"
+
 #include "composite.h"
 #include "final.h"
 #include <sstream>
@@ -49,7 +51,11 @@ map<string, vector<size_t>> TypeIndices;
 map<string, vector<size_t>> Companions;
 string SystemBarycenter;
 
-// -------------------- Functions-------------------- //
+string HTMLhead;
+string HTMLcontent;
+string HTMLMenu;
+
+// -------------------- Functions -------------------- //
 
 void SortSystemType(ObjectBuffer Sys)
 {
@@ -98,13 +104,8 @@ ObjectBuffer::iterator FindSystemBarycenter(ObjectBuffer& Sys)
 	throw exception("System barycenter is not found.");
 }
 
-// GH MarkDown
-string SystemInfoTable(SystemInfo Info)
+void FormatOutputSysInfo(ostream& os, string fmtstring, string ifmtstring, const SystemInfo& Info)
 {
-	ostringstream os;
-	os << "| | |\n|:---|:---|\n";
-	string fmtstring = "| {} | {:." + to_string(_OUT_PRECISION) + "g} |\n";
-	string ifmtstring = "| {} | {} |\n";
 	os << vformat(fmtstring, make_format_args(C0_Age, Info.Age));
 	os << vformat(fmtstring, make_format_args(C0_Mass, Info.Mass));
 	os << vformat(fmtstring, make_format_args(C0_SMAOP, Info.DistOutPlanet));
@@ -116,7 +117,51 @@ string SystemInfoTable(SystemInfo Info)
 	os << vformat(ifmtstring, make_format_args(C0_Comets, Info.NComets));
 	os << vformat(ifmtstring, make_format_args(C0_RSatel, Info.NRSatellites));
 	os << vformat(ifmtstring, make_format_args(C0_SpType, Info.SpType));
+}
 
+// HTML
+string HTMLHeadOutput()
+{
+	ObjectBuffer::iterator SystemBarycen;
+	try { SystemBarycen = FindSystemBarycenter(System); }
+	catch (exception e)
+	{
+		cout << e.what();
+		abort();
+	}
+
+	ostringstream fout;
+	fout << MakeHTMLHead(SystemBarycen->Name[0]);
+	SystemBarycenter = SystemBarycen->Name[0];
+
+	return fout.str();
+}
+
+string HTMLTitleOutput()
+{
+	ostringstream fout;
+	SystemInfo Info = gbuffer_basic(System, TypeIndices);
+	fout << "\t\t\t" << _Html_Tags::_h1_begin << SystemBarycenter << _Html_Tags::_h1_end << '\n';
+	fout << "\t\t\t" << _Html_Tags::_table_begin << '\n';
+
+	string fmtstring = "\t\t\t\t<tr class = \"planetTable\"><td class = \"planetTableHead\">{}</td><td class = \"planetTableData\">{:." + to_string(_OUT_PRECISION) + "g}</td></tr>\n";
+	string ifmtstring = "\t\t\t\t<tr class = \"planetTable\"><td class = \"planetTableHead\">{}</td><td class = \"planetTableData\">{}</td></tr>\n";
+	fout << vformat("\t\t\t\t<tr class = \"planetTable\"><td class = \"planetTableHead\" colspan = 2 align=\"center\">{}</td></tr>\n", make_format_args(C0_Title1));
+	FormatOutputSysInfo(fout, fmtstring, ifmtstring, Info);
+
+	fout << "\t\t\t" << _Html_Tags::_table_end << '\n';
+
+	return fout.str();
+}
+
+// GH MarkDown
+string GHMDSystemInfoTable(SystemInfo Info)
+{
+	ostringstream os;
+	os << "| | |\n|:---|:---|\n";
+	string fmtstring = "| {} | {:." + to_string(_OUT_PRECISION) + "g} |\n";
+	string ifmtstring = "| {} | {} |\n";
+	FormatOutputSysInfo(os, fmtstring, ifmtstring, Info);
 	return os.str();
 }
 
@@ -134,7 +179,7 @@ string GHMarkDownOutput()
 	fout << vformat("# {}\n", make_format_args(SystemBarycen->Name[0]));
 
 	SystemInfo Info = gbuffer_basic(System, TypeIndices);
-	fout << "\n ## " + C0_Title1 + "\n" << SystemInfoTable(Info);
+	fout << "\n ## " + C0_Title1 + "\n" << GHMDSystemInfoTable(Info);
 	SystemBarycenter = SystemBarycen->Name[0];
 
 	return fout.str();
@@ -185,8 +230,12 @@ void composite()
 	switch (OFormat)
 	{
 	case HTML:
-		cout << "HTML format output is not support just now, maybe support in the future versions.\n";
-		exit(0xFFFFFFFF);
+		if (!Astrobiology)
+		{
+			HTMLhead = HTMLHeadOutput();
+			HTMLcontent = HTMLTitleOutput();
+		}
+		else { HTMLHeadOutput(); }
 		break;
 	case MD:
 	default:

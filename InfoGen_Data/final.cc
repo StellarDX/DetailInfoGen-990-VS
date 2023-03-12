@@ -18,6 +18,7 @@
 *
 ****/
 
+#include "gbuffer_html.h"
 #include "composite.h"
 #include "composite1.h"
 #include "composite2.h"
@@ -91,6 +92,24 @@ void ParseLocalStrings(string FileName, string LCID, UINT CP)
 	}
 }
 
+void HTMLWrite()
+{
+	Final += HTMLhead;
+
+	// Body
+	Final += '\t' + string(_Html_Tags::_body_begin) + '\n';
+
+	Final += "\t\t" + vformat(_Html_Tags::_div_begin, make_format_args("left")) + '\n';
+	Final += HTMLMenu;
+	Final += "\t\t" + string(_Html_Tags::_div_end) + '\n';
+
+	Final += "\t\t" + vformat(_Html_Tags::_div_begin, make_format_args("content")) + '\n';
+	Final += HTMLcontent;
+	Final += "\t\t" + string(_Html_Tags::_div_end) + '\n';
+
+	Final += '\t' + string(_Html_Tags::_body_end)+'\n';
+}
+
 void NormalProcess(ISCStream& SystemIn, vector<string> args)
 {
 	UINT LCodePage = 65001;
@@ -126,6 +145,8 @@ void NormalProcess(ISCStream& SystemIn, vector<string> args)
 		composite3(args);
 		composite4();
 	}
+
+	if (OFormat == HTML) { HTMLWrite(); }
 }
 
 /////////////////////////MAIN//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -256,6 +277,11 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 
 	// Processing
 
+	if (OFormat == HTML)
+	{
+		Final += string(_Html_Tags::_DOCTYPE) + '\n';
+		Final += string(_Html_Tags::_html_begin) + '\n';
+	}
 	if (find(args.begin(), args.end(), "-geochronology") != args.end()) { geochronology(SystemIn, args); }
 	else if (find(args.begin(), args.end(), "-mineralogy") != args.end()) { minerals(SystemIn, args); }
 	else
@@ -263,6 +289,7 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		if (find(args.begin(), args.end(), "-astrobiology") != args.end()) { Astrobiology = true; }
 		NormalProcess(SystemIn, args);
 	}
+	if (OFormat == HTML) {Final += string(_Html_Tags::_html_end) + '\n';}
 
 	// Transcode
 
@@ -284,7 +311,7 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 	switch (OFormat)
 	{
 	case HTML:
-		OutputFileName = args[1].substr(0, args[1].size() - 5) + ".html";
+		OutputFileName = args[1].substr(0, args[1].size() - 3) + ".html";
 		break;
 	case MD:
 	default:

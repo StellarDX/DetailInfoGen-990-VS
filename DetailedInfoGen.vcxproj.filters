@@ -58,6 +58,9 @@
     <ClCompile Include="InfoGen_Data\composite4.cc">
       <Filter>Src</Filter>
     </ClCompile>
+    <ClCompile Include="InfoGen_Data\gbuffer_html.cc">
+      <Filter>Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InfoGen_Data\composite.h">
@@ -107,6 +110,7 @@
     <ClInclude Include="InfoGen_Data\composite3.h" />
     <ClInclude Include="InfoGen_Data\composite4.h" />
     <ClInclude Include="InfoGen_Data\astrobiology\GB16297-1996.inl" />
+    <ClInclude Include="InfoGen_Data\gbuffer_html.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="InfoGen_Data\COMMON.inl" />

@@ -20,7 +20,7 @@ ObjectBuffer::iterator FindSystemBarycenter(ObjectBuffer& Sys);
 
 void SortSystemType(ObjectBuffer Sys);
 void SortParentBody(ObjectBuffer Sys);
-std::string SystemInfoTable(SystemInfo Info);
+std::string GHMDSystemInfoTable(SystemInfo Info);
 
 void composite();
 

@@ -154,6 +154,7 @@
     <ClCompile Include="InfoGen_Data\final.cc" />
     <ClCompile Include="InfoGen_Data\gbuffer_atmosphere.cc" />
     <ClCompile Include="InfoGen_Data\gbuffer_basic.cc" />
+    <ClCompile Include="InfoGen_Data\gbuffer_html.cc" />
     <ClCompile Include="InfoGen_Data\gbuffer_planet.cc" />
     <ClCompile Include="InfoGen_Data\gbuffer_star.cc" />
     <ClCompile Include="InfoGen_Data\gbuffer_water.cc" />
@@ -224,6 +225,7 @@
     <ClCompile Include="InfoGen_Data\sorting.cc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="InfoGen_Data\gbuffer_html.h" />
     <ClInclude Include="InfoGen_Data\astrobiology\GB16297-1996.inl" />
     <ClInclude Include="InfoGen_Data\composite.h" />
     <ClInclude Include="InfoGen_Data\composite1.h" />

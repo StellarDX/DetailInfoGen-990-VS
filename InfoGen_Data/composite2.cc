@@ -1,4 +1,5 @@
-﻿#include "composite.h"
+﻿#include "gbuffer_html.h"
+#include "composite.h"
 #include "composite1.h"
 #include "composite2.h"
 #include "final.h"
@@ -81,6 +82,22 @@ bool IsHighInclined(shared_ptr<Object> Obj)
 
 // Output templates
 
+string HTMLMPDiam(shared_ptr<Object> Obj)
+{
+	string PrecStr = "{:." + to_string(_OUT_PRECISION) + "g}";
+	string fmtstr = "\t\t\t\t\t<tr class = \"moonTable\"><td class = \"planetTableData\" colspan = 1>{}</td><td class = \"planetTableData\" colspan = 1>{}</td><td class = \"planetTableData\" colspan = 1>" + PrecStr + "</td><td class = \"planetTableData\" colspan = 1>(" + PrecStr + " × " + PrecStr + " × " + PrecStr + ")</td><td class = \"planetTableData\" colspan = 1>" + PrecStr + "</td></tr>\n";
+	return vformat(fmtstr, make_format_args
+	(
+		Obj->Name[0],
+		Obj->ParentBody,
+		cse::cbrt(Obj->Dimensions.x * Obj->Dimensions.y * Obj->Dimensions.z),
+		Obj->Dimensions.x,
+		Obj->Dimensions.y,
+		Obj->Dimensions.z,
+		Obj->Orbit.SemiMajorAxis()
+	));
+}
+
 string GHMarkDownMPDiam(shared_ptr<Object> Obj)
 {
 	string PrecStr = "{:." + to_string(_OUT_PRECISION) + "g}";
@@ -97,6 +114,18 @@ string GHMarkDownMPDiam(shared_ptr<Object> Obj)
 	));
 }
 
+string HTMLMPMass(shared_ptr<Object> Obj)
+{
+	string PrecStr = "{:." + to_string(_OUT_PRECISION) + "g}";
+	string fmtstr = "\t\t\t\t\t<tr class = \"moonTable\"><td class = \"planetTableData\" colspan = 1>{}</td><td class = \"planetTableData\" colspan = 1>{}</td><td class = \"planetTableData\" colspan = 1>" + PrecStr + "</td></tr>\n";
+	return vformat(fmtstr, make_format_args
+	(
+		Obj->Name[0],
+		Obj->ParentBody,
+		Obj->Mass
+	));
+}
+
 string GHMarkDownMPMass(shared_ptr<Object> Obj)
 {
 	string PrecStr = "{:." + to_string(_OUT_PRECISION) + "g}";
@@ -106,6 +135,19 @@ string GHMarkDownMPMass(shared_ptr<Object> Obj)
 		Obj->Name[0],
 		Obj->ParentBody,
 		Obj->Mass
+	));
+}
+
+string HTMLMPRot(shared_ptr<Object> Obj)
+{
+	string PrecStr = "{:." + to_string(_OUT_PRECISION) + "g}";
+	string fmtstr = "\t\t\t\t\t<tr class = \"moonTable\"><td class = \"planetTableData\" colspan = 1>{}</td><td class = \"planetTableData\" colspan = 1>" + PrecStr + "</td><td class = \"planetTableData\" colspan = 1>{}</td><td class = \"planetTableData\" colspan = 1>" + PrecStr + "</td></tr>\n";
+	return vformat(fmtstr, make_format_args
+	(
+		Obj->Name[0],
+		Obj->Rotation.RotationPeriod,
+		Obj->ParentBody,
+		cse::cbrt(Obj->Dimensions.x * Obj->Dimensions.y * Obj->Dimensions.z)
 	));
 }
 
@@ -119,6 +161,18 @@ string GHMarkDownMPRot(shared_ptr<Object> Obj)
 		Obj->Rotation.RotationPeriod,
 		Obj->ParentBody,
 		cse::cbrt(Obj->Dimensions.x * Obj->Dimensions.y * Obj->Dimensions.z)
+	));
+}
+
+string HTMLMPIncl(shared_ptr<Object> Obj)
+{
+	string PrecStr = "{:." + to_string(_OUT_PRECISION) + "g}";
+	string fmtstr = "\t\t\t\t\t<tr class = \"moonTable\"><td class = \"planetTableData\" colspan = 1>{}</td><td class = \"planetTableData\" colspan = 1>{}</td><td class = \"planetTableData\" colspan = 1>" + PrecStr + "</td></tr>\n";
+	return vformat(fmtstr, make_format_args
+	(
+		Obj->Name[0],
+		Obj->ParentBody,
+		Obj->Orbit.Inclination
 	));
 }
 
@@ -167,6 +221,97 @@ bool RotLessCmp(shared_ptr<Object> Left, shared_ptr<Object> Right)
 bool InclCmp(shared_ptr<Object> Left, shared_ptr<Object> Right)
 {
 	return Left->Orbit.Inclination < Right->Orbit.Inclination;
+}
+
+void HTMLPushMenu(string ObjName, string ObjType);
+
+string HTMLMPList()
+{
+	ostringstream os;
+	os << "\t\t\t" << _Html_Tags::_table_begin << '\n';
+
+	os << "\t\t\t\t<tr class = \"baryTable\"><td colspan = 4 class = \"beltTableTop\"><a name = \"Exceptional Asteroids\">" + C2_Title3 + "</a></td>";
+
+	HTMLPushMenu("Exceptional Asteroids", "");
+
+	switch (MinorPlanetSortArg)
+	{
+	case MPS_Diam:
+	default:
+		os << "<td colspan = 2 class = \"beltTableTopEnd\">" + C2_Sort0 + "</td></tr>\n";
+		os << "\t\t\t\t<tr class = \"baryTable\"><td colspan = 6><table class = \"tempTable\" border=\"1\">\n";
+		os << "\t\t\t\t\t<td class = \"beltTableSubHead\">" + C2_AstName + "</td><td class = \"beltTableSubHead\">" + C2_AstParent + "</td><td class = \"beltTableSubHead\">" + C2_AstDiam + "</td><td class = \"beltTableSubHead\">" + C2_AstDim + "</td><td class = \"beltTableSubHead\">" + C2_AstDist + "</td></tr>\n";
+		__DFS_SearchMinorPlanets(os, SystemStructure, DiameterLargerThan120);
+		__Qsort_Objects(MinorPlanetBuffer.begin(), MinorPlanetBuffer.end(), DiameterCmp);
+		for (size_t i = 0; i < MinorPlanetBuffer.size(); i++)
+		{
+			os << HTMLMPDiam(MinorPlanetBuffer[i]);
+		}
+		os << "\t\t\t\t</table></td></tr>\n";
+		break;
+	case MPS_Mass:
+		os << "<td colspan = 2 class = \"beltTableTopEnd\">" + C2_Sort1 + "</td></tr>\n";
+		os << "\t\t\t\t<tr class = \"baryTable\"><td colspan = 6><table class = \"tempTable\" border=\"1\">\n";
+		os << "\t\t\t\t\t<td class = \"beltTableSubHead\">" + C2_AstName + "</td><td class = \"beltTableSubHead\">" + C2_AstParent + "</td><td class = \"beltTableSubHead\">" + C2_AstMass + "</td></tr>\n";
+		__DFS_SearchMinorPlanets(os, SystemStructure, MassLargerThan1E18);
+		__Qsort_Objects(MinorPlanetBuffer.begin(), MinorPlanetBuffer.end(), MassCmp);
+		for (size_t i = 0; i < MinorPlanetBuffer.size(); i++)
+		{
+			os << HTMLMPMass(MinorPlanetBuffer[i]);
+		}
+		os << "\t\t\t\t</table></td></tr>\n";
+		break;
+	case MPS_FastRot:
+		os << "<td colspan = 2 class = \"beltTableTopEnd\">" + C2_Sort2 + "</td></tr>\n";
+		os << "\t\t\t\t<tr class = \"baryTable\"><td colspan = 6><table class = \"tempTable\" border=\"1\">\n";
+		os << "\t\t\t\t\t<td class = \"beltTableSubHead\">" + C2_AstName + "</td><td class = \"beltTableSubHead\">" + C2_AstRotate + "</td><td class = \"beltTableSubHead\">" + C2_AstParent + "</td><td class = \"beltTableSubHead\">" + C2_AstDiam + "</td></tr>\n";
+		__DFS_SearchMinorPlanets(os, SystemStructure, RPeriodLessThan100s);
+		__Qsort_Objects(MinorPlanetBuffer.begin(), MinorPlanetBuffer.end(), RotLessCmp);
+		for (size_t i = 0; i < MinorPlanetBuffer.size(); i++)
+		{
+			os << HTMLMPRot(MinorPlanetBuffer[i]);
+		}
+		os << "\t\t\t\t</table></td></tr>\n";
+		break;
+	case MPS_SlowRot:
+		os << "<td colspan = 2 class = \"beltTableTopEnd\">" + C2_Sort3 + "</td></tr>\n";
+		os << "\t\t\t\t<tr class = \"baryTable\"><td colspan = 6><table class = \"tempTable\" border=\"1\">\n";
+		os << "\t\t\t\t\t<td class = \"beltTableSubHead\">" + C2_AstName + "</td><td class = \"beltTableSubHead\">" + C2_AstRotate + "</td><td class = \"beltTableSubHead\">" + C2_AstParent + "</td><td class = \"beltTableSubHead\">" + C2_AstDiam + "</td></tr>\n";
+		__DFS_SearchMinorPlanets(os, SystemStructure, RPeriodGreaterThan1000h);
+		__Qsort_Objects(MinorPlanetBuffer.begin(), MinorPlanetBuffer.end(), RotGreaterCmp);
+		for (size_t i = 0; i < MinorPlanetBuffer.size(); i++)
+		{
+			os << HTMLMPRot(MinorPlanetBuffer[i]);
+		}
+		os << "\t\t\t\t</table></td></tr>\n";
+		break;
+	case MPS_Retro:
+		os << "<td colspan = 2 class = \"beltTableTopEnd\">" + C2_Sort4 + "</td></tr>\n";
+		os << "\t\t\t\t<tr class = \"baryTable\"><td colspan = 6><table class = \"tempTable\" border=\"1\">\n";
+		os << "\t\t\t\t\t<td class = \"beltTableSubHead\">" + C2_AstName + "</td><td class = \"beltTableSubHead\">" + C2_AstParent + "</td><td class = \"beltTableSubHead\">" + C2_AstIncl + "</td></tr>\n";
+		__DFS_SearchMinorPlanets(os, SystemStructure, IsRetrograde);
+		for (size_t i = 0; i < MinorPlanetBuffer.size(); i++)
+		{
+			os << HTMLMPIncl(MinorPlanetBuffer[i]);
+		}
+		os << "\t\t\t\t</table></td></tr>\n";
+		break;
+	case MPS_Incl:
+		os << "<td colspan = 2 class = \"beltTableTopEnd\">" + C2_Sort5 + "</td></tr>\n";
+		os << "\t\t\t\t<tr class = \"baryTable\"><td colspan = 6><table class = \"tempTable\" border=\"1\">\n";
+		os << "\t\t\t\t\t<td class = \"beltTableSubHead\">" + C2_AstName + "</td><td class = \"beltTableSubHead\">" + C2_AstParent + "</td><td class = \"beltTableSubHead\">" + C2_AstIncl + "</td></tr>\n";
+		__DFS_SearchMinorPlanets(os, SystemStructure, IsHighInclined);
+		__Qsort_Objects(MinorPlanetBuffer.begin(), MinorPlanetBuffer.end(), InclCmp);
+		for (size_t i = 0; i < MinorPlanetBuffer.size(); i++)
+		{
+			os << HTMLMPIncl(MinorPlanetBuffer[i]);
+		}
+		os << "\t\t\t\t</table></td></tr>\n";
+		break;
+	}
+	os << "\t\t\t" << _Html_Tags::_table_end << '\n';
+
+	return os.str();
 }
 
 string GHMarkDownMPList()
@@ -296,6 +441,10 @@ void composite2(vector<string> args)
 	switch (OFormat)
 	{
 	case HTML:
+		if (!Astrobiology)
+		{
+			HTMLcontent += HTMLMPList();
+		}
 		break;
 	case MD:
 	default:
