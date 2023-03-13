@@ -56,6 +56,7 @@ string HTMLcontent;
 string HTMLMenu;
 
 extern string CSSPath;
+extern bool CopyCSS;
 
 // -------------------- Functions -------------------- //
 
@@ -133,7 +134,7 @@ string HTMLHeadOutput()
 	}
 
 	ostringstream fout;
-	fout << MakeHTMLHead(SystemBarycen->Name[0], CSSPath);
+	fout << MakeHTMLHead(SystemBarycen->Name[0], CSSPath, CopyCSS);
 	SystemBarycenter = SystemBarycen->Name[0];
 
 	return fout.str();
@@ -144,11 +145,11 @@ string HTMLTitleOutput()
 	ostringstream fout;
 	SystemInfo Info = gbuffer_basic(System, TypeIndices);
 	fout << "\t\t\t" << _Html_Tags::_h1_begin << SystemBarycenter << _Html_Tags::_h1_end << '\n';
-	fout << "\t\t\t" << _Html_Tags::_table_begin << '\n';
+	fout << "\t\t\t" << "<table border=\"1\">" << '\n';
 
-	string fmtstring = "\t\t\t\t<tr class = \"planetTable\"><td class = \"planetTableHead\">{}</td><td class = \"planetTableData\">{:." + to_string(_OUT_PRECISION) + "g}</td></tr>\n";
-	string ifmtstring = "\t\t\t\t<tr class = \"planetTable\"><td class = \"planetTableHead\">{}</td><td class = \"planetTableData\">{}</td></tr>\n";
-	fout << vformat("\t\t\t\t<tr class = \"planetTable\"><td class = \"planetTableHead\" colspan = 2 align=\"center\">{}</td></tr>\n", make_format_args(C0_Title1));
+	string fmtstring = "\t\t\t\t<tr class = \"MainTable\"><td class = \"MainTableHead\">{}</td><td class = \"MainTableData\">{:." + to_string(_OUT_PRECISION) + "g}</td></tr>\n";
+	string ifmtstring = "\t\t\t\t<tr class = \"MainTable\"><td class = \"MainTableHead\">{}</td><td class = \"MainTableData\">{}</td></tr>\n";
+	fout << vformat("\t\t\t\t<tr class = \"MainTable\"><td class = \"MainTableTitle\" colspan = 2 align=\"center\">{}</td></tr>\n", make_format_args(C0_Title1));
 	FormatOutputSysInfo(fout, fmtstring, ifmtstring, Info);
 
 	fout << "\t\t\t" << _Html_Tags::_table_end << '\n';

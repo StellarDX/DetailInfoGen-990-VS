@@ -1,0 +1,295 @@
+﻿/*
+	详细信息生成器默认样式配置文件《满庭芳》
+	颜色参考：http://www.360doc.com/content/23/0130/19/71084434_1065516886.shtml
+*/
+
+div.left
+{
+	width: 20%;
+	height: 100%;
+	float: left;
+	position: fixed;
+	overflow: auto;
+
+	background-color:rgb(245, 242, 233) /* 手如柔荑，肤如凝脂，领如蝤蛴，齿如瓠犀。 */
+}
+
+div.content
+{
+	float: right;
+	padding: 10px;
+	width: 75%;
+
+	background-color:rgb(234, 238, 241) /* 疏绮笼寒，浅云栖月。 */
+}
+
+h1.topmost
+{
+	font-size:250%;
+	font-weight:bold;
+}
+
+h2.topmost
+{
+	font-size:180%;
+	font-weight:bold;
+}
+
+/* ----------Tables---------- */
+
+table
+{
+	border-collapse:collapse;
+	width: 50%
+}
+
+table.general{ width: 85% }
+
+table.SubTable
+{
+	text-align: center;
+	width: 100%;
+}
+
+/* Main */
+
+tr.MainTable {}
+
+td.MainTableTitle
+{
+	font-weight:bold;
+
+	background-color:rgb(236, 212, 82); /* 鱼戏排缃叶，龟浮见绿池。 */
+}
+
+td.MainTableHead
+{
+	font-weight:bold;
+	width: 25%;
+	
+	background-color:rgb(255, 238, 111); /* 轻如松花落金粉，浓似苔锦含碧滋。 */
+}
+
+td.MainTableData
+{
+	padding-left:10px;
+	padding-right:10px;	
+	
+	background-color:rgb(255, 251, 190); /* 半见离宫出，才分远水明。 */
+}
+
+/* Barycenter */
+td.BarycenterTable {}
+
+td.BarycenterTableTop
+{
+	font-weight:bold;
+	font-size:150%;
+	padding: 5px;
+
+	color:rgb(255, 255, 255);
+	background-color:rgb(66, 34, 86); /* 角声满天秋色里，塞上燕脂凝夜紫。 */
+}
+
+td.BarycenterTableTopEnd
+{
+	font-weight:bold;
+	font-size:150%;
+	padding: 5px;
+
+	color:rgb(255, 255, 255);
+	background-color:rgb(66, 34, 86); /* 角声满天秋色里，塞上燕脂凝夜紫。 */
+}
+
+/* Orbit */
+
+td.OrbitTable {}
+
+td.OrbitTableSectionHeader
+{
+	font-weight:bold;
+	font-size:120%;
+
+	background-color:rgb(117, 193, 196); /* 地远松石古，风扬弦管清。 */
+}
+
+td.OrbitTableHead
+{
+	font-weight:bold;
+	width: 15%;
+
+	background-color:rgb(177, 213, 200); /* 水色沧浪，波涛浩汗。 */
+}
+
+td.OrbitTableData
+{
+	padding-left:10px;
+	padding-right:10px;	
+
+	background-color:rgb(213, 235, 225); /* 篷窗窥天缥，江水真安流。 */
+}
+
+/* Star */
+
+td.StarTable {}
+
+td.StarTableTop
+{
+	font-weight:bold;
+	font-size:150%;
+	padding: 5px;
+
+	color:rgb(255, 255, 255);
+	background-color:rgb(183, 36, 48); /* 血染洋红久不消，芝泥方法费深调。 */
+}
+
+td.StarTableTopEnd
+{
+	font-weight:bold;
+	font-size:150%;
+	padding: 5px;
+
+	color:rgb(255, 255, 255);
+	background-color:rgb(183, 36, 48); /* 血染洋红久不消，芝泥方法费深调。 */
+}
+
+td.StarTableSectionHeader
+{
+	font-weight:bold;
+	font-size:120%;
+
+	background-color:rgb(229, 90, 123); /* 桃红复含宿雨，柳绿更带朝烟。 */
+}
+
+td.StarTableHead
+{
+	font-weight:bold;
+	width: 15%;
+
+	background-color:rgb(233, 142, 122); /* 赛儿方十一岁，穿的东方亮衫子，水墨披风，鹅黄裙。 */
+}
+
+td.StarTableData
+{
+	padding-left:10px;
+	padding-right:10px;
+
+	background-color:rgb(254, 226, 223); /* 烂漫花棚锦绣窠，海上霞色上轻罗。 */
+}
+
+/* Planet */
+
+td.PlanetTable {}
+
+td.PlanetTableTop
+{
+	font-size:150%;
+	font-weight:bold;
+	padding: 5px;
+
+	color:rgb(255, 255, 255);
+	background-color:rgb(46, 89, 167); /* 鞭垂泰岳群青末，袖拂苏台万绿初。 */
+}
+
+td.PlanetTableTopEnd
+{
+	font-size:150%;
+	font-weight:bold;
+	padding: 5px;
+
+	color:rgb(255, 255, 255);
+	background-color:rgb(46, 89, 167); /* 鞭垂泰岳群青末，袖拂苏台万绿初。 */
+}
+
+/* 下面两个分别用石青的三青和四青，因为头青和二青太深了。 */
+td.PlanetTableSectionHeader
+{
+	font-weight:bold;
+	font-size:120%;
+
+	background-color:rgb(63, 148, 228);
+}
+
+td.PlanetTableHead
+{
+	font-weight:bold;
+	width: 15%;	
+
+	background-color:rgb(118, 199, 252);
+}
+
+td.PlanetTableSubHead
+{
+	font-weight:bold;
+
+	background-color:rgb(118, 199, 252);
+}
+
+td.PlanetTableData
+{
+	padding-left:10px;
+	padding-right:10px;	
+
+	background-color:rgb(212, 229, 239) /* 醉看墨花月白，恍疑雪满前村。 */
+}
+
+/* SubSystem */
+
+td.SubSysTable {}
+
+td.SubSysTableSectionHeader
+{
+	font-weight:bold;
+	font-size:120%;
+
+	background-color:rgb(203, 92, 131); /* 玉转湿丝牵晓水，熟粉生香琅玕紫。 */
+}
+
+td.SubSysTableSubHead
+{
+	font-weight:bold;
+
+	background-color:rgb(206, 147, 191); /* 春色鲜于二月中，分明姹紫胜嫣红。翻疑误泼胭脂水，化出花身迥不同。 */
+}
+
+td.SubSysTableData
+{
+	background-color:rgb(251, 231, 232); /* 初微红，后苍白，如银出炉 */
+}
+
+/* Minor Planets */
+
+td.MinorPlanetTable {}
+
+td.MinorPlanetTableTop
+{
+	font-size:150%;
+	font-weight:bold;
+	padding: 5px;
+
+	color:rgb(255, 255, 255);
+	background-color:rgb(107, 84, 88); /* 牝土之气，仰乎玄天，玄天六百岁生玄砥。 */
+}
+
+td.MinorPlanetTableTopEnd
+{
+	font-size:150%;
+	font-weight:bold;
+	padding: 5px;
+	text-align: right;
+
+	color:rgb(255, 255, 255);
+	background-color:rgb(107, 84, 88); /* 牝土之气，仰乎玄天，玄天六百岁生玄砥。 */
+}
+
+td.MinorPlanetTableSubHead
+{
+	font-weight:bold;
+
+	background-color:rgb(153, 128, 108); /* 残寒正欺病酒，掩沉香绣户。 */
+}
+
+td.MinorPlanetTableData
+{
+	background-color: rgb(240, 246, 246); /* 缃即今之古色，京师呼汤米娇。 */
+}

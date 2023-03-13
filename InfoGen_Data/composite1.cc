@@ -267,13 +267,13 @@ shared_ptr<SystemStruct> BuildTree(map<string, vector<size_t>> CompanionBuffer)
 string HTMLGenOrbit(shared_ptr<Object> Obj)
 {
 	ostringstream os;
-	string fmtstring = "<td class = \"planetTableHead\" colspan = 1 >{}</td><td class = \"planetTableData\" colspan = {}>{:." + to_string(_OUT_PRECISION) + "g}</td>";
-	string ifmtstring = "<td class = \"planetTableHead\" colspan = 1 >{}</td><td class = \"planetTableData\" colspan = {}>{}</td>";
+	string fmtstring = "<td class = \"OrbitTableHead\" colspan = 1 >{}</td><td class = \"OrbitTableData\" colspan = {}>{:." + to_string(_OUT_PRECISION) + "g}</td>";
+	string ifmtstring = "<td class = \"OrbitTableHead\" colspan = 1 >{}</td><td class = \"OrbitTableData\" colspan = {}>{}</td>";
 
-	os << "\t\t\t\t<tr class = \"planetTable\"><td colspan = 6 class = \"planetTableSectionHeader\" align=\"center\">" + C1_Orbit_Title + "</td></tr>\n";
+	os << "\t\t\t\t<tr class = \"OrbitTable\"><td colspan = 6 class = \"OrbitTableSectionHeader\" align=\"center\">" + C1_Orbit_Title + "</td></tr>\n";
 
 	// Epoch and RefPlane
-	os << "\t\t\t\t<tr class = \"planetTable\">";
+	os << "\t\t\t\t<tr class = \"OrbitTable\">";
 	if (isinf(Obj->Orbit.Epoch)) { Obj->Orbit.Epoch = J2000; }
 	os << vformat(fmtstring, make_format_args(C1_Orbit_Epoch, 2, Obj->Orbit.Epoch));
 	os << vformat(ifmtstring, make_format_args(C1_Orbit_RefPlane, 2, Obj->Orbit.RefPlane));
@@ -282,14 +282,14 @@ string HTMLGenOrbit(shared_ptr<Object> Obj)
 	// Detect binary
 	if (Obj->Orbit.Binary)
 	{
-		os << "\t\t\t\t<tr class = \"planetTable\">";
+		os << "\t\t\t\t<tr class = \"OrbitTable\">";
 		os << vformat(ifmtstring, make_format_args(C1_Orbit_Prim, 2, Obj->ParentBody));
 		os << vformat(ifmtstring, make_format_args(C1_Orbit_Comp, 2, Obj->Name[0]));
 		os << "</tr>\n";
 	}
 
 	// Semi-major axis and apsis
-	os << "\t\t\t\t<tr class = \"planetTable\">";
+	os << "\t\t\t\t<tr class = \"OrbitTable\">";
 	if (Obj->Orbit.Eccentricity == 0)
 	{
 		os << vformat(fmtstring, make_format_args(C1_Orbit_a, 5, Obj->Orbit.SemiMajorAxis()));
@@ -331,7 +331,7 @@ string HTMLGenOrbit(shared_ptr<Object> Obj)
 	os << "</tr>\n";
 
 	// Calculate Synodic month when object is moon.
-	os << "\t\t\t\t<tr class = \"planetTable\">";
+	os << "\t\t\t\t<tr class = \"OrbitTable\">";
 	if (ParentBodyStack.top().Pointer->Type == "Planet")
 	{
 		os << vformat(fmtstring, make_format_args(C1_Orbit_P3, 2, Obj->Orbit.Period));
@@ -354,7 +354,7 @@ string HTMLGenOrbit(shared_ptr<Object> Obj)
 			Obj->Rotation.Obliquity = Obj->Orbit.Inclination;
 		}
 		os << "</tr>\n";
-		os << "\t\t\t\t<tr class = \"planetTable\">";
+		os << "\t\t\t\t<tr class = \"OrbitTable\">";
 		os << vformat(fmtstring, make_format_args(C1_Orbit_e, 2, Obj->Orbit.Eccentricity));
 		os << vformat(fmtstring, make_format_args(C1_Orbit_i, 2, Obj->Orbit.Inclination));
 	}
@@ -374,7 +374,7 @@ string HTMLGenOrbit(shared_ptr<Object> Obj)
 	os << "</tr>\n";
 
 	// Plane of orbit
-	os << "\t\t\t\t<tr class = \"planetTable\">";
+	os << "\t\t\t\t<tr class = \"OrbitTable\">";
 	os << vformat(fmtstring, make_format_args(C1_Orbit_M0, 1, Obj->Orbit.MeanAnomaly));
 	os << vformat(fmtstring, make_format_args(C1_Orbit_ome, 1, Obj->Orbit.AscendingNode));
 	if (Obj->Orbit.Binary)
@@ -493,12 +493,12 @@ string HTMLGenSubSys(shared_ptr<Object> Obj)
 	ostringstream os;
 	if (CurrentSubSystem != nullptr)
 	{
-		if (Obj->Type == "Barycenter") { os << "\t\t\t\t<tr class = \"planetTable\"><td colspan = 6 class = \"planetTableSectionHeader\" align=\"center\">" + C1_SubSys_Title1 + "</td></tr>\n"; }
-		else if (Obj->Type == "Moon") { os << "\t\t\t\t<tr class = \"planetTable\"><td colspan = 6 class = \"planetTableSectionHeader\" align=\"center\">" + C1_SubSys_Title2 + "</td></tr>\n"; }
-		else { os << "\t\t\t\t<tr class = \"planetTable\"><td colspan = 6 class = \"planetTableSectionHeader\" align=\"center\">" + C1_SubSys_Title3 + "</td></tr>\n"; }
-		os << "\t\t\t\t<tr class = \"planetTable\"><td colspan = 6><table class = \"tempTable\" border=\"1\">\n";
-		os << "\t\t\t\t\t<tr class = \"planetTable\"><td class = \"planetTableSubHead\">" + C1_SubSys_Name + "</td><td class = \"planetTableSubHead\">" + C1_SubSys_Diam + "</td><td class = \"planetTableSubHead\">" + C1_SubSys_Mass +
-			"</td><td class = \"planetTableSubHead\">" + C1_SubSys_a + "</td><td class = \"planetTableSubHead\">" + C1_SubSys_P + "</td><td class = \"planetTableSubHead\">" + C1_SubSys_i + "</td><td class = \"planetTableSubHead\">" + C1_SubSys_e + "</td></tr>\n";
+		if (Obj->Type == "Barycenter") { os << "\t\t\t\t<tr class = \"SubSysTable\"><td colspan = 6 class = \"SubSysTableSectionHeader\" align=\"center\">" + C1_SubSys_Title1 + "</td></tr>\n"; }
+		else if (Obj->Type == "Moon") { os << "\t\t\t\t<tr class = \"SubSysTable\"><td colspan = 6 class = \"SubSysTableSectionHeader\" align=\"center\">" + C1_SubSys_Title2 + "</td></tr>\n"; }
+		else { os << "\t\t\t\t<tr class = \"SubSysTable\"><td colspan = 6 class = \"SubSysTableSectionHeader\" align=\"center\">" + C1_SubSys_Title3 + "</td></tr>\n"; }
+		os << "\t\t\t\t<tr class = \"SubSysTable\"><td colspan = 6><table class = \"SubTable\" border=\"1\">\n";
+		os << "\t\t\t\t\t<tr class = \"SubSysTable\"><td class = \"SubSysTableSubHead\">" + C1_SubSys_Name + "</td><td class = \"SubSysTableSubHead\">" + C1_SubSys_Diam + "</td><td class = \"SubSysTableSubHead\">" + C1_SubSys_Mass +
+			"</td><td class = \"SubSysTableSubHead\">" + C1_SubSys_a + "</td><td class = \"SubSysTableSubHead\">" + C1_SubSys_P + "</td><td class = \"SubSysTableSubHead\">" + C1_SubSys_i + "</td><td class = \"SubSysTableSubHead\">" + C1_SubSys_e + "</td></tr>\n";
 		string PrecStr = "{:." + to_string(_OUT_PRECISION) + "g}";
 		for (size_t i = 0; i < CurrentSubSystem->Catalog.size(); i++)
 		{
@@ -519,7 +519,7 @@ string HTMLGenSubSys(shared_ptr<Object> Obj)
 				CurrentSubSystem->Catalog[i].Pointer->Dimensions.z == CurrentSubSystem->Catalog[i].Pointer->Dimensions.x
 			)
 			{
-				sfmtstr = "\t\t\t\t\t<tr class = \"moonTable\"><td class = \"planetTableData\" colspan = 1>{}</td><td class = \"planetTableData\" colspan = 1>" + PrecStr + "</td><td class = \"planetTableData\" colspan = 1>" + PrecStr + "</td><td class = \"planetTableData\" colspan = 1>" + PrecStr + "</td><td class = \"planetTableData\" colspan = 1>" + PrecStr + "</td><td class = \"planetTableData\" colspan = 1>" + PrecStr + "</td><td class = \"planetTableData\" colspan = 1>" + PrecStr + "</td></tr>\n";
+				sfmtstr = "\t\t\t\t\t<tr class = \"SubSysTable\"><td class = \"SubSysTableData\" colspan = 1>{}</td><td class = \"SubSysTableData\" colspan = 1>" + PrecStr + "</td><td class = \"SubSysTableData\" colspan = 1>" + PrecStr + "</td><td class = \"SubSysTableData\" colspan = 1>" + PrecStr + "</td><td class = \"SubSysTableData\" colspan = 1>" + PrecStr + "</td><td class = \"SubSysTableData\" colspan = 1>" + PrecStr + "</td><td class = \"SubSysTableData\" colspan = 1>" + PrecStr + "</td></tr>\n";
 				os << vformat(sfmtstr, make_format_args
 				(
 					NameString,
@@ -537,7 +537,7 @@ string HTMLGenSubSys(shared_ptr<Object> Obj)
 				CurrentSubSystem->Catalog[i].Pointer->Dimensions.z == CurrentSubSystem->Catalog[i].Pointer->Dimensions.x
 			)
 			{
-				sfmtstr = "\t\t\t\t\t<tr class = \"moonTable\"><td class = \"planetTableData\" colspan = 1>{}</td><td class = \"planetTableData\" colspan = 1>" + PrecStr + " (" + PrecStr + " × " + PrecStr + ")</td><td class = \"planetTableData\" colspan = 1>" + PrecStr + "</td><td class = \"planetTableData\" colspan = 1>" + PrecStr + "</td><td class = \"planetTableData\" colspan = 1>" + PrecStr + "</td><td class = \"planetTableData\" colspan = 1>" + PrecStr + "</td><td class = \"planetTableData\" colspan = 1>" + PrecStr + "</td></tr>\n";
+				sfmtstr = "\t\t\t\t\t<tr class = \"SubSysTable\"><td class = \"SubSysTableData\" colspan = 1>{}</td><td class = \"SubSysTableData\" colspan = 1>" + PrecStr + " (" + PrecStr + " × " + PrecStr + ")</td><td class = \"SubSysTableData\" colspan = 1>" + PrecStr + "</td><td class = \"SubSysTableData\" colspan = 1>" + PrecStr + "</td><td class = \"SubSysTableData\" colspan = 1>" + PrecStr + "</td><td class = \"SubSysTableData\" colspan = 1>" + PrecStr + "</td><td class = \"SubSysTableData\" colspan = 1>" + PrecStr + "</td></tr>\n";
 				os << vformat(sfmtstr, make_format_args
 				(
 					NameString,
@@ -553,7 +553,7 @@ string HTMLGenSubSys(shared_ptr<Object> Obj)
 			}
 			else
 			{
-				sfmtstr = "\t\t\t\t\t<tr class = \"moonTable\"><td class = \"planetTableData\" colspan = 1>{}</td><td class = \"planetTableData\" colspan = 1>" + PrecStr + " (" + PrecStr + " × " + PrecStr + " × " + PrecStr + ")</td><td class = \"planetTableData\" colspan = 1>" + PrecStr + "</td><td class = \"planetTableData\" colspan = 1>" + PrecStr + "</td><td class = \"planetTableData\" colspan = 1>" + PrecStr + "</td><td class = \"planetTableData\" colspan = 1>" + PrecStr + "</td><td class = \"planetTableData\" colspan = 1>" + PrecStr + "</td></tr>\n";
+				sfmtstr = "\t\t\t\t\t<tr class = \"SubSysTable\"><td class = \"SubSysTableData\" colspan = 1>{}</td><td class = \"SubSysTableData\" colspan = 1>" + PrecStr + " (" + PrecStr + " × " + PrecStr + " × " + PrecStr + ")</td><td class = \"SubSysTableData\" colspan = 1>" + PrecStr + "</td><td class = \"SubSysTableData\" colspan = 1>" + PrecStr + "</td><td class = \"SubSysTableData\" colspan = 1>" + PrecStr + "</td><td class = \"SubSysTableData\" colspan = 1>" + PrecStr + "</td><td class = \"SubSysTableData\" colspan = 1>" + PrecStr + "</td></tr>\n";
 				os << vformat(sfmtstr, make_format_args
 				(
 					NameString,
@@ -689,7 +689,7 @@ string HTMLProcBar(shared_ptr<Object> Obj)
 	HTMLPushMenu(Obj->Name[0], C1_Bar_Type);
 
 	os << "\t\t\t" << _Html_Tags::_table_begin << '\n';
-	os << vformat("\t\t\t\t<tr class = \"starTable\"><td colspan = 4 class = \"starTableTop\"><a name = \"{0}\">{0}</a></td><td colspan = 2 class = \"starTableTopEnd\">{1}</td></tr>\n", make_format_args(Obj->Name[0], C1_Bar_Type));
+	os << vformat("\t\t\t\t<tr class = \"BarycenterTable\"><td colspan = 4 class = \"BarycenterTableTop\"><a name = \"{0}\">{0}</a></td><td colspan = 2 class = \"BarycenterTableTopEnd\" align=\"right\">{1}</td></tr>\n", make_format_args(Obj->Name[0], C1_Bar_Type));
 	if (Obj->Orbit.RefPlane != NO_DATA_STRING && Obj->Orbit.RefPlane != "Static" && Obj->Orbit.RefPlane != "Fixed")
 	{
 		os << HTMLGenOrbit(Obj);
@@ -750,13 +750,13 @@ string GHMarkDownProcBar(shared_ptr<Object> Obj)
 string HTMLProcStar(shared_ptr<Object> Obj)
 {
 	ostringstream os;
-	string fmtstring = "<td class = \"starTableHead\" colspan = 1 >{}</td><td class = \"starTableData\" colspan = {}>{:." + to_string(_OUT_PRECISION) + "g}</td>";
-	string ifmtstring = "<td class = \"starTableHead\" colspan = 1 >{}</td><td class = \"starTableData\" colspan = {}>{}</td>";
+	string fmtstring = "<td class = \"StarTableHead\" colspan = 1 >{}</td><td class = \"StarTableData\" colspan = {}>{:." + to_string(_OUT_PRECISION) + "g}</td>";
+	string ifmtstring = "<td class = \"StarTableHead\" colspan = 1 >{}</td><td class = \"StarTableData\" colspan = {}>{}</td>";
 
 	HTMLPushMenu(Obj->Name[0], GenStarType(Obj));
 
 	os << "\t\t\t" << _Html_Tags::_table_begin << "\n";
-	os << vformat("\t\t\t\t<tr class = \"starTable\"><td colspan = 4 class = \"starTableTop\"><a name = \"{0}\">{0}</a></td><td colspan = 2 class = \"starTableTopEnd\">{1}</td></tr>\n", make_format_args(Obj->Name[0], GenStarType(Obj)));
+	os << vformat("\t\t\t\t<tr class = \"StarTable\"><td colspan = 4 class = \"StarTableTop\"><a name = \"{0}\">{0}</a></td><td colspan = 2 class = \"StarTableTopEnd\" align=\"right\">{1}</td></tr>\n", make_format_args(Obj->Name[0], GenStarType(Obj)));
 
 	if (Obj->Orbit.RefPlane != NO_DATA_STRING && Obj->Orbit.RefPlane != "Static" && Obj->Orbit.RefPlane != "Fixed")
 	{
@@ -766,12 +766,12 @@ string HTMLProcStar(shared_ptr<Object> Obj)
 	if (IsBlackHole(Obj->SpecClass)) // Pecular process for black holes
 	{
 		BlackHoleParams Par = BlackHolePar(Obj);
-		os << "\t\t\t\t<tr class = \"starTable\"><td colspan = 6 class = \"starTableSectionHeader\" align=\"center\">" + C1_Physical + "</td></tr>\n";
-		os << "\t\t\t\t<tr class = \"starTable\">";
+		os << "\t\t\t\t<tr class = \"StarTable\"><td colspan = 6 class = \"StarTableSectionHeader\" align=\"center\">" + C1_Physical + "</td></tr>\n";
+		os << "\t\t\t\t<tr class = \"StarTable\">";
 		os << vformat(fmtstring, make_format_args(C1_Star_Mass, 2, Par.Mass));
 		os << vformat(fmtstring, make_format_args(C1_BH_SRadius, 2, Par.SchwarzschildRadius));
 		os << "</tr>\n";
-		os << "\t\t\t\t<tr class = \"starTable\">";
+		os << "\t\t\t\t<tr class = \"StarTable\">";
 		os << vformat(fmtstring, make_format_args(C1_BH_KerrSpin, 2, Par.Spin));
 		os << vformat(fmtstring, make_format_args(C1_BH_KerrCharge, 2, Par.Charge));
 		os << "</tr>\n";
@@ -779,31 +779,31 @@ string HTMLProcStar(shared_ptr<Object> Obj)
 	else
 	{
 		StarParams Params = gbuffer_star(Obj);
-		os << "\t\t\t\t<tr class = \"starTable\"><td colspan = 6 class = \"starTableSectionHeader\" align=\"center\">" + C1_Physical + "</td></tr>\n";
-		os << "\t\t\t\t<tr class = \"starTable\">";
+		os << "\t\t\t\t<tr class = \"StarTable\"><td colspan = 6 class = \"StarTableSectionHeader\" align=\"center\">" + C1_Physical + "</td></tr>\n";
+		os << "\t\t\t\t<tr class = \"StarTable\">";
 		os << vformat(fmtstring, make_format_args(C1_Star_Lum, 2, Params.Luminosity));
 		os << vformat(fmtstring, make_format_args(C1_Star_MagBol, 2, Params.AbsMagnBol));
 		os << "</tr>\n";
-		os << "\t\t\t\t<tr class = \"starTable\">";
+		os << "\t\t\t\t<tr class = \"StarTable\">";
 		os << vformat(fmtstring, make_format_args(C1_Star_EqRadius, 1, Params.EqRadius));
 		os << vformat(fmtstring, make_format_args(C1_Star_Oblate, 1, Params.Flattening));
 		os << vformat(fmtstring, make_format_args(C1_Star_Volume, 1, Params.Volume));
 		os << "</tr>\n";
-		os << "\t\t\t\t<tr class = \"starTable\">";
+		os << "\t\t\t\t<tr class = \"StarTable\">";
 		os << vformat(fmtstring, make_format_args(C1_Star_Mass, 2, Params.Mass));
 		os << vformat(fmtstring, make_format_args(C1_Star_Density, 2, Params.AvgDensity));
 		os << "</tr>\n";
-		os << "\t\t\t\t<tr class = \"starTable\">";
+		os << "\t\t\t\t<tr class = \"StarTable\">";
 		os << vformat(fmtstring, make_format_args(C1_Star_SurfGrav, 2, Params.EqSurfGrav));
 		os << vformat(fmtstring, make_format_args(C1_Star_EscVel, 2, Params.EscapeVelocity));
 		os << "</tr>\n";
-		os << "\t\t\t\t<tr class = \"starTable\">";
+		os << "\t\t\t\t<tr class = \"StarTable\">";
 		os << vformat(ifmtstring, make_format_args(C1_Star_Class, 2, Params.SpType));
 		os << vformat(fmtstring, make_format_args(C1_Star_Teff, 2, Params.Temperature));
 		os << "</tr>\n";
 		if (!Obj->TidalLocked)
 		{
-			os << "\t\t\t\t<tr class = \"starTable\">";
+			os << "\t\t\t\t<tr class = \"StarTable\">";
 			os << vformat(fmtstring, make_format_args(C1_Star_Obliq, 2, Params.Obliquity));
 			os << vformat(fmtstring, make_format_args(C1_Star_RP, 2, Params.RotationPeriod));
 			os << "</tr>\n";
@@ -867,13 +867,13 @@ string GHMarkDownProcStar(shared_ptr<Object> Obj)
 string HTMLProcPlanet(shared_ptr<Object> Obj)
 {
 	ostringstream os;
-	string fmtstring = "\t\t\t\t<tr class = \"planetTable\"><td class = \"planetTableHead\" colspan = 1 >{}</td><td class = \"planetTableData\" colspan = {}>{:." + to_string(_OUT_PRECISION) + "g}</td></tr>\n";
-	string fmtstring2 = "<td class = \"planetTableHead\" colspan = 1 >{}</td><td class = \"planetTableData\" colspan = {}>{:." + to_string(_OUT_PRECISION) + "g}</td>";
-	string ifmtstring = "\t\t\t\t<tr class = \"planetTable\"><td class = \"planetTableHead\" colspan = 1 >{}</td><td class = \"planetTableData\" colspan = {}>{}</td></tr>\n";
+	string fmtstring = "\t\t\t\t<tr class = \"PlanetTable\"><td class = \"PlanetTableHead\" colspan = 1 >{}</td><td class = \"PlanetTableData\" colspan = {}>{:." + to_string(_OUT_PRECISION) + "g}</td></tr>\n";
+	string fmtstring2 = "<td class = \"PlanetTableHead\" colspan = 1 >{}</td><td class = \"PlanetTableData\" colspan = {}>{:." + to_string(_OUT_PRECISION) + "g}</td>";
+	string ifmtstring = "\t\t\t\t<tr class = \"PlanetTable\"><td class = \"PlanetTableHead\" colspan = 1 >{}</td><td class = \"PlanetTableData\" colspan = {}>{}</td></tr>\n";
 	string OrbitString = HTMLGenOrbit(Obj);
 	PlanetParams Par = gbuffer_planet(Obj);
 	os << "\t\t\t" << _Html_Tags::_table_begin << "\n";
-	os << vformat("\t\t\t\t<tr class = \"planetTable\"><td colspan = 4 class = \"planetTableTop\"><a name = \"{0}\">{0}</a></td><td colspan = 2 class = \"planetTableTopEnd\">{1}</td></tr>\n", make_format_args(Obj->Name[0], GenPlanetType(Obj)));
+	os << vformat("\t\t\t\t<tr class = \"PlanetTable\"><td colspan = 4 class = \"PlanetTableTop\"><a name = \"{0}\">{0}</a></td><td colspan = 2 class = \"PlanetTableTopEnd\" align=\"right\">{1}</td></tr>\n", make_format_args(Obj->Name[0], GenPlanetType(Obj)));
 
 	HTMLPushMenu(Obj->Name[0], GenPlanetType(Obj));
 
@@ -883,11 +883,11 @@ string HTMLProcPlanet(shared_ptr<Object> Obj)
 	}
 
 	// Physical data
-	os << "\t\t\t\t<tr class = \"planetTable\"><td colspan = 6 class = \"planetTableSectionHeader\" align=\"center\">" + C1_Physical + "</td></tr>\n";
+	os << "\t\t\t\t<tr class = \"PlanetTable\"><td colspan = 6 class = \"PlanetTableSectionHeader\" align=\"center\">" + C1_Physical + "</td></tr>\n";
 	
 	if (Par.Flattening != 0)
 	{
-		os << "\t\t\t\t<tr class = \"planetTable\">";
+		os << "\t\t\t\t<tr class = \"PlanetTable\">";
 		os << vformat(fmtstring2, make_format_args(C1_Planet_MRad, 1, Par.MeanRadius));
 		os << vformat(fmtstring2, make_format_args(C1_Planet_ERad, 1, Par.EqRadius));
 		os << vformat(fmtstring2, make_format_args(C1_Planet_PRad, 1, Par.PolarRadius));
@@ -905,21 +905,21 @@ string HTMLProcPlanet(shared_ptr<Object> Obj)
 	{
 		Par.SynodicPeriod = SynodicPeriodBuffer;
 	}
-	os << "\t\t\t\t<tr class = \"planetTable\">";
+	os << "\t\t\t\t<tr class = \"PlanetTable\">";
 	os << vformat(fmtstring2, make_format_args(C1_Planet_SidPer, 2, Par.RotationPeriod));
 	os << vformat(fmtstring2, make_format_args(C1_Planet_SynPer, 2, Par.SynodicPeriod));
 	os << "</tr>\n";
 
 	os << vformat(fmtstring, make_format_args(C1_Planet_Obliq, 5, Par.AxialTilt));
 
-	os << "\t\t\t\t<tr class = \"planetTable\">";
+	os << "\t\t\t\t<tr class = \"PlanetTable\">";
 	os << vformat(fmtstring2, make_format_args(C1_Planet_AlbedoB, 2, Par.AlbedoBond));
 	os << vformat(fmtstring2, make_format_args(C1_Planet_AlbedoG, 2, Par.AlbedoGeom));
 	os << "</tr>\n";
 
-	os << "\t\t\t\t<tr class = \"planetTable\"><td colspan = 6><table class = \"tempTable\" border=\"1\">\n";
-	os << "\t\t\t\t\t<tr class = \"planetTable\"><td class = \"planetTableSubHead\"></td><td class = \"planetTableSubHead\">" + C1_Planet_TempMin + "</td><td class = \"planetTableSubHead\">" + C1_Planet_TempMean + "</td><td class = \"planetTableSubHead\">" + C1_Planet_TempMax + "</td></tr>\n";
-	string tfmtstring = "\t\t\t\t\t<tr class = \"planetTable\"><td class = \"planetTableHead\" colspan = 1 >" + C1_Planet_Temp + "</td><td class = \"planetTableData\" colspan = 1>{:." + to_string(_OUT_PRECISION) + "g}</td><td class = \"planetTableData\" colspan = 1>{:." + to_string(_OUT_PRECISION) + "g}</td><td class = \"planetTableData\" colspan = 1>{:." + to_string(_OUT_PRECISION) + "g}</td></tr>\n";
+	os << "\t\t\t\t<tr class = \"PlanetTable\"><td colspan = 6><table class = \"SubTable\" border=\"1\">\n";
+	os << "\t\t\t\t\t<tr class = \"PlanetTable\"><td class = \"PlanetTableSubHead\"></td><td class = \"PlanetTableSubHead\">" + C1_Planet_TempMin + "</td><td class = \"PlanetTableSubHead\">" + C1_Planet_TempMean + "</td><td class = \"PlanetTableSubHead\">" + C1_Planet_TempMax + "</td></tr>\n";
+	string tfmtstring = "\t\t\t\t\t<tr class = \"PlanetTable\"><td class = \"PlanetTableHead\" colspan = 1 >" + C1_Planet_Temp + "</td><td class = \"PlanetTableData\" colspan = 1>{:." + to_string(_OUT_PRECISION) + "g}</td><td class = \"PlanetTableData\" colspan = 1>{:." + to_string(_OUT_PRECISION) + "g}</td><td class = \"PlanetTableData\" colspan = 1>{:." + to_string(_OUT_PRECISION) + "g}</td></tr>\n";
 	vec3 Temperatures(Par.MinTemperature, Par.MeanTemperature, Par.MaxTemperature);
 	if
 	(
@@ -938,8 +938,8 @@ string HTMLProcPlanet(shared_ptr<Object> Obj)
 	if (!Obj->NoAtmosphere)
 	{
 		Atmosphere Atm = gbuffer_atmosphere(Obj);
-		os << "\t\t\t\t<tr class = \"planetTable\"><td colspan = 6 class = \"planetTableSectionHeader\" align=\"center\">" + C1_Planet_Atm + "</td></tr>\n";
-		string aformatstring = "\t\t\t\t\t<tr class = \"planetTable\"><td class = \"planetTableHead\" colspan = 1 >{}</td><td class = \"planetTableData\" colspan = 1>{:." + to_string(_OUT_PRECISION) + "g}%</td><td class = \"planetTableData\" colspan = 4>{}</td></tr>\n";
+		os << "\t\t\t\t<tr class = \"PlanetTable\"><td colspan = 6 class = \"PlanetTableSectionHeader\" align=\"center\">" + C1_Planet_Atm + "</td></tr>\n";
+		string aformatstring = "\t\t\t\t\t<tr class = \"PlanetTable\"><td class = \"PlanetTableHead\" colspan = 1 >{}</td><td class = \"PlanetTableData\" colspan = 1>{:." + to_string(_OUT_PRECISION) + "g}%</td><td class = \"PlanetTableData\" colspan = 4>{}</td></tr>\n";
 		os << vformat(fmtstring, make_format_args(C1_Planet_Pressure, 5, Atm.SurfPressure));
 		auto it = Atm.Composition.begin();
 		auto end = Atm.Composition.end();
@@ -960,8 +960,8 @@ string HTMLProcPlanet(shared_ptr<Object> Obj)
 	if (!Obj->NoOcean)
 	{
 		Ocean Oc = gbuffer_water(Obj);
-		os << "\t\t\t\t<tr class = \"planetTable\"><td colspan = 6 class = \"planetTableSectionHeader\" align=\"center\">" + C1_Planet_Ocean + "</td></tr>\n";
-		string aformatstring = "\t\t\t\t<tr class = \"planetTable\"><td class = \"planetTableHead\" colspan = 1 >{}</td><td class = \"planetTableData\" colspan = 1>{:." + to_string(_OUT_PRECISION) + "g}%</td><td class = \"planetTableData\" colspan = 4>{}</td></tr>\n\n";
+		os << "\t\t\t\t<tr class = \"PlanetTable\"><td colspan = 6 class = \"PlanetTableSectionHeader\" align=\"center\">" + C1_Planet_Ocean + "</td></tr>\n";
+		string aformatstring = "\t\t\t\t<tr class = \"PlanetTable\"><td class = \"PlanetTableHead\" colspan = 1 >{}</td><td class = \"PlanetTableData\" colspan = 1>{:." + to_string(_OUT_PRECISION) + "g}%</td><td class = \"PlanetTableData\" colspan = 4>{}</td></tr>\n\n";
 		os << vformat(fmtstring, make_format_args(C1_Planet_OceanDep, 5, Oc.Height));
 		auto it = Oc.Composition.begin();
 		auto end = Oc.Composition.end();

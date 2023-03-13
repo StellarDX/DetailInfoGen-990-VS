@@ -117,5 +117,6 @@
     <None Include="InfoGen_Data\astrobiology\GB3095_2012.inl" />
     <None Include="InfoGen_Data\astrobiology\DB23T_1791_2021.inl" />
     <None Include="InfoGen_Data\astrobiology\GB14554_93.inl" />
+    <None Include="InfoGen_Data\html_themes\Default.css" />
   </ItemGroup>
 </Project>

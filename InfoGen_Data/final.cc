@@ -42,6 +42,8 @@ bool Astrobiology = false;
 uint32_t _OUT_PRECISION = 12;
 string LcID = "1033";
 map<string, string> LocStrings;
+string OutputFileName;
+bool CopyCSS = false;
 
 string CSSPath;
 
@@ -172,6 +174,7 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		cout << "\t\033[32m-seed=<seed> \033[0m: Specify seed of random generator, using Hexadecimal(0 - FFFFFFFF), it will randomly generated when argument is missing.\n";
 		cout << "\t\033[32m-prec=<int> \033[0m: Specify output precision, default is 12.\n";
 		cout << "\t\033[32m-lnkcss <path> \033[0m: Linking css file, only available for html mode.\n";
+		cout << "\t\033[32m-cpcss \033[0m: Copy css file to destination directory, only available for html mode.\n";
 
 		cout << "\t\033[32m-mpsort=<char> \033[0m: Generate a list of minor planets(include dwarf planets) that are exceptional in some way. The following values are valid:\n";
 		cout << "\t\t\033[33mdiameter \033[0m- IRAS standard, asteroids with a diameter greater than 120 Km (This is default option when argument is missing or invalid.)\n";
@@ -250,6 +253,36 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		}
 	}
 
+	// Set Output Name
+	if (args[1].substr(args[1].size() - 3, 3) != ".sc")
+	{
+		args[1] += ".sc";
+	}
+	switch (OFormat)
+	{
+	case HTML:
+		OutputFileName = args[1].substr(0, args[1].size() - 3) + ".html";
+		break;
+	case MD:
+	default:
+		OutputFileName = args[1].substr(0, args[1].size() - 3) + ".md";
+		break;
+	}
+
+	for (size_t i = 0; i < args.size(); i++)
+	{
+		if (args[i] == "-out" && i < args.size())
+		{
+			if (args[i + 1][0] == '-' || i == args.size() - 1)
+			{
+				cout << "Invalid output filename." << '\n';
+				abort();
+			}
+			OutputFileName = args[i + 1];
+			break;
+		}
+	}
+
 	// Linking CSS
 	if (OFormat == HTML)
 	{
@@ -266,6 +299,7 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 				break;
 			}
 		}
+		if (find(args.begin(), args.end(), "-cpcss") != args.end()) { CopyCSS = true; }
 	}
 
 	// Parse File
@@ -285,10 +319,6 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 	//string FileName = "RS 0-5-21663-1051-3833-8-4038573-225";
 	ISCStream SystemIn;
 	//try{SystemIn = ParseFile(FileName + ".sc");}
-	if (args[1].substr(args[1].size()-3, 3) != ".sc")
-	{
-		args[1] += ".sc";
-	}
 	try {SystemIn = ParseFile(args[1], srcencoding); }
 	catch (exception e)
 	{
@@ -328,35 +358,11 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 
 	// Output file
 
-	string OutputFileName;
-	switch (OFormat)
-	{
-	case HTML:
-		OutputFileName = args[1].substr(0, args[1].size() - 3) + ".html";
-		break;
-	case MD:
-	default:
-		OutputFileName = args[1].substr(0, args[1].size() - 3) + ".md";
-		break;
-	}
-
-	for (size_t i = 0; i < args.size(); i++)
-	{
-		if (args[i] == "-out" && i < args.size())
-		{
-			if (args[i + 1][0] == '-' || i == args.size() - 1)
-			{
-				cout << "Invalid output filename." << '\n';
-				abort();
-			}
-			OutputFileName = args[i + 1];
-			break;
-		}
-	}
-
 	ofstream fout(OutputFileName);
 	fout << Final;
 	fout.close();
+
+	cout << "File is exported at " + OutputFileName << '\n';
 
 	exit(0);
 }

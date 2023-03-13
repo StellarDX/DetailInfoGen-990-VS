@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #ifndef __GBUF_HTML__
 #define __GBUF_HTML__
@@ -37,6 +37,6 @@ extern std::string HTMLhead;
 extern std::string HTMLcontent;
 extern std::string HTMLMenu;
 
-std::string MakeHTMLHead(std::string Title, std::string CSSPath = "");
+std::string MakeHTMLHead(std::string Title, std::string CSSPath = "", bool Copy = false);
 
 #endif
