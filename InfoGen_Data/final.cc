@@ -215,44 +215,6 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 	if (find(args.begin(), args.end(), "-fmt=html") != args.end()) { OFormat = HTML; }
 	else if (find(args.begin(), args.end(), "-fmt=md") != args.end()) { OFormat = MD; }
 
-	// Seed
-	for (size_t i = 0; i < args.size(); i++)
-	{
-		if (args[i].substr(0, 6) == "-seed=")
-		{
-			string encodstr = args[i];
-			random.seed(stoull(encodstr.substr(6, encodstr.size() - 6), nullptr, 16));
-			break;
-		}
-	}
-
-	// Localization
-	for (size_t i = 0; i < args.size(); i++)
-	{
-		if (args[i].substr(0, 6) == "-lcid=")
-		{
-			string lcstr = args[i];
-			LcID = lcstr.substr(6, lcstr.size() - 6);
-			break;
-		}
-	}
-
-	// Output precision
-	for (size_t i = 0; i < args.size(); i++)
-	{
-		if (args[i].substr(0, 6) == "-prec=")
-		{
-			string encodstr = args[i];
-			_OUT_PRECISION = stoi(encodstr.substr(6, encodstr.size() - 6));
-			if (_OUT_PRECISION > 32)
-			{
-				cout << "Precision is too high to output.\n";
-				abort();
-			}
-			break;
-		}
-	}
-
 	// Set Output Name
 	if (args[1].substr(args[1].size() - 3, 3) != ".sc")
 	{
@@ -269,9 +231,37 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		break;
 	}
 
+	int srcencoding = 65001; // Default encoding is UTF-8
+	int outencoding = 65001; // Default encoding is UTF-8
 	for (size_t i = 0; i < args.size(); i++)
 	{
-		if (args[i] == "-out" && i < args.size())
+		// Seed
+		if (args[i].substr(0, 6) == "-seed=")
+		{
+			string encodstr = args[i];
+			random.seed(stoull(encodstr.substr(6, encodstr.size() - 6), nullptr, 16));
+		}
+
+		// Localization
+		else if (args[i].substr(0, 6) == "-lcid=")
+		{
+			string lcstr = args[i];
+			LcID = lcstr.substr(6, lcstr.size() - 6);
+		}
+
+		// Output precision
+		else if (args[i].substr(0, 6) == "-prec=")
+		{
+			string encodstr = args[i];
+			_OUT_PRECISION = stoi(encodstr.substr(6, encodstr.size() - 6));
+			if (_OUT_PRECISION > 32)
+			{
+				cout << "Precision is too high to output.\n";
+				abort();
+			}
+		}
+
+		else if (args[i] == "-out" && i < args.size())
 		{
 			if (args[i + 1][0] == '-' || i == args.size() - 1)
 			{
@@ -279,46 +269,38 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 				abort();
 			}
 			OutputFileName = args[i + 1];
-			break;
+		}
+
+		// Linking CSS
+		else if (OFormat == HTML && args[i] == "-lnkcss" && i < args.size())
+		{
+			if (args[i + 1][0] == '-' || i == args.size() - 1)
+			{
+				cout << "Invalid css filename." << '\n';
+				abort();
+			}
+			CSSPath = args[i + 1];
+		}
+
+		else if (args[i].substr(0, 7) == "-srccp=")
+		{
+			string encodstr = args[i];
+			srcencoding = stoi(encodstr.substr(7, encodstr.size() - 7));
+		}
+
+		else if (args[i].substr(0, 7) == "-outcp=")
+		{
+			string encodstr = args[i];
+			outencoding = stoi(encodstr.substr(7, encodstr.size() - 7));
 		}
 	}
 
-	// Linking CSS
-	if (OFormat == HTML)
-	{
-		for (size_t i = 0; i < args.size(); i++)
-		{
-			if (args[i] == "-lnkcss" && i < args.size())
-			{
-				if (args[i + 1][0] == '-' || i == args.size() - 1)
-				{
-					cout << "Invalid css filename." << '\n';
-					abort();
-				}
-				CSSPath = args[i + 1];
-				break;
-			}
-		}
-		if (find(args.begin(), args.end(), "-cpcss") != args.end()) { CopyCSS = true; }
-	}
+	if (OFormat == HTML && find(args.begin(), args.end(), "-cpcss") != args.end()) { CopyCSS = true; }
 
 	// Parse File
 
 	cout << "Loading File...\n";
-
-	int srcencoding = 65001; // Default encoding is UTF-8
-	for (size_t i = 0; i < args.size(); i++)
-	{
-		if (args[i].substr(0, 7) == "-srccp=")
-		{
-			string encodstr = args[i];
-			srcencoding = stoi(encodstr.substr(7, encodstr.size() - 7));
-			break;
-		}
-	}
-	//string FileName = "RS 0-5-21663-1051-3833-8-4038573-225";
 	ISCStream SystemIn;
-	//try{SystemIn = ParseFile(FileName + ".sc");}
 	try {SystemIn = ParseFile(args[1], srcencoding); }
 	catch (exception e)
 	{
@@ -344,16 +326,6 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 
 	// Transcode
 
-	int outencoding = 65001; // Default encoding is UTF-8
-	for (size_t i = 0; i < args.size(); i++)
-	{
-		if (args[i].substr(0, 7) == "-outcp=")
-		{
-			string encodstr = args[i];
-			outencoding = stoi(encodstr.substr(7, encodstr.size() - 7));
-			break;
-		}
-	}
 	Transcode(Final, outencoding);
 
 	// Output file
@@ -362,7 +334,7 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 	fout << Final;
 	fout.close();
 
-	cout << "File is exported at " + OutputFileName << '\n';
+	cout << "File is output at " + OutputFileName << '\n';
 
 	exit(0);
 }
