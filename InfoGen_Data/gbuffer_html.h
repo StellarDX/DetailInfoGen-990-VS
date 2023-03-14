@@ -28,9 +28,13 @@ public:
 	static constexpr auto _h1_end      = "</h1>";
 	static constexpr auto _h2_begin    = "<h2 class = \"topmost\">";
 	static constexpr auto _h2_end      = "</h2>";
+	static constexpr auto _hx_begin    = "<h{} class = \"topmost\">";
+	static constexpr auto _hx_end      = "</h{}>";
 	static constexpr auto _table_begin = "<table class = \"general\" border=\"1\">";
 	static constexpr auto _table_end   = "</table>";
 	static constexpr auto _html_line   = "<hr>";
+	static constexpr auto _para_begin  = "<p>";
+	static constexpr auto _para_end    = "</p>";
 };
 
 extern std::string HTMLhead;

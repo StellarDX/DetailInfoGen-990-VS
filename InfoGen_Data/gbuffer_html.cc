@@ -6,7 +6,6 @@
 #include <iostream>
 #include <vector>
 #include <windows.h>
-#include <tchar.h>
 
 using namespace std;
 
@@ -42,10 +41,7 @@ string MoveCSS(string _Src, string _Dst)
 	}
 	if (IsCopy)
 	{
-		ofstream os(_Dst);
-		os << BufferS.rdbuf();
-		os.close();
-		BufferS.close();
+		CopyFileA(_Src.c_str(), _Dst.c_str(), false);
 	}
 
 	string FileNameTmp;
@@ -66,10 +62,6 @@ string MakeHTMLHead(string Title, string CSSPath, bool Copy)
 {
 	ostringstream os;
 	os << "\t" << _Html_Tags::_head_begin << '\n';
-	if (!CSSPath.empty())
-	{
-		os << "\t\t" << vformat(_Html_Tags::_link, make_format_args(CSSPath)) << '\n';
-	}
 	os << "\t\t" << _Html_Tags::_meta << '\n';
 	os << "\t\t" << _Html_Tags::_title_begin << Title << _Html_Tags::_title_end << '\n';
 
@@ -78,7 +70,7 @@ string MakeHTMLHead(string Title, string CSSPath, bool Copy)
 	{
 		CSSPath = MoveCSS(CSSPath, OutputFileName.substr(0, OutputFileName.size() - 5) + ".css");
 	}
-	os << "\t\t" << "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + CSSPath + "\">" << '\n';
+	os << "\t\t" << vformat(_Html_Tags::_link, make_format_args(CSSPath)) << '\n';
 
 	os << "\t" << _Html_Tags::_head_end << '\n';
 	return os.str();

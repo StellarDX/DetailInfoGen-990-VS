@@ -55,9 +55,6 @@ string HTMLhead;
 string HTMLcontent;
 string HTMLMenu;
 
-extern string CSSPath;
-extern bool CopyCSS;
-
 // -------------------- Functions -------------------- //
 
 void SortSystemType(ObjectBuffer Sys)

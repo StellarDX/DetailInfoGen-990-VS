@@ -30,6 +30,11 @@ extern ObjectBuffer System;
 
 extern std::map<std::string, std::string> LocStrings;
 
+extern std::string CSSPath;
+extern bool CopyCSS;
+
 void Transcode(std::string& arg, int encoding);
+
+void HTMLWrite();
 
 #endif

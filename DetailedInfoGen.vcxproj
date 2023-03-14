@@ -256,6 +256,7 @@
     <None Include="InfoGen_Data\astrobiology\GB3095_2012.inl" />
     <None Include="InfoGen_Data\COMMON.inl" />
     <None Include="InfoGen_Data\html_themes\Default.css" />
+    <None Include="InfoGen_Data\html_themes\Geochronology.css" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

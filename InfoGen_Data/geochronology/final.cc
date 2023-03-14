@@ -1,5 +1,6 @@
 ﻿#include "composite.h"
 #include "final.h"
+#include "../final.h"
 
 #include <CSE/Object.h>
 
@@ -116,32 +117,23 @@ void ParseLocalStrings(string FileName, string LCID, UINT CP);
 
 void geochronology(ISCStream& SystemIn, vector<string> args)
 {
+	string ObjectName, ParentName;
+	SysIn = SystemIn;
+
 	UINT LCodePage = 65001;
+
+	string CMFName;
+	uint64 CMEncoding = 65001;
 	for (size_t i = 0; i < args.size(); i++)
 	{
 		if (args[i].substr(0, 8) == "-lchset=")
 		{
 			string lccp = args[i];
 			LCodePage = stoul(lccp.substr(8, lccp.size() - 8));
-			break;
 		}
-	}
-	cout << "Loading localizations...\n";
-	ParseLocalStrings("Geochronology.cfg", LcID, LCodePage);
 
-	if (find(args.begin(), args.end(), "-target") == args.end())
-	{
-		cout << "Object is unknown.\n";
-		abort();
-	}
-
-	string ObjectName, ParentName;
-	SysIn = SystemIn;
-	
-	// Find ObjectName and ParentName
-	for (size_t i = 0; i < args.size(); i++)
-	{
-		if (args[i] == "-target" && i < args.size())
+		// Find ObjectName and ParentName
+		else if (args[i] == "-target" && i < args.size())
 		{
 			if (args[i + 1][0] == '-' || i == args.size() - 1)
 			{
@@ -149,7 +141,6 @@ void geochronology(ISCStream& SystemIn, vector<string> args)
 				abort();
 			}
 			ObjectName = args[i + 1];
-			break;
 		}
 		else if (args[i] == "-parent" && i < args.size())
 		{
@@ -159,16 +150,10 @@ void geochronology(ISCStream& SystemIn, vector<string> args)
 				abort();
 			}
 			ParentName = args[i + 1];
-			break;
 		}
-	}
 
-	// Load Custom Model
-	string CMFName;
-	uint64 CMEncoding = 65001;
-	for (size_t i = 0; i < args.size(); i++)
-	{
-		if (args[i].substr(0, 7) == "-evmcp=")
+		// Load Custom Model
+		else if (args[i].substr(0, 7) == "-evmcp=")
 		{
 			string evstr = args[i];
 			CMEncoding = stoull(evstr.substr(7, evstr.size() - 7));
@@ -183,6 +168,16 @@ void geochronology(ISCStream& SystemIn, vector<string> args)
 			CMFName = args[i + 1];
 		}
 	}
+
+	cout << "Loading localizations...\n";
+	ParseLocalStrings("Geochronology.cfg", LcID, LCodePage);
+
+	if (ObjectName.empty())
+	{
+		cout << "Object is unknown.\n";
+		abort();
+	}
+
 	if (!CMFName.empty()) { LoadCustomModel(CMFName, CMEncoding); }
 
 	// Find object
@@ -202,4 +197,6 @@ void geochronology(ISCStream& SystemIn, vector<string> args)
 	}
 
 	composite0geo(Target, Parent);
+
+	if (OFormat == HTML) { HTMLWrite(); }
 }

@@ -10,6 +10,7 @@ div.left
 	float: left;
 	position: fixed;
 	overflow: auto;
+	padding: 10px;
 
 	background-color:rgb(245, 242, 233) /* 手如柔荑，肤如凝脂，领如蝤蛴，齿如瓠犀。 */
 }
@@ -86,6 +87,7 @@ td.BarycenterTableTop
 	font-weight:bold;
 	font-size:150%;
 	padding: 5px;
+	border-right: hidden;
 
 	color:rgb(255, 255, 255);
 	background-color:rgb(66, 34, 86); /* 角声满天秋色里，塞上燕脂凝夜紫。 */
@@ -96,6 +98,7 @@ td.BarycenterTableTopEnd
 	font-weight:bold;
 	font-size:150%;
 	padding: 5px;
+	border-left: hidden;
 
 	color:rgb(255, 255, 255);
 	background-color:rgb(66, 34, 86); /* 角声满天秋色里，塞上燕脂凝夜紫。 */
@@ -138,6 +141,7 @@ td.StarTableTop
 	font-weight:bold;
 	font-size:150%;
 	padding: 5px;
+	border-right: hidden;
 
 	color:rgb(255, 255, 255);
 	background-color:rgb(183, 36, 48); /* 血染洋红久不消，芝泥方法费深调。 */
@@ -148,6 +152,7 @@ td.StarTableTopEnd
 	font-weight:bold;
 	font-size:150%;
 	padding: 5px;
+	border-left: hidden;
 
 	color:rgb(255, 255, 255);
 	background-color:rgb(183, 36, 48); /* 血染洋红久不消，芝泥方法费深调。 */
@@ -186,6 +191,7 @@ td.PlanetTableTop
 	font-size:150%;
 	font-weight:bold;
 	padding: 5px;
+	border-right: hidden;
 
 	color:rgb(255, 255, 255);
 	background-color:rgb(46, 89, 167); /* 鞭垂泰岳群青末，袖拂苏台万绿初。 */
@@ -196,6 +202,7 @@ td.PlanetTableTopEnd
 	font-size:150%;
 	font-weight:bold;
 	padding: 5px;
+	border-left: hidden;
 
 	color:rgb(255, 255, 255);
 	background-color:rgb(46, 89, 167); /* 鞭垂泰岳群青末，袖拂苏台万绿初。 */
@@ -266,6 +273,7 @@ td.MinorPlanetTableTop
 	font-size:150%;
 	font-weight:bold;
 	padding: 5px;
+	border-right: hidden;
 
 	color:rgb(255, 255, 255);
 	background-color:rgb(107, 84, 88); /* 牝土之气，仰乎玄天，玄天六百岁生玄砥。 */
@@ -277,6 +285,7 @@ td.MinorPlanetTableTopEnd
 	font-weight:bold;
 	padding: 5px;
 	text-align: right;
+	border-left: hidden;
 
 	color:rgb(255, 255, 255);
 	background-color:rgb(107, 84, 88); /* 牝土之气，仰乎玄天，玄天六百岁生玄砥。 */

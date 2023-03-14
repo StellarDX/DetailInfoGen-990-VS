@@ -1,5 +1,6 @@
 ﻿#include "composite.h"
 #include "final.h"
+#include "../gbuffer_html.h"
 #include "../final.h"
 
 #include <map>
@@ -65,6 +66,102 @@ float64 FindAge(Object Target, Object Parent)
 	}
 }
 
+void HTMLPushMenuGeo(string Name, string ClassName, string YrRange, size_t TitleLvl)
+{
+	ostringstream os;
+	string NSpace;
+	for (size_t i = 0; i < TitleLvl; i++)
+	{
+		NSpace += "&nbsp&nbsp";
+	}
+	if (YrRange.empty()) { os << vformat("\t\t\t{1}<a href = \"#{0}\">{2}</a>", make_format_args(ClassName, NSpace, Name)); }
+	else { os << vformat("\t\t\t{2}<a href = \"#{0}\">{3}</a> - {1}", make_format_args(ClassName, YrRange, NSpace, Name)); }
+	os << _Html_Tags::_html_endl << '\n';
+	HTMLMenu += os.str();
+}
+
+string HTML_Eons(Object Target, Object Parent, float64 Age, string Title, string ClassName, vec2 Range, map<float64, string> Timeline, function<bool(size_t)> Func = nullptr)
+{
+	ostringstream os;
+	string LvStr = "\t\t\t";
+
+	os << LvStr << _Html_Tags::_table_begin << '\n';
+	os << vformat(LvStr + "\t<tr class = \"{0}Table\"><td colspan = 4 class = \"{0}TableTop\"><a name = \"{0}\">{1}</a></td>", make_format_args(ClassName, Title));
+	string YRange;
+	if (isinf(Range.y))
+	{
+		os << vformat("<td colspan = 2 class = \"{}TableTopEnd\" align=\"right\">{} Yrs - {}</td></tr>\n", make_format_args(ClassName, Range.x, Geo_Present));
+		YRange = vformat("{} Yrs - {}", make_format_args(Range.x, Geo_Present));
+	}
+	else
+	{
+		os << vformat("<td colspan = 2 class = \"{}TableTopEnd\" align=\"right\">{} - {} Yrs</td></tr>\n", make_format_args(ClassName, Range.x, Range.y));
+		YRange = vformat("{} Yrs - {}", make_format_args(Range.x, Range.y));
+	}
+	HTMLPushMenuGeo(Title, ClassName, YRange, 0);
+
+	auto it = Timeline.begin();
+	auto end = Timeline.end();
+	for (size_t i = 0; it != end; ++it, ++i)
+	{
+		if (Age - it->first >= 0)
+		{
+			if (Func && Func(i)) { continue; }
+			string Event = vformat(it->second, make_format_args(Target.Name[0], Parent.Name[0]));
+			os << vformat(LvStr + "\t<tr class = \"{0}Table\"><td class = \"{0}TableHead\" colspan = 1 >{1}</td><td class = \"{0}TableData\" colspan = 5>{2}</td></tr>\n", make_format_args(ClassName, it->first, Event));
+		}
+	}
+
+	os << LvStr << _Html_Tags::_table_end << '\n';
+	return os.str();
+}
+
+string HTML_Eras(Object Target, Object Parent, float64 Age, string Title, string ClassName, vec2 Range, map<float64, string> Timeline, function<bool(size_t)> Func = nullptr)
+{
+	ostringstream os;
+	string LvStr = "\t\t\t";
+
+	string YRange;
+	if (isinf(Range.y)){YRange = vformat("{} Yrs - {}", make_format_args(Range.x, Geo_Present));}
+	else{YRange = vformat("{} - {} Yrs", make_format_args(Range.x, Range.y));}
+	os << vformat(LvStr + "\t<tr class = \"{0}Table\"><td colspan = 6 class = \"{0}TableSectionHeader\" align=\"center\"><a name = \"{0}\">{1} ({2})</a></td></tr>\n", make_format_args(ClassName, Title, YRange));
+	HTMLPushMenuGeo(Title, ClassName, YRange, 1);
+
+	auto it = Timeline.begin();
+	auto end = Timeline.end();
+	for (size_t i = 0; it != end; ++it, ++i)
+	{
+		if (Age - it->first >= 0)
+		{
+			if (Func && Func(i)) { continue; }
+			string Event = vformat(it->second, make_format_args(Target.Name[0], Parent.Name[0]));
+			os << vformat(LvStr + "\t<tr class = \"{0}Table\"><td class = \"{0}TableHead\" colspan = 1 >{1}</td><td class = \"{0}TableData\" colspan = 5>{2}</td></tr>\n", make_format_args(ClassName, it->first, Event));
+		}
+	}
+
+	return os.str();
+}
+
+string HTML_Civil(float64 Age, string PlanetName)
+{
+	ostringstream os;
+	os << "\t\t\t" << _Html_Tags::_table_begin << '\n';
+	os << vformat("\t\t\t\t<tr class = \"CivilizationTable\"><td colspan = 6 class = \"CivilizationTableTop\"><a name = \"Civilization\">" + Geo_CvTitle + "</a></td></tr>\n", make_format_args(PlanetName));
+	HTMLPushMenuGeo(vformat(Geo_CvTitle, make_format_args(PlanetName)), "Civilization", "", 0);
+	auto it = __Civilization_Timeline.begin();
+	auto end = __Civilization_Timeline.end();
+	for (; it != end; ++it)
+	{
+		if (Age - it->first >= 0)
+		{
+			string Event = vformat(it->second, make_format_args(__Cenozoic_Era_Timeline.rbegin()->first + it->first));
+			os << vformat("\t\t\t\t<tr class = \"{0}Table\"><td class = \"{0}TableHead\" colspan = 1 >{1}</td><td class = \"{0}TableData\" colspan = 5>{2}</td></tr>\n", make_format_args("Civilization", it->first, Event));
+		}
+	}
+	os << "\t\t\t" << _Html_Tags::_table_end << '\n';
+	return os.str();
+}
+
 string GHMD_General(Object Target, Object Parent, float64 Age, string Title, size_t TitleLvl, vec2 Range, map<float64, string> Timeline, function<bool(size_t)> Func = nullptr)
 {
 	ostringstream os;
@@ -79,7 +176,7 @@ string GHMD_General(Object Target, Object Parent, float64 Age, string Title, siz
 	auto end = Timeline.end();
 	for (size_t i = 0; it != end; ++it, ++i)
 	{
-		if (Age - it->first > 0)
+		if (Age - it->first >= 0)
 		{
 			if (Func && Func(i)) { continue; }
 			string Event = vformat(it->second, make_format_args(Target.Name[0], Parent.Name[0]));
@@ -96,12 +193,75 @@ string GHMD_Civil(float64 Age)
 	auto end = __Civilization_Timeline.end();
 	for (; it != end; ++it)
 	{
-		if (Age - it->first > 0)
+		if (Age - it->first >= 0)
 		{
 			string Event = vformat(it->second, make_format_args(__Cenozoic_Era_Timeline.rbegin()->first + it->first));
 			os << vformat(" * **{:.0f} Yrs** : {}\n", make_format_args(it->first, Event));
 		}
 	}
+	return os.str();
+}
+
+string HTMLProcessEarth(Object Target, Object Parent) // For earth model
+{
+	ostringstream os;
+
+	os << vformat("\t\t\t" + string(_Html_Tags::_h1_begin) + Geo_Title + string(_Html_Tags::_h1_end) + "\n", make_format_args(Target.Name[0]));
+	os << vformat("\t\t\t" + string(_Html_Tags::_para_begin) + Geo_Age + ": {}" + string(_Html_Tags::_para_end) + "\n", make_format_args(TotalAge));
+
+	os << HTML_Eons(Target, Parent, TotalAge, Geo_Hadean, "HadeanEon", __Hadean_Eon_Range, __Hadean_Eon_Timeline,
+		(function<bool(size_t)>)[=](size_t i)->bool {return i == 1 && !HasMoon;});
+	os << "\t\t\t" << _Html_Tags::_html_endl << '\n';
+	if (!__Archean_Eon_Timeline.empty() && TotalAge > __Archean_Eon_Timeline.begin()->first)
+	{
+		os << HTML_Eons(Target, Parent, TotalAge, Geo_Archean, "ArcheanEon", __Archean_Eon_Range, __Archean_Eon_Timeline);
+		os << "\t\t\t" << _Html_Tags::_html_endl << '\n';
+	}
+	if (!__Proterozoic_Eon_Timeline.empty() && TotalAge > __Proterozoic_Eon_Timeline.begin()->first)
+	{
+		os << HTML_Eons(Target, Parent, TotalAge, Geo_Proterozoic, "ProterozoicEon", __Proterozoic_Eon_Range, __Proterozoic_Eon_Timeline);
+		os << "\t\t\t" << _Html_Tags::_html_endl << '\n';
+	}
+
+	if (!__Proterozoic_Eon_Timeline.empty() && TotalAge > __Proterozoic_Eon_Timeline.rbegin()->first)
+	{
+		os << "\t\t\t" << _Html_Tags::_table_begin << '\n';
+		os << vformat("\t\t\t\t<tr class = \"{0}Table\"><td colspan = 4 class = \"{0}TableTop\"><a name = \"{0}\">{1}</a></td>", make_format_args("PhanerozoicEon", Geo_Phanerozoic));
+		HTMLPushMenuGeo(Geo_Phanerozoic, "PhanerozoicEon", vformat("{} Yrs - {}", make_format_args(__Phanerozoic_Eon_Start.x, Geo_Present)), 0);
+		os << vformat("<td colspan = 2 class = \"{}TableTopEnd\" align=\"right\">{} Yrs - {}</td></tr>\n", make_format_args("PhanerozoicEon", __Phanerozoic_Eon_Start.x, Geo_Present));
+		if (!__Palaeozoic_Era_Timeline.empty() && TotalAge > __Palaeozoic_Era_Timeline.begin()->first)
+		{
+			os << HTML_Eras(Target, Parent, TotalAge, Geo_Paleozoic, "PalaeozoicEra", __Palaeozoic_Era_Range, __Palaeozoic_Era_Timeline);
+		}
+		if (!__Mesozoic_Era_Timeline.empty() && TotalAge > __Mesozoic_Era_Timeline.begin()->first)
+		{
+			os << HTML_Eras(Target, Parent, TotalAge, Geo_Mesozoic, "MesozoicEra", __Mesozoic_Era_Range, __Mesozoic_Era_Timeline);
+		}
+		if (!__Cenozoic_Era_Timeline.empty() && TotalAge > __Cenozoic_Era_Timeline.begin()->first)
+		{
+			os << HTML_Eras(Target, Parent, TotalAge, Geo_Cenozoic, "CenozoicEra", __Cenozoic_Era_Begin, __Cenozoic_Era_Timeline);
+		}
+		os << "\t\t\t" << _Html_Tags::_table_end << '\n';
+		os << "\t\t\t" << _Html_Tags::_html_endl << '\n';
+
+		if (!__Cenozoic_Era_Timeline.empty() && TotalAge > __Cenozoic_Era_Timeline.rbegin()->first)
+		{
+			//os << vformat("\t\t\t" + string(_Html_Tags::_h2_begin) + Geo_CvTitle + string(_Html_Tags::_h2_end) + "\n", make_format_args(Target.Name[0]));
+			os << HTML_Civil(TotalAge - __Cenozoic_Era_Timeline.rbegin()->first, Target.Name[0]);
+
+			if (TotalAge - __Cenozoic_Era_Timeline.rbegin()->first > __Civilization_Timeline.rbegin()->first)
+			{
+				os << "\t\t\t" << _Html_Tags::_para_begin + EndStr + _Html_Tags::_para_end + "\n";
+			}
+		}
+	}
+
+	os << "\t\t\t" << _Html_Tags::_h2_begin << "Reference" << _Html_Tags::_h2_end << "\n";
+	os << "\t\t\t<p><a href = \"https://en.wikipedia.org/wiki/History_of_Earth\">Wikipedia: History of Earth</a></p>\n";
+	os << "\t\t\t<p><a href = \"https://en.wikipedia.org/wiki/Timeline_of_the_evolutionary_history_of_life#Detailed_timeline\">Wikipedia: Timeline of the evolutionary history of life</a></p>\n";
+	os << "\t\t\t<p><a href = \"https://en.wikipedia.org/wiki/History_of_technology\">Wikipedia: History of technology</a></p>\n";
+	os << "\t\t\t<p><a href = \"https://en.wikipedia.org/wiki/Timeline_of_historic_inventions\">Wikipedia: Timeline of historic inventions</a></p>\n";
+
 	return os.str();
 }
 
@@ -154,6 +314,64 @@ string GHMarkDownProcessEarth(Object Target, Object Parent) // For earth model
 	os << " * [Wikipedia: Timeline of the evolutionary history of life](https://en.wikipedia.org/wiki/Timeline_of_the_evolutionary_history_of_life#Detailed_timeline)\n";
 	os << " * [Wikipedia: History of technology](https://en.wikipedia.org/wiki/History_of_technology)\n";
 	os << " * [Wikipedia: Timeline of historic inventions](https://en.wikipedia.org/wiki/Timeline_of_historic_inventions)\n";
+
+	return os.str();
+}
+
+string HTMLProcess(Object Target, Object Parent) // For earth model
+{
+	ostringstream os;
+
+	os << vformat("\t\t\t" + string(_Html_Tags::_h1_begin) + Geo_Title + string(_Html_Tags::_h1_end) + "\n", make_format_args(Target.Name[0]));
+	os << vformat("\t\t\t" + string(_Html_Tags::_para_begin) + Geo_Age + ": {}" + string(_Html_Tags::_para_end) + "\n", make_format_args(TotalAge));
+
+	os << HTML_Eons(Target, Parent, TotalAge, Geo_Hadean, "HadeanEon", __Hadean_Eon_Range, __Hadean_Eon_Timeline);
+	os << "\t\t\t" << _Html_Tags::_html_endl << '\n';
+	if (!__Archean_Eon_Timeline.empty() && TotalAge > __Archean_Eon_Timeline.begin()->first)
+	{
+		os << HTML_Eons(Target, Parent, TotalAge, Geo_Archean, "ArcheanEon", __Archean_Eon_Range, __Archean_Eon_Timeline);
+		os << "\t\t\t" << _Html_Tags::_html_endl << '\n';
+	}
+	if (!__Proterozoic_Eon_Timeline.empty() && TotalAge > __Proterozoic_Eon_Timeline.begin()->first)
+	{
+		os << HTML_Eons(Target, Parent, TotalAge, Geo_Proterozoic, "ProterozoicEon", __Proterozoic_Eon_Range, __Proterozoic_Eon_Timeline);
+		os << "\t\t\t" << _Html_Tags::_html_endl << '\n';
+	}
+
+	if (!__Proterozoic_Eon_Timeline.empty() && TotalAge > __Proterozoic_Eon_Timeline.rbegin()->first)
+	{
+		os << "\t\t\t" << _Html_Tags::_table_begin << '\n';
+		os << vformat("\t\t\t\t<tr class = \"{0}Table\"><td colspan = 4 class = \"{0}TableTop\"><a name = \"{0}\">{1}</a></td>", make_format_args("PhanerozoicEon", Geo_Phanerozoic));
+		if (isinf(__Phanerozoic_Eon_Start.y)) { os << vformat("<td colspan = 2 class = \"{}TableTopEnd\" align=\"right\">{} Yrs - {}</td></tr>\n", make_format_args("PhanerozoicEon", __Phanerozoic_Eon_Start.x, Geo_Present)); }
+		else { os << vformat("<td colspan = 2 class = \"{}TableTopEnd\" align=\"right\">{} - {} Yrs</td></tr>\n", make_format_args("PhanerozoicEon", __Phanerozoic_Eon_Start.x, __Phanerozoic_Eon_Start.y)); }
+		HTMLPushMenuGeo(Geo_Phanerozoic, "PhanerozoicEon", vformat("{} Yrs - {}", make_format_args(__Phanerozoic_Eon_Start.x, Geo_Present)), 0);
+		
+		if (!__Palaeozoic_Era_Timeline.empty() && TotalAge > __Palaeozoic_Era_Timeline.begin()->first)
+		{
+			os << HTML_Eras(Target, Parent, TotalAge, Geo_Paleozoic, "PalaeozoicEra", __Palaeozoic_Era_Range, __Palaeozoic_Era_Timeline);
+		}
+		if (!__Mesozoic_Era_Timeline.empty() && TotalAge > __Mesozoic_Era_Timeline.begin()->first)
+		{
+			os << HTML_Eras(Target, Parent, TotalAge, Geo_Mesozoic, "MesozoicEra", __Mesozoic_Era_Range, __Mesozoic_Era_Timeline);
+		}
+		if (!__Cenozoic_Era_Timeline.empty() && TotalAge > __Cenozoic_Era_Timeline.begin()->first)
+		{
+			os << HTML_Eras(Target, Parent, TotalAge, Geo_Cenozoic, "CenozoicEra", __Cenozoic_Era_Begin, __Cenozoic_Era_Timeline);
+		}
+		os << "\t\t\t" << _Html_Tags::_table_end << '\n';
+		os << "\t\t\t" << _Html_Tags::_html_endl << '\n';
+
+		if (!__Cenozoic_Era_Timeline.empty() && TotalAge > __Cenozoic_Era_Timeline.rbegin()->first)
+		{
+			//os << vformat("\t\t\t" + string(_Html_Tags::_h2_begin) + Geo_CvTitle + string(_Html_Tags::_h2_end) + "\n", make_format_args(Target.Name[0]));
+			os << HTML_Civil(TotalAge - __Cenozoic_Era_Timeline.rbegin()->first, Target.Name[0]);
+		}
+	}
+
+	if (TotalAge > EndYear)
+	{
+		os << "\t\t\t" << _Html_Tags::_para_begin + EndStr + _Html_Tags::_para_end + "\n";
+	}
 
 	return os.str();
 }
@@ -287,7 +505,7 @@ void _DefInit()
 	__Cenozoic_Era_Timeline = 
 	{
 		{4474E6,    __Cenozoic_Era_Events[0]},
-		{4474E6,    __Cenozoic_Era_Events[1]},
+		{4474E6 + 1, __Cenozoic_Era_Events[1]}, // avoid comflict
 		{__EC1,     __Cenozoic_Era_Events[2]},
 		{4480E6,    __Cenozoic_Era_Events[3]},
 		{4485E6,    __Cenozoic_Era_Events[4]},
@@ -361,6 +579,10 @@ void composite0geo(Object Target, Object Parent)
 	switch (OFormat)
 	{
 	case HTML:
+		if (CSSPath.empty()) { CSSPath = "./InfoGen_Data/html_themes/Geochronology.css"; }
+		Final += MakeHTMLHead(vformat(Geo_Title, make_format_args(Target.Name[0])), CSSPath, CopyCSS);
+		if (CustomModel) { HTMLcontent = HTMLProcess(Target, Parent); }
+		else { HTMLcontent += HTMLProcessEarth(Target, Parent); }
 		break;
 	case MD:
 	default:
