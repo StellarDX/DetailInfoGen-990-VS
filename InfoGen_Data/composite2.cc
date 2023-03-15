@@ -240,7 +240,7 @@ string HTMLMPList()
 	default:
 		os << "<td colspan = 2 class = \"MinorPlanetTableTopEnd\">" + C2_Sort0 + "</td></tr>\n";
 		os << "\t\t\t\t<tr class = \"MinorPlanetTable\"><td colspan = 6><table class = \"SubTable\" border=\"1\">\n";
-		os << "\t\t\t\t\t<td class = \"MinorPlanetTableSubHead\">" + C2_AstName + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstParent + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstDiam + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstDim + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstDist + "</td></tr>\n";
+		os << "\t\t\t\t\t<tr class = \"SubSysTable\"><td class = \"MinorPlanetTableSubHead\">" + C2_AstName + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstParent + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstDiam + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstDim + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstDist + "</td></tr>\n";
 		__DFS_SearchMinorPlanets(os, SystemStructure, DiameterLargerThan120);
 		__Qsort_Objects(MinorPlanetBuffer.begin(), MinorPlanetBuffer.end(), DiameterCmp);
 		for (size_t i = 0; i < MinorPlanetBuffer.size(); i++)
@@ -252,7 +252,7 @@ string HTMLMPList()
 	case MPS_Mass:
 		os << "<td colspan = 2 class = \"MinorPlanetTableTopEnd\">" + C2_Sort1 + "</td></tr>\n";
 		os << "\t\t\t\t<tr class = \"MinorPlanetTable\"><td colspan = 6><table class = \"SubTable\" border=\"1\">\n";
-		os << "\t\t\t\t\t<td class = \"MinorPlanetTableSubHead\">" + C2_AstName + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstParent + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstMass + "</td></tr>\n";
+		os << "\t\t\t\t\t<tr class = \"SubSysTable\"><td class = \"MinorPlanetTableSubHead\">" + C2_AstName + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstParent + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstMass + "</td></tr>\n";
 		__DFS_SearchMinorPlanets(os, SystemStructure, MassLargerThan1E18);
 		__Qsort_Objects(MinorPlanetBuffer.begin(), MinorPlanetBuffer.end(), MassCmp);
 		for (size_t i = 0; i < MinorPlanetBuffer.size(); i++)
@@ -264,7 +264,7 @@ string HTMLMPList()
 	case MPS_FastRot:
 		os << "<td colspan = 2 class = \"MinorPlanetTableTopEnd\">" + C2_Sort2 + "</td></tr>\n";
 		os << "\t\t\t\t<tr class = \"MinorPlanetTable\"><td colspan = 6><table class = \"SubTable\" border=\"1\">\n";
-		os << "\t\t\t\t\t<td class = \"MinorPlanetTableSubHead\">" + C2_AstName + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstRotate + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstParent + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstDiam + "</td></tr>\n";
+		os << "\t\t\t\t\t<tr class = \"SubSysTable\"><td class = \"MinorPlanetTableSubHead\">" + C2_AstName + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstRotate + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstParent + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstDiam + "</td></tr>\n";
 		__DFS_SearchMinorPlanets(os, SystemStructure, RPeriodLessThan100s);
 		__Qsort_Objects(MinorPlanetBuffer.begin(), MinorPlanetBuffer.end(), RotLessCmp);
 		for (size_t i = 0; i < MinorPlanetBuffer.size(); i++)
@@ -276,7 +276,7 @@ string HTMLMPList()
 	case MPS_SlowRot:
 		os << "<td colspan = 2 class = \"MinorPlanetTableTopEnd\">" + C2_Sort3 + "</td></tr>\n";
 		os << "\t\t\t\t<tr class = \"MinorPlanetTable\"><td colspan = 6><table class = \"SubTable\" border=\"1\">\n";
-		os << "\t\t\t\t\t<td class = \"MinorPlanetTableSubHead\">" + C2_AstName + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstRotate + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstParent + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstDiam + "</td></tr>\n";
+		os << "\t\t\t\t\t<tr class = \"SubSysTable\"><td class = \"MinorPlanetTableSubHead\">" + C2_AstName + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstRotate + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstParent + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstDiam + "</td></tr>\n";
 		__DFS_SearchMinorPlanets(os, SystemStructure, RPeriodGreaterThan1000h);
 		__Qsort_Objects(MinorPlanetBuffer.begin(), MinorPlanetBuffer.end(), RotGreaterCmp);
 		for (size_t i = 0; i < MinorPlanetBuffer.size(); i++)
@@ -288,7 +288,7 @@ string HTMLMPList()
 	case MPS_Retro:
 		os << "<td colspan = 2 class = \"MinorPlanetTableTopEnd\">" + C2_Sort4 + "</td></tr>\n";
 		os << "\t\t\t\t<tr class = \"MinorPlanetTable\"><td colspan = 6><table class = \"SubTable\" border=\"1\">\n";
-		os << "\t\t\t\t\t<td class = \"MinorPlanetTableSubHead\">" + C2_AstName + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstParent + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstIncl + "</td></tr>\n";
+		os << "\t\t\t\t\t<tr class = \"SubSysTable\"><td class = \"MinorPlanetTableSubHead\">" + C2_AstName + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstParent + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstIncl + "</td></tr>\n";
 		__DFS_SearchMinorPlanets(os, SystemStructure, IsRetrograde);
 		for (size_t i = 0; i < MinorPlanetBuffer.size(); i++)
 		{
@@ -299,7 +299,7 @@ string HTMLMPList()
 	case MPS_Incl:
 		os << "<td colspan = 2 class = \"MinorPlanetTableTopEnd\">" + C2_Sort5 + "</td></tr>\n";
 		os << "\t\t\t\t<tr class = \"MinorPlanetTable\"><td colspan = 6><table class = \"SubTable\" border=\"1\">\n";
-		os << "\t\t\t\t\t<td class = \"MinorPlanetTableSubHead\">" + C2_AstName + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstParent + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstIncl + "</td></tr>\n";
+		os << "\t\t\t\t\t<tr class = \"SubSysTable\"><td class = \"MinorPlanetTableSubHead\">" + C2_AstName + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstParent + "</td><td class = \"MinorPlanetTableSubHead\">" + C2_AstIncl + "</td></tr>\n";
 		__DFS_SearchMinorPlanets(os, SystemStructure, IsHighInclined);
 		__Qsort_Objects(MinorPlanetBuffer.begin(), MinorPlanetBuffer.end(), InclCmp);
 		for (size_t i = 0; i < MinorPlanetBuffer.size(); i++)

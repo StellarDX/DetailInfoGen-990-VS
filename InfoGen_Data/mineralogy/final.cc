@@ -63,6 +63,12 @@ void minerals(ISCStream& SystemIn, vector<string> args)
 {
 	// Load localization
 	UINT LCodePage = 65001;
+
+	bool CustomOreDict = false;
+	string OreDictPath = "InfoGen_Data/mineralogy/OreDict.tbl";
+	int encoding = 65001; // Default encoding is UTF-8
+
+	string MPSStr = "diameter";
 	for (size_t i = 0; i < args.size(); i++)
 	{
 		if (args[i].substr(0, 8) == "-lchset=")
@@ -71,16 +77,7 @@ void minerals(ISCStream& SystemIn, vector<string> args)
 			LCodePage = stoul(lccp.substr(8, lccp.size() - 8));
 			break;
 		}
-	}
-	cout << "Loading localizations...\n";
-	ParseLocalStrings("SystemInfo.cfg", LcID, LCodePage);
-	ParseLocalStrings("Mineralogy.cfg", LcID, LCodePage);
 
-	bool CustomOreDict = false;
-	string OreDictPath = "InfoGen_Data/mineralogy/OreDict.tbl";
-
-	for (size_t i = 0; i < args.size(); i++)
-	{
 		if (args[i] == "-oredict" && i < args.size())
 		{
 			if (args[i + 1][0] == '-' || i == args.size() - 1)
@@ -92,22 +89,14 @@ void minerals(ISCStream& SystemIn, vector<string> args)
 			CustomOreDict = true;
 			break;
 		}
-	}
 
-	int encoding = 65001; // Default encoding is UTF-8
-	for (size_t i = 0; i < args.size() && CustomOreDict; i++)
-	{
 		if (args[i].substr(0, 14) == "-oredictencod=")
 		{
 			string encodstr = args[i];
 			encoding = stoi(encodstr.substr(14, encodstr.size() - 14));
 			break;
 		}
-	}
 
-	string MPSStr = "diameter";
-	for (size_t i = 0; i < args.size(); i++)
-	{
 		if (args[i].substr(0, 17) == "-minorplanetsort=")
 		{
 			string encodstr = args[i];
@@ -115,6 +104,10 @@ void minerals(ISCStream& SystemIn, vector<string> args)
 			break;
 		}
 	}
+
+	cout << "Loading localizations...\n";
+	ParseLocalStrings("SystemInfo.cfg", LcID, LCodePage);
+	ParseLocalStrings("Mineralogy.cfg", LcID, LCodePage);
 
 	if (MPSStr == "diameter") { MinorPlanetSortArg = MPS_Diam; }
 	else if (MPSStr == "mass") { MinorPlanetSortArg = MPS_Mass; } // Only mass and radius valid in this scope
@@ -124,4 +117,6 @@ void minerals(ISCStream& SystemIn, vector<string> args)
 	SortSystemType(System);
 
 	composite0min();
+
+	if (OFormat == HTML) { HTMLWrite(); }
 }

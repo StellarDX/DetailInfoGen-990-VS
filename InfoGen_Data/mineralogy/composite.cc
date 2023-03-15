@@ -2,6 +2,7 @@
 #include "final.h"
 
 #include "../gbuffer_planet.h"
+#include "../gbuffer_html.h"
 #include "../composite.h"
 #include "../composite2.h"
 #include "../final.h"
@@ -120,6 +121,36 @@ string RandMineralStr(size_t N)
 	return os.str();
 }
 
+string HTMLGenMinerals(string ClassName, const ObjectBuffer& Objects, size_t N)
+{
+	ostringstream os;
+	string FmtString = string("\t\t\t\t<tr class = \"{0}Table\">") +
+		string("<td class = \"{0}TableData\" colspan = 1>{1}</td>") +
+		string("<td class = \"{0}TableData\" colspan = 1>{2}</td>") +
+		string("<td class = \"{0}TableData\" colspan = 1>{3}</td>") +
+		string("<td class = \"{0}TableData\" colspan = 3>{4}</td></tr>\n");
+
+	os << vformat(string("\t\t\t\t<tr class = \"{0}Table\">") + 
+		string("<td class = \"{0}TableHead\" colspan = 1>{1}</td>") +
+		string("<td class = \"{0}TableHead\" colspan = 1>{2}</td>") +
+		string("<td class = \"{0}TableHead\" colspan = 1>{3}</td>") + 
+		string("<td class = \"{0}TableHeadLi\" colspan = 3>{4}</td></tr>\n"),
+		make_format_args(ClassName, Min_Name, Min_Parent, Min_Class, Min_MinList));
+
+	for (size_t i = 0; i < Objects.size(); i++)
+	{
+		os << vformat(FmtString, make_format_args
+		(
+			ClassName,
+			Objects[i].Name[0],
+			Objects[i].ParentBody,
+			GenPlanetType(make_shared<Object>(Objects[i])),
+			RandMineralStr(N)
+		));
+	}
+	return os.str();
+}
+
 string GHMDGenMinerals(const ObjectBuffer& Objects, size_t N)
 {
 	ostringstream os;
@@ -133,6 +164,34 @@ string GHMDGenMinerals(const ObjectBuffer& Objects, size_t N)
 			Objects[i].Name[0],
 			Objects[i].ParentBody,
 			GenPlanetType(make_shared<Object>(Objects[i])),
+			RandMineralStr(N)
+		));
+	}
+	return os.str();
+}
+
+string HTMLGenMineralsMinor(string ClassName, const ObjectBuffer& Objects, size_t N)
+{
+	ostringstream os;
+
+	string FmtString = string("\t\t\t\t<tr class = \"{0}Table\">") +
+		string("<td class = \"{0}TableData\" colspan = 1>{1}</td>") +
+		string("<td class = \"{0}TableData\" colspan = 1>{2}</td>") +
+		string("<td class = \"{0}TableData\" colspan = 4>{3}</td></tr>\n");
+
+	os << vformat(string("\t\t\t\t<tr class = \"{0}Table\">") +
+		string("<td class = \"{0}TableHead\" colspan = 1>{1}</td>") +
+		string("<td class = \"{0}TableHead\" colspan = 1>{2}</td>") +
+		string("<td class = \"{0}TableHeadLi\" colspan = 4>{3}</td></tr>\n"),
+		make_format_args(ClassName, Min_Name, Min_Parent, Min_MinList));
+
+	for (size_t i = 0; i < Objects.size(); i++)
+	{
+		os << vformat(FmtString, make_format_args
+		(
+			ClassName,
+			Objects[i].Name[0],
+			Objects[i].ParentBody,
 			RandMineralStr(N)
 		));
 	}
@@ -157,18 +216,37 @@ string GHMDGenMineralsMinor(const ObjectBuffer& Objects, size_t N)
 	return os.str();
 }
 
+string HTMLGenMineral()
+{
+	ostringstream os;
+	os << vformat("\t\t\t" + string(_Html_Tags::_h1_begin) + Min_Title + string(_Html_Tags::_h1_end) + "\n", make_format_args(SystemBarycenter));
+	FindRockyPlanets(System, TypeIndices);
+	os << "\t\t\t" << _Html_Tags::_table_begin << '\n';
+	os << "\t\t\t\t<tr class = \"MajorPlanetsMineralTable\"><td colspan = 6 class = \"MajorPlanetsMineralTableTop\"><a name = \"MajorPlanetsMineral\">" + Min_STitle1 + "</a></td></tr>\n";
+	HTMLMenu += "\t\t\t<a href=\"#MajorPlanetsMineral\">" + Min_STitle1 + "</a><br>\n";
+	os << HTMLGenMinerals("MajorPlanetsMineral", TerrestrialPlanetsBuf, MAX_MINERAL_NUMBER_MAJOR);
+	os << "\t\t\t" << _Html_Tags::_table_end << '\n';
+	os << "\t\t\t" << _Html_Tags::_html_endl << '\n';
+	os << "\t\t\t" << _Html_Tags::_table_begin << '\n';
+	os << "\t\t\t\t<tr class = \"MinorPlanetsMineralTable\"><td colspan = 6 class = \"MinorPlanetsMineralTableTop\"><a name = \"MinorPlanetsMineral\">" + Min_STitle2 + "</a></td></tr>\n";
+	HTMLMenu += "\t\t\t<a href=\"#MinorPlanetsMineral\">" + Min_STitle2 + "</a><br>\n";
+	os << HTMLGenMineralsMinor("MinorPlanetsMineral", MinorPlanetsBuf, MAX_MINERAL_NUMBER_MINOR);
+	os << "\t\t\t" << _Html_Tags::_table_end << '\n';
+	os << "\t\t\t" << _Html_Tags::_html_endl << '\n';
+	os << "\t\t\t" << _Html_Tags::_table_begin << '\n';
+	os << "\t\t\t\t<tr class = \"SmallMoonsMineralTable\"><td colspan = 6 class = \"SmallMoonsMineralTableTop\"><a name = \"SmallMoonsMineral\">" + Min_STitle3 + "</a></td></tr>\n";
+	HTMLMenu += "\t\t\t<a href=\"#SmallMoonsMineral\">" + Min_STitle3 + "</a><br>\n";
+	os << HTMLGenMineralsMinor("SmallMoonsMineral", SmallMoonBuf, MAX_MINERAL_NUMBER_MINOR);
+	os << "\t\t\t" << _Html_Tags::_table_end << '\n';
+
+	os << vformat("\t\t\t" + string(_Html_Tags::_html_line) + "\n\t\t\t" + string(_Html_Tags::_para_begin) + "Generator seed : {:X}" + string(_Html_Tags::_para_end) + "\n", make_format_args(random.seed()));
+	return os.str();
+}
+
 string GHMDGenMineral()
 {
-	ObjectBuffer::iterator SystemBarycenter;
-	try { SystemBarycenter = FindSystemBarycenter(System); }
-	catch (exception e)
-	{
-		cout << e.what();
-		abort();
-	}
-
 	ostringstream os;
-	os << vformat("# " + Min_Title + "\n", make_format_args(SystemBarycenter->Name[0]));
+	os << vformat("# " + Min_Title + "\n", make_format_args(SystemBarycenter));
 	FindRockyPlanets(System, TypeIndices);
 	os << "## " + Min_STitle1 + "\n";
 	os << GHMDGenMinerals(TerrestrialPlanetsBuf, MAX_MINERAL_NUMBER_MAJOR);
@@ -201,14 +279,23 @@ void composite0min()
 	GetLocalePlanet();
 	GetLocalMin();
 
+	try { SystemBarycenter = FindSystemBarycenter(System)->Name[0]; }
+	catch (exception e)
+	{
+		cout << e.what();
+		abort();
+	}
+
 	switch (OFormat)
 	{
 	case HTML:
+		if (CSSPath.empty()) { CSSPath = "./InfoGen_Data/html_themes/Mineralogy.css"; }
+		Final += MakeHTMLHead(vformat(Min_Title, make_format_args(SystemBarycenter)), CSSPath, CopyCSS);
+		HTMLcontent += HTMLGenMineral();
 		break;
 	case MD:
-		Final += GHMDGenMineral();
-		break;
 	default:
+		Final += GHMDGenMineral();
 		break;
 	}
 }

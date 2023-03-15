@@ -569,8 +569,8 @@ string HTMLGenSubSys(shared_ptr<Object> Obj)
 				));
 			}
 		}
+		os << "\t\t\t\t</table></td></tr>\n";
 	}
-	os << "\t\t\t\t</table></td></tr>\n";
 
 	return os.str();
 }
@@ -961,7 +961,7 @@ string HTMLProcPlanet(shared_ptr<Object> Obj)
 	{
 		Ocean Oc = gbuffer_water(Obj);
 		os << "\t\t\t\t<tr class = \"PlanetTable\"><td colspan = 6 class = \"PlanetTableSectionHeader\" align=\"center\">" + C1_Planet_Ocean + "</td></tr>\n";
-		string aformatstring = "\t\t\t\t<tr class = \"PlanetTable\"><td class = \"PlanetTableHead\" colspan = 1 >{}</td><td class = \"PlanetTableData\" colspan = 1>{:." + to_string(_OUT_PRECISION) + "g}%</td><td class = \"PlanetTableData\" colspan = 4>{}</td></tr>\n\n";
+		string aformatstring = "\t\t\t\t<tr class = \"PlanetTable\"><td class = \"PlanetTableHead\" colspan = 1 >{}</td><td class = \"PlanetTableData\" colspan = 1>{:." + to_string(_OUT_PRECISION) + "g}%</td><td class = \"PlanetTableData\" colspan = 4>{}</td></tr>\n";
 		os << vformat(fmtstring, make_format_args(C1_Planet_OceanDep, 5, Oc.Height));
 		auto it = Oc.Composition.begin();
 		auto end = Oc.Composition.end();

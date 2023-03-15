@@ -1,0 +1,168 @@
+/*
+	详细信息生成器默认样式配置文件《满庭芳》
+	颜色参考：http://www.360doc.com/content/23/0130/19/71084434_1065516886.shtml
+*/
+
+div.left
+{
+	width: 20%;
+	height: 100%;
+	float: left;
+	position: fixed;
+	overflow: auto;
+	padding: 10px;
+
+	background-color:rgb(245, 242, 233) /* 手如柔荑，肤如凝脂，领如蝤蛴，齿如瓠犀。 */
+}
+
+div.content
+{
+	float: right;
+	padding: 10px;
+	width: 75%;
+
+	background-color:rgb(234, 238, 241) /* 疏绮笼寒，浅云栖月。 */
+}
+
+h1.topmost
+{
+	font-size:250%;
+	font-weight:bold;
+}
+
+h2.topmost
+{
+	font-size:180%;
+	font-weight:bold;
+}
+
+table
+{
+	border-collapse:collapse;
+	width: 50%
+}
+
+table.general{ width: 85% }
+
+/* Major planets and moons */
+
+tr.MajorPlanetsMineralTable {}
+
+td.MajorPlanetsMineralTableTop
+{
+	font-size:150%;
+	font-weight:bold;
+	padding: 5px;
+
+	color:rgb(255, 255, 255);
+	background-color:rgb(46, 89, 167); /* 鞭垂泰岳群青末，袖拂苏台万绿初。 */
+}
+
+td.MajorPlanetsMineralTableHead
+{
+	font-weight:bold;
+	width: 10%;	
+	padding-left:5px;
+	padding-right:5px;
+
+	background-color:rgb(118, 199, 252);
+}
+
+td.MajorPlanetsMineralTableHeadLi
+{
+	font-weight:bold;
+	padding-left:5px;
+	padding-right:5px;
+
+	background-color:rgb(118, 199, 252);
+}
+
+td.MajorPlanetsMineralTableData
+{
+	padding-left:10px;
+	padding-right:10px;	
+
+	background-color:rgb(212, 229, 239) /* 醉看墨花月白，恍疑雪满前村。 */
+}
+
+/* Minor planets */
+
+tr.MinorPlanetsMineralTable {}
+
+td.MinorPlanetsMineralTableTop
+{
+	font-size:150%;
+	font-weight:bold;
+	padding: 5px;
+
+	color:rgb(255, 255, 255);
+	background-color:rgb(107, 84, 88); /* 牝土之气，仰乎玄天，玄天六百岁生玄砥。 */
+}
+
+td.MinorPlanetsMineralTableHead
+{
+	font-weight:bold;
+	width: 15%;
+	padding-left:5px;
+	padding-right:5px;
+
+	background-color:rgb(153, 128, 108); /* 残寒正欺病酒，掩沉香绣户。 */
+}
+
+td.MinorPlanetsMineralTableHeadLi
+{
+	font-weight:bold;
+	padding-left:5px;
+	padding-right:5px;
+
+	background-color:rgb(153, 128, 108); /* 残寒正欺病酒，掩沉香绣户。 */
+}
+
+td.MinorPlanetsMineralTableData
+{
+	padding-left:10px;
+	padding-right:10px;
+
+	background-color: rgb(240, 246, 246); /* 缃即今之古色，京师呼汤米娇。 */
+}
+
+/* Minor moons */
+
+tr.SmallMoonsMineralTable {}
+
+td.SmallMoonsMineralTableTop
+{
+	font-weight:bold;
+	font-size:150%;
+	padding: 5px;
+
+	color:rgb(255, 255, 255);
+	background-color:rgb(66, 34, 86); /* 角声满天秋色里，塞上燕脂凝夜紫。 */
+}
+
+td.SmallMoonsMineralTableHead
+{
+	font-weight:bold;
+	width: 15%;
+	padding-left:5px;
+	padding-right:5px;
+
+	background-color:rgb(206, 147, 191); /* 春色鲜于二月中，分明姹紫胜嫣红。翻疑误泼胭脂水，化出花身迥不同。 */
+}
+
+td.SmallMoonsMineralTableHeadLi
+{
+	font-weight:bold;
+	padding-left:5px;
+	padding-right:5px;
+
+	background-color:rgb(206, 147, 191); /* 春色鲜于二月中，分明姹紫胜嫣红。翻疑误泼胭脂水，化出花身迥不同。 */
+}
+
+td.SmallMoonsMineralTableData
+{
+	padding-left:10px;
+	padding-right:10px;
+
+	background-color:rgb(251, 231, 232); /* 初微红，后苍白，如银出炉 */
+}
