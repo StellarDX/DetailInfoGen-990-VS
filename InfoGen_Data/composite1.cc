@@ -686,7 +686,7 @@ string HTMLProcBar(shared_ptr<Object> Obj)
 	}
 	if (IsMainBarycenter) { return ""; } // Return tmpty string if it is the main barycenter.
 
-	HTMLPushMenu(Obj->Name[0], C1_Bar_Type);
+	if (!Astrobiology) { HTMLPushMenu(Obj->Name[0], C1_Bar_Type); }
 
 	os << "\t\t\t" << _Html_Tags::_table_begin << '\n';
 	os << vformat("\t\t\t\t<tr class = \"BarycenterTable\"><td colspan = 4 class = \"BarycenterTableTop\"><a name = \"{0}\">{0}</a></td><td colspan = 2 class = \"BarycenterTableTopEnd\" align=\"right\">{1}</td></tr>\n", make_format_args(Obj->Name[0], C1_Bar_Type));
@@ -752,8 +752,8 @@ string HTMLProcStar(shared_ptr<Object> Obj)
 	ostringstream os;
 	string fmtstring = "<td class = \"StarTableHead\" colspan = 1 >{}</td><td class = \"StarTableData\" colspan = {}>{:." + to_string(_OUT_PRECISION) + "g}</td>";
 	string ifmtstring = "<td class = \"StarTableHead\" colspan = 1 >{}</td><td class = \"StarTableData\" colspan = {}>{}</td>";
-
-	HTMLPushMenu(Obj->Name[0], GenStarType(Obj));
+	
+	if (!Astrobiology) { HTMLPushMenu(Obj->Name[0], GenStarType(Obj)); }
 
 	os << "\t\t\t" << _Html_Tags::_table_begin << "\n";
 	os << vformat("\t\t\t\t<tr class = \"StarTable\"><td colspan = 4 class = \"StarTableTop\"><a name = \"{0}\">{0}</a></td><td colspan = 2 class = \"StarTableTopEnd\" align=\"right\">{1}</td></tr>\n", make_format_args(Obj->Name[0], GenStarType(Obj)));
@@ -875,7 +875,7 @@ string HTMLProcPlanet(shared_ptr<Object> Obj)
 	os << "\t\t\t" << _Html_Tags::_table_begin << "\n";
 	os << vformat("\t\t\t\t<tr class = \"PlanetTable\"><td colspan = 4 class = \"PlanetTableTop\"><a name = \"{0}\">{0}</a></td><td colspan = 2 class = \"PlanetTableTopEnd\" align=\"right\">{1}</td></tr>\n", make_format_args(Obj->Name[0], GenPlanetType(Obj)));
 
-	HTMLPushMenu(Obj->Name[0], GenPlanetType(Obj));
+	if (!Astrobiology) { HTMLPushMenu(Obj->Name[0], GenPlanetType(Obj)); }
 
 	if (Obj->Orbit.RefPlane != NO_DATA_STRING && Obj->Orbit.RefPlane != "Static" && Obj->Orbit.RefPlane != "Fixed")
 	{

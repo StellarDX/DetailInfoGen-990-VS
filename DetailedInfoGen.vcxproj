@@ -255,6 +255,7 @@
     <None Include="InfoGen_Data\astrobiology\GB14554_93.inl" />
     <None Include="InfoGen_Data\astrobiology\GB3095_2012.inl" />
     <None Include="InfoGen_Data\COMMON.inl" />
+    <None Include="InfoGen_Data\html_themes\Astrobiology.css" />
     <None Include="InfoGen_Data\html_themes\Default.css" />
     <None Include="InfoGen_Data\html_themes\Geochronology.css" />
     <None Include="InfoGen_Data\html_themes\Mineralogy.css" />

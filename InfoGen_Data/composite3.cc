@@ -1,5 +1,6 @@
 #include "composite3.h"
 
+#include "gbuffer_html.h"
 #include "gbuffer_planet.h"
 #include "composite.h"
 #include "composite2.h"
@@ -15,6 +16,7 @@ namespace Localization
 	string Asb_Title  = "Habitability of rocky objects in \"{}\" System.";
 	string Asb_Name   = "Object Name";
 	string Asb_Parent = "Parent";
+	string Asb_ESILi  = "ESI List";
 	string Asb_ESI    = "ESI";
 }
 
@@ -34,6 +36,28 @@ void __DFS_FindRockyObj(shared_ptr<SystemStruct> SysTree)
 		}
 		__DFS_FindRockyObj(SysTree->Catalog[i].SubSystem);
 	}
+}
+
+string HTMLAstrobiology()
+{
+	Final += MakeHTMLHead(vformat(Asb_Title, make_format_args(SystemBarycenter)), CSSPath, CopyCSS);
+	ostringstream os;
+	os << vformat("\t\t\t" + string(_Html_Tags::_h1_begin) + Asb_Title + string(_Html_Tags::_h1_end) + "\n", make_format_args(SystemBarycenter));
+	os << "\t\t\t" << _Html_Tags::_table_begin << '\n';
+	os << "\t\t\t\t<tr class = \"ESITable\"><td class = \"ESITableTitle\" colspan = 3>" + Asb_ESILi + "</td></tr>\n";
+	os << "\t\t\t\t<tr class = \"ESITable\"><td class = \"ESITableSubHead\">" + Asb_Name + "</td><td class = \"ESITableSubHead\">" + Asb_Parent + "</td><td class = \"ESITableSubHeadESI\">" + Asb_ESI + "</td></tr>\n";
+	string FmtString = "\t\t\t\t<tr class = \"ESITable\"><td class = \"ESITableData\">{}</td><td class = \"ESITableData\">{}</td><td class = \"ESITableData\">{:." + to_string(_OUT_PRECISION) + "g}</td></tr>\n";
+	for (size_t i = 0; i < RockyObjBuf.size(); i++)
+	{
+		os << vformat(FmtString, make_format_args
+		(
+			RockyObjBuf[i]->Name[0],
+			RockyObjBuf[i]->ParentBody,
+			EarthSimIndex_RRhoVT(RockyObjBuf[i])
+		));
+	}
+	os << "\t\t\t" << _Html_Tags::_table_end << '\n';
+	return os.str();
 }
 
 string GHMDAstrobiology()
@@ -61,6 +85,7 @@ void GetLocalAsB1()
 	GetLcString("Asb_Title",  &Asb_Title);
 	GetLcString("Asb_Name",   &Asb_Name);
 	GetLcString("Asb_Parent", &Asb_Parent);
+	GetLcString("Asb_ESILi",  &Asb_ESILi);
 	GetLcString("Asb_ESI",    &Asb_ESI);
 }
 
@@ -89,6 +114,8 @@ void composite3(vector<string> args)
 	switch (OFormat)
 	{
 	case HTML:
+		if (CSSPath.empty()) { CSSPath = "./InfoGen_Data/html_themes/Astrobiology.css"; }
+		HTMLcontent += HTMLAstrobiology();
 		break;
 	case MD:
 	default:

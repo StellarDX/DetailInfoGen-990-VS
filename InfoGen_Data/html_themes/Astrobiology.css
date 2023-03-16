@@ -1,0 +1,141 @@
+/*
+	详细信息生成器默认样式配置文件《满庭芳》
+	颜色参考：http://www.360doc.com/content/23/0130/19/71084434_1065516886.shtml
+*/
+
+div.left
+{
+	width: 20%;
+	height: 100%;
+	float: left;
+	position: fixed;
+	overflow: auto;
+	padding: 10px;
+
+	background-color:rgb(245, 242, 233) /* 手如柔荑，肤如凝脂，领如蝤蛴，齿如瓠犀。 */
+}
+
+div.content
+{
+	float: right;
+	padding: 10px;
+	width: 75%;
+
+	background-color:rgb(234, 238, 241) /* 疏绮笼寒，浅云栖月。 */
+}
+
+h1.topmost
+{
+	font-size:250%;
+	font-weight:bold;
+}
+
+h2.topmost
+{
+	font-size:180%;
+	font-weight:bold;
+}
+
+/* ----------Tables---------- */
+
+table
+{
+	border-collapse:collapse;
+	width: 50%
+}
+
+table.general{ width: 85% }
+
+/* Main */
+
+tr.ESITable {}
+
+td.ESITableTitle
+{
+	font-weight:bold;
+	font-size:150%;
+	
+
+	background-color:rgb(236, 212, 82); /* 鱼戏排缃叶，龟浮见绿池。 */
+}
+
+td.ESITableSubHead
+{
+	font-weight:bold;
+	width: 20%;
+	
+	background-color:rgb(255, 238, 111); /* 轻如松花落金粉，浓似苔锦含碧滋。 */
+}
+
+td.ESITableSubHeadESI
+{
+	font-weight:bold;
+	
+	background-color:rgb(255, 238, 111); /* 轻如松花落金粉，浓似苔锦含碧滋。 */
+}
+
+td.ESITableData
+{
+	padding-left:10px;
+	padding-right:10px;	
+	
+	background-color:rgb(255, 251, 190); /* 半见离宫出，才分远水明。 */
+}
+
+/* Planet */
+
+td.PlanetTable {}
+
+td.PlanetTableTop
+{
+	font-size:150%;
+	font-weight:bold;
+	padding: 5px;
+	border-right: hidden;
+
+	color:rgb(255, 255, 255);
+	background-color:rgb(46, 89, 167); /* 鞭垂泰岳群青末，袖拂苏台万绿初。 */
+}
+
+td.PlanetTableTopEnd
+{
+	font-size:150%;
+	font-weight:bold;
+	padding: 5px;
+	border-left: hidden;
+
+	color:rgb(255, 255, 255);
+	background-color:rgb(46, 89, 167); /* 鞭垂泰岳群青末，袖拂苏台万绿初。 */
+}
+
+/* 下面两个分别用石青的三青和四青，因为头青和二青太深了。 */
+td.PlanetTableSectionHeader
+{
+	font-weight:bold;
+	font-size:120%;
+
+	background-color:rgb(63, 148, 228);
+}
+
+td.PlanetTableHead
+{
+	font-weight:bold;
+	width: 15%;	
+
+	background-color:rgb(118, 199, 252);
+}
+
+td.PlanetTableSubHead
+{
+	font-weight:bold;
+
+	background-color:rgb(118, 199, 252);
+}
+
+td.PlanetTableData
+{
+	padding-left:10px;
+	padding-right:10px;	
+
+	background-color:rgb(212, 229, 239) /* 醉看墨花月白，恍疑雪满前村。 */
+}

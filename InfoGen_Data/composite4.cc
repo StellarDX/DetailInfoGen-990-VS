@@ -1,5 +1,5 @@
 ﻿#include "composite4.h"
-
+#include "gbuffer_html.h"
 #include "gbuffer_planet.h"
 #include "composite.h"
 #include "composite3.h"
@@ -15,11 +15,9 @@
 using namespace std;
 using namespace cse;
 
-enum HabRank { ACE, SSS, SS, S, A, B, C, D };
-static const string HabRankStr[8]{ "ACE", "SSS", "SS", "S", "A", "B", "C", "D" };
-
 namespace Localization
 {
+	string Asb_Title2     = "Details";
 	string Asb_Rating     = "Overall rating";
 	string AsB_SurfGrav   = "Surface Gravity";
 	string AsB_SurfGravL1 = "Too low";
@@ -75,6 +73,26 @@ static const uint64 PressureLevels = 7;
 static const float64 PressureStd[] = {0, 6250, 38300, 47500, 30*StdAtm, 60*StdAtm , 100*StdAtm };
 string PressureStr[] = { "Extremely Low", "Very low", "Low", "Moderate", "High", "Very high", "Extremely high"};
 
+string HabRating()
+{
+	// This is an empty function. and you are welcomed to make standards for rating.
+	enum HabRank { ACE, SSS, SS, S, A, B, C, D };
+	static const string HabRankStr[8]{ "ACE", "SSS", "SS", "S", "A", "B", "C", "D" };
+
+
+
+	return "Incomplete";
+}
+
+string HTMLProcPlanHabGrav(shared_ptr<Object> Obj)
+{
+	float64 Grav = (GravConstant * Obj->Mass) / cse::pow(Obj->Radius(), 2);
+	string FmtStr = "\t\t\t\t<tr class = \"PlanetTable\"><td class = \"PlanetTableHead\" colspan = 1 ></td><td class = \"PlanetTableData\" colspan = 5>" + AsB_SurfGrav + ": " + PrecStr + " m/s^2 - {}</td></tr>\n";
+	if (Grav < MinHabitGrav) { return vformat(FmtStr, make_format_args(Grav, AsB_SurfGravL1)); }
+	else if (Grav > MaxHabitGrav) { return vformat(FmtStr, make_format_args(Grav, AsB_SurfGravL3)); }
+	else { return vformat(FmtStr, make_format_args(Grav, AsB_SurfGravL2)); }
+}
+
 string GHMDProcPlanHabGrav(shared_ptr<Object> Obj)
 {
 	float64 Grav = (GravConstant * Obj->Mass) / cse::pow(Obj->Radius(), 2);
@@ -82,6 +100,38 @@ string GHMDProcPlanHabGrav(shared_ptr<Object> Obj)
 	if (Grav < MinHabitGrav) { return vformat(FmtStr, make_format_args(Grav, AsB_SurfGravL1)); }
 	else if (Grav > MaxHabitGrav) { return vformat(FmtStr, make_format_args(Grav, AsB_SurfGravL3)); }
 	else { return vformat(FmtStr, make_format_args(Grav, AsB_SurfGravL2)); }
+}
+
+string HTMLProcPlanHabRotation(shared_ptr<Object> Obj)
+{
+	float64 SynodicPeriod;
+	if ((Obj->Rotation.Obliquity > 90 && Obj->Rotation.Obliquity < 270) ||
+		(Obj->Rotation.Obliquity < -90 && Obj->Rotation.Obliquity > -270))
+	{
+		SynodicPeriod = -(Obj->Orbit.Period * Obj->Rotation.RotationPeriod) / (Obj->Orbit.Period + Obj->Rotation.RotationPeriod);
+	}
+	else { SynodicPeriod = (Obj->Orbit.Period * Obj->Rotation.RotationPeriod) / (Obj->Orbit.Period - Obj->Rotation.RotationPeriod); }
+
+	string FmtStr = "\t\t\t\t<tr class = \"PlanetTable\"><td class = \"PlanetTableHead\" colspan = 1 ></td><td class = \"PlanetTableData\" colspan = 5>" + AsB_SPeriod + ": " + PrecStr + " sec - {}</td></tr>\n";
+	if (isinf(SynodicPeriod)) { return vformat(FmtStr, make_format_args(SynodicPeriod, AsB_SPeriodL6)); }
+	for (size_t i = 0; i < RotationLevels - 1; i++)
+	{
+		if (3600. * RotationStd[i] < cse::abs(SynodicPeriod) && cse::abs(SynodicPeriod) < 3600. * RotationStd[i + 1])
+		{
+			return vformat(FmtStr, make_format_args(SynodicPeriod, RotationStr[i]));
+		}
+	}
+
+	string fstr = vformat(FmtStr, make_format_args(SynodicPeriod, RotationStr[RotationLevels - 1]));
+	if ((Obj->Rotation.Obliquity > 60 && Obj->Rotation.Obliquity < 120) ||
+		(Obj->Rotation.Obliquity < -60 && Obj->Rotation.Obliquity > -120) ||
+		(Obj->Rotation.Obliquity < 240 && Obj->Rotation.Obliquity > 300) ||
+		(Obj->Rotation.Obliquity < -240 && Obj->Rotation.Obliquity > -300))
+	{
+		fstr += "\t\t\t\t<tr class = \"PlanetTable\"><td class = \"PlanetTableHead\" colspan = 1 ></td><td class = \"PlanetTableData\" colspan = 5>" + Asb_HighAxT + "</td></tr>\n";
+	}
+
+	return fstr;
 }
 
 string GHMDProcPlanHabRotation(shared_ptr<Object> Obj)
@@ -116,6 +166,19 @@ string GHMDProcPlanHabRotation(shared_ptr<Object> Obj)
 	return fstr;
 }
 
+string HTMLProcPlanHabMST(shared_ptr<Object> Obj)
+{
+	string FmtStr = "\t\t\t\t<tr class = \"PlanetTable\"><td class = \"PlanetTableHead\" colspan = 1 ></td><td class = \"PlanetTableData\" colspan = 5>" + AsB_TSurf + ": " + PrecStr + " °K - {}</td></tr>\n";
+	for (size_t i = 0; i < TempLevels - 1; i++)
+	{
+		if (TempStd[i] < Obj->Teff && Obj->Teff < TempStd[i + 1])
+		{
+			return vformat(FmtStr, make_format_args(Obj->Teff, TempStr[i]));
+		}
+	}
+	return vformat(FmtStr, make_format_args(Obj->Teff, TempStr[TempLevels - 1]));
+}
+
 string GHMDProcPlanHabMST(shared_ptr<Object> Obj)
 {
 	string FmtStr = " * **" + AsB_TSurf + "**: " + PrecStr + " °K - {}\n";
@@ -127,6 +190,52 @@ string GHMDProcPlanHabMST(shared_ptr<Object> Obj)
 		}
 	}
 	return vformat(FmtStr, make_format_args(Obj->Teff, TempStr[TempLevels - 1]));
+}
+
+string HTMLProcPlanHabAtm(shared_ptr<Object> Obj)
+{
+	if (Obj->NoAtmosphere) { return "\t\t\t\t<tr class = \"PlanetTable\"><td class = \"PlanetTableHead\" colspan = 1 ></td><td class = \"PlanetTableData\" colspan = 5>" + Asb_NoAtm + "</td></tr>\n"; }
+	set<string> Exceeds; // Used to analyze toxic atmosphere
+	if (!__GB3095_SO2(Obj->Atmosphere)) { Exceeds.insert("SO2"); }
+	if (!__GB3095_CO(Obj->Atmosphere)) { Exceeds.insert("CO"); }
+	if (!__GB16297_Cl2(Obj->Atmosphere)) { Exceeds.insert("Cl2"); }
+	if (!__GB16297_Hydrocarbon(Obj->Atmosphere)) { Exceeds.insert("Hydrocarbon"); }
+	if (!__GB14554_NH3(Obj->Atmosphere)) { Exceeds.insert("NH3"); }
+	if (!__GB14554_H2S(Obj->Atmosphere)) { Exceeds.insert("H2S"); }
+
+	if (!Exceeds.empty())
+	{
+		string out = "\t\t\t\t<tr class = \"PlanetTable\"><td class = \"PlanetTableHead\" colspan = 1 ></td><td class = \"PlanetTableData\" colspan = 5>" + Asb_ToxicAtm + ": ";
+		auto it = Exceeds.begin();
+		auto end = Exceeds.end();
+		int i = 0;
+		while (it != end)
+		{
+			out += *it;
+			if (i < Exceeds.size() - 1) { out += ", "; }
+			++it;
+			++i;
+		}
+		return out + "</td></tr>\n";
+	}
+
+	auto Breathable = __DB23T_1791_O2(Obj->Atmosphere);
+	switch (Breathable)
+	{
+	case 0:
+	case 1:
+	default:
+		return "\t\t\t\t<tr class = \"PlanetTable\"><td class = \"PlanetTableHead\" colspan = 1 ></td><td class = \"PlanetTableData\" colspan = 5>" + Asb_UAtm1 + "</td></tr>\n";
+		break;
+	case 2:
+		return "\t\t\t\t<tr class = \"PlanetTable\"><td class = \"PlanetTableHead\" colspan = 1 ></td><td class = \"PlanetTableData\" colspan = 5>" + Asb_BAtm + "</td></tr>\n";
+		break;
+	case 3:
+		return "\t\t\t\t<tr class = \"PlanetTable\"><td class = \"PlanetTableHead\" colspan = 1 ></td><td class = \"PlanetTableData\" colspan = 5>" + Asb_UAtm2 + "</td></tr>\n";
+		break;
+	}
+
+	return ""; // Unreachable
 }
 
 string GHMDProcPlanHabAtm(shared_ptr<Object> Obj)
@@ -175,6 +284,20 @@ string GHMDProcPlanHabAtm(shared_ptr<Object> Obj)
 	return ""; // Unreachable
 }
 
+string HTMLProcPlanHabAtmPressure(shared_ptr<Object> Obj)
+{
+	if (Obj->NoAtmosphere) { return ""; }
+	string FmtStr = "\t\t\t\t<tr class = \"PlanetTable\"><td class = \"PlanetTableHead\" colspan = 1 ></td><td class = \"PlanetTableData\" colspan = 5>" + Asb_Pressure + ": " + PrecStr + " Pa - {}</td></tr>\n";
+	for (size_t i = 0; i < PressureLevels - 1; i++)
+	{
+		if (PressureStd[i] < Obj->Atmosphere.Pressure && Obj->Atmosphere.Pressure < PressureStd[i + 1])
+		{
+			return vformat(FmtStr, make_format_args(Obj->Atmosphere.Pressure, PressureStr[i]));
+		}
+	}
+	return vformat(FmtStr, make_format_args(Obj->Atmosphere.Pressure, PressureStr[PressureLevels - 1]));
+}
+
 string GHMDProcPlanHabAtmPressure(shared_ptr<Object> Obj)
 {
 	if (Obj->NoAtmosphere) { return ""; }
@@ -189,16 +312,46 @@ string GHMDProcPlanHabAtmPressure(shared_ptr<Object> Obj)
 	return vformat(FmtStr, make_format_args(Obj->Atmosphere.Pressure, PressureStr[PressureLevels - 1]));
 }
 
+void HTMLPushMenu(string ObjName, string ObjType);
+
+string HTMLProcPlanHab(shared_ptr<Object> Obj)
+{
+	ostringstream os;
+	os << "\t\t\t" << _Html_Tags::_table_begin << '\n';
+	os << vformat("\t\t\t\t<tr class = \"PlanetTable\"><td colspan = 4 class = \"PlanetTableTop\"><a name = \"{0}\">{0}</a></td><td colspan = 2 class = \"PlanetTableTopEnd\" align=\"right\">{1}</td></tr>\n", make_format_args(Obj->Name[0], GenPlanetType(Obj)));
+	HTMLPushMenu(Obj->Name[0], GenPlanetType(Obj));
+	os << vformat("\t\t\t\t<tr class = \"PlanetTable\"><td class = \"PlanetTableHead\" colspan = 1 >" + Asb_Rating + "</td><td class = \"PlanetTableData\" colspan = 5>{}</td></tr>\n", make_format_args(HabRating()));
+	os << HTMLProcPlanHabGrav(Obj);
+	os << HTMLProcPlanHabRotation(Obj);
+	os << HTMLProcPlanHabMST(Obj);
+	os << HTMLProcPlanHabAtm(Obj);
+	os << HTMLProcPlanHabAtmPressure(Obj);
+	os << "\t\t\t" << _Html_Tags::_table_end << '\n';
+	os << "\t\t\t" << _Html_Tags::_html_endl << '\n';
+	return os.str();
+}
+
 string GHMDProcPlanHab(shared_ptr<Object> Obj)
 {
 	ostringstream os;
 	os << vformat("\n### {} - {}\n", make_format_args(Obj->Name[0], GenPlanetType(Obj)));
-	os << vformat("*" + Asb_Rating + " : {}*\n", make_format_args("Incompleted"));
+	os << vformat("*" + Asb_Rating + " : {}*\n", make_format_args(HabRating()));
 	os << GHMDProcPlanHabGrav(Obj);
 	os << GHMDProcPlanHabRotation(Obj);
 	os << GHMDProcPlanHabMST(Obj);
 	os << GHMDProcPlanHabAtm(Obj);
 	os << GHMDProcPlanHabAtmPressure(Obj);
+	return os.str();
+}
+
+string HTMLHabOut()
+{
+	ostringstream os;
+	os << "\t\t\t" << _Html_Tags::_h2_begin << Asb_Title2 << _Html_Tags::_h2_end << "\n";
+	for (size_t i = 0; i < RockyObjBuf.size(); i++)
+	{
+		os << HTMLProcPlanHab(RockyObjBuf[i]);
+	}
 	return os.str();
 }
 
@@ -260,6 +413,7 @@ void composite4()
 	switch (OFormat)
 	{
 	case HTML:
+		HTMLcontent += HTMLHabOut();
 		break;
 	case MD:
 	default:

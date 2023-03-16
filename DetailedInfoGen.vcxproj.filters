@@ -120,5 +120,6 @@
     <None Include="InfoGen_Data\html_themes\Default.css" />
     <None Include="InfoGen_Data\html_themes\Geochronology.css" />
     <None Include="InfoGen_Data\html_themes\Mineralogy.css" />
+    <None Include="InfoGen_Data\html_themes\Astrobiology.css" />
   </ItemGroup>
 </Project>
