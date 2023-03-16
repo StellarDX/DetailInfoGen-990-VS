@@ -122,17 +122,8 @@ void FormatOutputSysInfo(ostream& os, string fmtstring, string ifmtstring, const
 // HTML
 string HTMLHeadOutput()
 {
-	ObjectBuffer::iterator SystemBarycen;
-	try { SystemBarycen = FindSystemBarycenter(System); }
-	catch (exception e)
-	{
-		cout << e.what();
-		abort();
-	}
-
 	ostringstream fout;
-	fout << MakeHTMLHead(SystemBarycen->Name[0], CSSPath, CopyCSS);
-	SystemBarycenter = SystemBarycen->Name[0];
+	fout << MakeHTMLHead(SystemBarycenter, CSSPath, CopyCSS);
 
 	return fout.str();
 }
@@ -226,16 +217,23 @@ void composite()
 
 	SortSystemType(System);
 	SortParentBody(System);
+	ObjectBuffer::iterator SystemBarycen;
 
 	switch (OFormat)
 	{
 	case HTML:
+		try { SystemBarycen = FindSystemBarycenter(System); }
+		catch (exception e)
+		{
+			cout << e.what();
+			abort();
+		}
+		SystemBarycenter = SystemBarycen->Name[0];
 		if (!Astrobiology)
 		{
 			HTMLhead = HTMLHeadOutput();
 			HTMLcontent = HTMLTitleOutput();
 		}
-		else { HTMLHeadOutput(); }
 		break;
 	case MD:
 	default:

@@ -40,6 +40,7 @@ void __DFS_FindRockyObj(shared_ptr<SystemStruct> SysTree)
 
 string HTMLAstrobiology()
 {
+	if (CSSPath.empty()) { CSSPath = "./InfoGen_Data/html_themes/Astrobiology.css"; }
 	Final += MakeHTMLHead(vformat(Asb_Title, make_format_args(SystemBarycenter)), CSSPath, CopyCSS);
 	ostringstream os;
 	os << vformat("\t\t\t" + string(_Html_Tags::_h1_begin) + Asb_Title + string(_Html_Tags::_h1_end) + "\n", make_format_args(SystemBarycenter));
@@ -114,7 +115,6 @@ void composite3(vector<string> args)
 	switch (OFormat)
 	{
 	case HTML:
-		if (CSSPath.empty()) { CSSPath = "./InfoGen_Data/html_themes/Astrobiology.css"; }
 		HTMLcontent += HTMLAstrobiology();
 		break;
 	case MD:
