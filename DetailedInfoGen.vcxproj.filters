@@ -121,5 +121,7 @@
     <None Include="InfoGen_Data\html_themes\Geochronology.css" />
     <None Include="InfoGen_Data\html_themes\Mineralogy.css" />
     <None Include="InfoGen_Data\html_themes\Astrobiology.css" />
+    <None Include="README.md" />
+    <None Include="LICENSE" />
   </ItemGroup>
 </Project>

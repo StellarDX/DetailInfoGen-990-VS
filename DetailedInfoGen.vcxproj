@@ -259,6 +259,8 @@
     <None Include="InfoGen_Data\html_themes\Default.css" />
     <None Include="InfoGen_Data\html_themes\Geochronology.css" />
     <None Include="InfoGen_Data\html_themes\Mineralogy.css" />
+    <None Include="LICENSE" />
+    <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
