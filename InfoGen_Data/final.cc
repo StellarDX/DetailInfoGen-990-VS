@@ -158,7 +158,8 @@ void NormalProcess(ISCStream& SystemIn, vector<string> args)
 int main(int argc, char const* argv[]) // main function can return "void" in C++20, WHY???
 {
 	cout << "SpaceEngine 0.990 Detailed information generator\nCopyright (C) StellarDX Astronomy.\n";
-	cout << "This is a free software, licenced under GNU General public license v2.\n";
+	cout << "This is a free software, see the source for copying condition. \n";
+	//cout << "There is no warranty; not even for merchantability or fitness for a particular purpose.\n";
 	cout << "Built with " + COMPILER_VERSION << '\n' << '\n';
 
 	if (argc == 1)
