@@ -290,7 +290,7 @@ void composite0min()
 	{
 	case HTML:
 		if (CSSPath.empty()) { CSSPath = "./InfoGen_Data/html_themes/Mineralogy.css"; }
-		Final += MakeHTMLHead(vformat(Min_Title, make_format_args(SystemBarycenter)), CSSPath, CopyCSS);
+		Final += MakeHTMLHead(vformat(Min_Title, make_format_args(SystemBarycenter)), outencoding, CSSPath, CopyCSS);
 		HTMLcontent += HTMLGenMineral();
 		break;
 	case MD:

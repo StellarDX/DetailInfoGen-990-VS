@@ -44,6 +44,7 @@ string LcID = "1033";
 map<string, string> LocStrings;
 string OutputFileName;
 bool CopyCSS = false;
+int outencoding = 65001;
 
 string CSSPath;
 
@@ -233,7 +234,7 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 	}
 
 	int srcencoding = 65001; // Default encoding is UTF-8
-	int outencoding = 65001; // Default encoding is UTF-8
+	//int outencoding = 65001; // Default encoding is UTF-8
 	for (size_t i = 0; i < args.size(); i++)
 	{
 		// Seed

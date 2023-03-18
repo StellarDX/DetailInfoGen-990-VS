@@ -14,7 +14,7 @@ public:
 	static constexpr auto _head_begin  = "<head>";
 	static constexpr auto _head_end    = "</head>";
 	static constexpr auto _link        = "<link rel=\"stylesheet\" type=\"text/css\" href=\"{}\"/>"; // FMT string
-	static constexpr auto _meta        = "<meta charset=\"UTF-8\">"; // HTML only support utf-8 encoding.
+	static constexpr auto _meta        = "<meta charset=\"{}\">"; // HTML only support utf-8 encoding.
 	static constexpr auto _title_begin = "<title>";
 	static constexpr auto _title_end   = "</title>";
 	static constexpr auto _body_begin  = "<body>";
@@ -41,6 +41,6 @@ extern std::string HTMLhead;
 extern std::string HTMLcontent;
 extern std::string HTMLMenu;
 
-std::string MakeHTMLHead(std::string Title, std::string CSSPath = "", bool Copy = false);
+std::string MakeHTMLHead(std::string Title, int Charset, std::string CSSPath = "", bool Copy = false);
 
 #endif

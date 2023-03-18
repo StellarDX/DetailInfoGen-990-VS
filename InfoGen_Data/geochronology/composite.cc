@@ -580,7 +580,7 @@ void composite0geo(Object Target, Object Parent)
 	{
 	case HTML:
 		if (CSSPath.empty()) { CSSPath = "./InfoGen_Data/html_themes/Geochronology.css"; }
-		Final += MakeHTMLHead(vformat(Geo_Title, make_format_args(Target.Name[0])), CSSPath, CopyCSS);
+		Final += MakeHTMLHead(vformat(Geo_Title, make_format_args(Target.Name[0])), outencoding, CSSPath, CopyCSS);
 		if (CustomModel) { HTMLcontent = HTMLProcess(Target, Parent); }
 		else { HTMLcontent += HTMLProcessEarth(Target, Parent); }
 		break;

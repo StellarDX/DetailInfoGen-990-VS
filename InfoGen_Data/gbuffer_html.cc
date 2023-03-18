@@ -4,6 +4,7 @@
 #include <format>
 #include <fstream>
 #include <iostream>
+#include <map>
 #include <vector>
 #include <windows.h>
 
@@ -11,6 +12,22 @@ using namespace std;
 
 string DefaultCSSPath = "./InfoGen_Data/html_themes/Default.css";
 extern string OutputFileName;
+
+map<int, string> HTMLCharsetsPerm
+{
+	// Reference: https://html.spec.whatwg.org/multipage/parsing.html#character-encodings
+	{65001, "UTF-8"       }, {28592, "ISO-8859-2"  }, {28597, "ISO-8859-7"  }, {28598, "ISO-8859-8"  },
+	{  874, "windows-874" }, { 1250, "windows-1250"}, { 1251, "windows-1251"}, { 1252, "windows-1252"},
+	{ 1254, "windows-1254"}, { 1255, "windows-1255"}, { 1256, "windows-1256"}, { 1257, "windows-1257"},
+	{ 1258, "windows-1258"}, {  936, "GBK"         }, {  950, "Big5"        }, {50220, "ISO-2022-JP" },
+	{  932, "Shift_JIS"   }, {51949, "EUC-KR"      }, { 1201, "UTF-16BE"    }, { 1200, "UTF-16LE"    }
+};
+
+map<int, string> HTMLCharsets4b1d
+{
+	/*{     , "CESU-8"      },*/ {65000, "UTF-7"      }, /*{      , "BOCU-1"      },*/ 
+	/*{     , "SCSU"        },*/ /*{     , "EBCDIC"     },*/ /*{      , "UTF-32"      }*/
+};
 
 string MoveCSS(string _Src, string _Dst)
 {
@@ -58,11 +75,21 @@ string MoveCSS(string _Src, string _Dst)
 	return FileName.back();
 }
 
-string MakeHTMLHead(string Title, string CSSPath, bool Copy)
+string MakeHTMLHead(string Title, int Charset, string CSSPath, bool Copy)
 {
 	ostringstream os;
 	os << "\t" << _Html_Tags::_head_begin << '\n';
-	os << "\t\t" << _Html_Tags::_meta << '\n';
+
+	if (HTMLCharsets4b1d.find(Charset) != HTMLCharsets4b1d.end() ||
+		HTMLCharsetsPerm.find(Charset) == HTMLCharsetsPerm.end())
+	{
+		cout << "Code page is not used or forbidden in HTML.\n";
+		abort();
+	}
+
+	string CP = HTMLCharsetsPerm.find(Charset)->second;
+
+	os << "\t\t" << vformat(_Html_Tags::_meta, make_format_args(CP)) << '\n';
 	os << "\t\t" << _Html_Tags::_title_begin << Title << _Html_Tags::_title_end << '\n';
 
 	if (CSSPath.empty()) { CSSPath = DefaultCSSPath; }
