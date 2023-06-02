@@ -1,4 +1,5 @@
 ﻿#include "gbuffer_star.h"
+#include <CSE/Planets.h>
 
 using namespace std;
 using namespace cse;
@@ -163,8 +164,6 @@ void GetLocaleStar()
 
 StarParams gbuffer_star(shared_ptr<Object> arg)
 {
-	float64 MaxRadius = max(arg->Dimensions.x, arg->Dimensions.z) / 2.;
-	float64 Vol = float64((4. / 3.) * CSE_PI * (arg->Dimensions.x / 2.) * (arg->Dimensions.y / 2.) * (arg->Dimensions.z / 2.));
 	if (IsStarRemnant(arg->SpecClass)) // Transport luminosity from accretion disc when object is a star remnant with accretion disc
 	{
 		if (isinf(arg->LumBol)) { arg->LumBol = 0; }
@@ -174,17 +173,20 @@ StarParams gbuffer_star(shared_ptr<Object> arg)
 			arg->LumBol += arg->AccretionDisk.LumBol;
 		}
 	}
+	using namespace cse::planet;
 	return
 	{
 		.AbsMagnBol = ToAbsMagn4(arg->LumBol),
 		.SpType = arg->SpecClass,
-		.EqRadius = MaxRadius,
-		.Flattening = (MaxRadius - (arg->Dimensions.y / 2.)) / MaxRadius,
-		.Volume = Vol,
+		.EqRadius = EquatorialRadius(*arg),
+		.EqCircum = CircumferenceE(*arg),
+		.Flattening = Flattening(*arg),
+		.SurfArea = SurfaceArea(*arg),
+		.Volume = Volume(*arg),
 		.Mass = arg->Mass,
-		.AvgDensity = arg->Mass / Vol,
-		.EqSurfGrav = (GravConstant * arg->Mass) / cse::pow(MaxRadius, 2),
-		.EscapeVelocity = cse::sqrt((2. * GravConstant * arg->Mass) / MaxRadius),
+		.AvgDensity = MeanDensity(*arg),
+		.EqSurfGrav = SurfaceGravity(*arg),
+		.EscapeVelocity = EscapeVelocity(*arg),
 		.Temperature = arg->Teff,
 		.Luminosity = arg->LumBol,
 		.Obliquity = arg->Rotation.Obliquity,

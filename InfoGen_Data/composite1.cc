@@ -63,7 +63,9 @@ namespace Localization
 	static string C1_Star_MagBol     = "Bolometric magnitude";
 	static string C1_Star_Class      = "Spectral classification";
 	static string C1_Star_EqRadius   = "Equatorial radius (m)";
+	static string C1_Star_EqCircum   = "Equatorial circumference (m)";
 	static string C1_Star_Oblate     = "Flattening";
+	static string C1_Star_SurfArea   = "Surface area (m^2)";
 	static string C1_Star_Volume     = "Volume (m^3)";
 	static string C1_Star_Mass       = "Mass (Kg)";
 	static string C1_Star_Density    = "Average density (Kg/m^3)";
@@ -80,6 +82,9 @@ namespace Localization
 	static string C1_Planet_ERad     = "Equatorial radius (m)";
 	static string C1_Planet_PRad     = "Polar radius (m)";
 	static string C1_Planet_Oblate   = "Flattening";
+	static string C1_Planet_ECircum  = "Equatorial Circumference (m)";
+	static string C1_Planet_MCircum  = "Meridional Circumference (m)";
+	static string C1_Planet_SurfArea = "Surface area (m^2)";
 	static string C1_Planet_Volume   = "Volume (m^3)";
 	static string C1_Planet_Mass     = "Mass (Kg)";
 	static string C1_Planet_Density  = "Mean density (Kg/m^3)";
@@ -785,9 +790,15 @@ string HTMLProcStar(shared_ptr<Object> Obj)
 		os << vformat(fmtstring, make_format_args(C1_Star_MagBol, 2, Params.AbsMagnBol));
 		os << "</tr>\n";
 		os << "\t\t\t\t<tr class = \"StarTable\">";
-		os << vformat(fmtstring, make_format_args(C1_Star_EqRadius, 1, Params.EqRadius));
-		os << vformat(fmtstring, make_format_args(C1_Star_Oblate, 1, Params.Flattening));
-		os << vformat(fmtstring, make_format_args(C1_Star_Volume, 1, Params.Volume));
+		os << vformat(fmtstring, make_format_args(C1_Star_EqRadius, 2, Params.EqRadius));
+		os << vformat(fmtstring, make_format_args(C1_Star_EqCircum, 2, Params.EqCircum));
+		os << "</tr>\n";
+		os << "\t\t\t\t<tr class = \"StarTable\">";
+		os << vformat(fmtstring, make_format_args(C1_Star_Oblate, 5, Params.Flattening));
+		os << "</tr>\n";
+		os << "\t\t\t\t<tr class = \"StarTable\">";
+		os << vformat(fmtstring, make_format_args(C1_Star_SurfArea, 2, Params.SurfArea));
+		os << vformat(fmtstring, make_format_args(C1_Star_Volume, 2, Params.Volume));
 		os << "</tr>\n";
 		os << "\t\t\t\t<tr class = \"StarTable\">";
 		os << vformat(fmtstring, make_format_args(C1_Star_Mass, 2, Params.Mass));
@@ -844,7 +855,9 @@ string GHMarkDownProcStar(shared_ptr<Object> Obj)
 		os << vformat(fmtstring, make_format_args(C1_Star_MagBol, Params.AbsMagnBol));
 		os << vformat(ifmtstring, make_format_args(C1_Star_Class, Params.SpType));
 		os << vformat(fmtstring, make_format_args(C1_Star_EqRadius, Params.EqRadius));
+		os << vformat(fmtstring, make_format_args(C1_Star_EqCircum, Params.EqCircum));
 		os << vformat(fmtstring, make_format_args(C1_Star_Oblate, Params.Flattening));
+		os << vformat(fmtstring, make_format_args(C1_Star_SurfArea, Params.SurfArea));
 		os << vformat(fmtstring, make_format_args(C1_Star_Volume, Params.Volume));
 		os << vformat(fmtstring, make_format_args(C1_Star_Mass, Params.Mass));
 		os << vformat(fmtstring, make_format_args(C1_Star_Density, Params.AvgDensity));
@@ -895,6 +908,13 @@ string HTMLProcPlanet(shared_ptr<Object> Obj)
 	}
 	else { os << vformat(fmtstring, make_format_args(C1_Planet_MRad, 5, Par.MeanRadius)); }
 	os << vformat(fmtstring, make_format_args(C1_Planet_Oblate, 5, Par.Flattening));
+
+	os << "\t\t\t\t<tr class = \"PlanetTable\">";
+	os << vformat(fmtstring2, make_format_args(C1_Planet_ECircum, 2, Par.EqCircum));
+	os << vformat(fmtstring2, make_format_args(C1_Planet_MCircum, 2, Par.MeriCircum));
+	os << "</tr>\n";
+	os << vformat(fmtstring, make_format_args(C1_Planet_SurfArea, 5, Par.SurfArea));
+
 	os << vformat(fmtstring, make_format_args(C1_Planet_Volume, 5, Par.Volume));
 	os << vformat(fmtstring, make_format_args(C1_Planet_Mass, 5, Par.Mass));
 	os << vformat(fmtstring, make_format_args(C1_Planet_Density, 5, Par.MeanDensity));
@@ -1009,6 +1029,9 @@ string GHMarkDownProcPlanet(shared_ptr<Object> Obj)
 		os << vformat(fmtstring, make_format_args(C1_Planet_PRad, Par.PolarRadius));
 	}
 	os << vformat(fmtstring, make_format_args(C1_Planet_Oblate, Par.Flattening));
+	os << vformat(fmtstring, make_format_args(C1_Planet_ECircum, Par.EqCircum));
+	os << vformat(fmtstring, make_format_args(C1_Planet_MCircum, Par.MeriCircum));
+	os << vformat(fmtstring, make_format_args(C1_Planet_SurfArea, Par.SurfArea));
 	os << vformat(fmtstring, make_format_args(C1_Planet_Volume, Par.Volume));
 	os << vformat(fmtstring, make_format_args(C1_Planet_Mass, Par.Mass));
 	os << vformat(fmtstring, make_format_args(C1_Planet_Density, Par.MeanDensity));
@@ -1336,6 +1359,9 @@ void GetLocaleComp1()
 	GetLcString("C1_Planet_PRad",     &C1_Planet_PRad);
 	GetLcString("C1_Planet_PRad",     &C1_Planet_PRad);
 	GetLcString("C1_Planet_Oblate",   &C1_Planet_Oblate);
+	GetLcString("C1_Planet_ECircum",  &C1_Planet_ECircum);
+	GetLcString("C1_Planet_MCircum",  &C1_Planet_MCircum);
+	GetLcString("C1_Planet_SurfArea", &C1_Planet_SurfArea);
 	GetLcString("C1_Planet_Volume",   &C1_Planet_Volume);
 	GetLcString("C1_Planet_Mass",     &C1_Planet_Mass);
 	GetLcString("C1_Planet_Density",  &C1_Planet_Density);

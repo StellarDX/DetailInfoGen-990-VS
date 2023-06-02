@@ -12,9 +12,9 @@ struct StarParams
 	cse::float64 AbsMagnBol;      // Bolometric Magniyude
 	std::string  SpType;          // Spectral classification
 	cse::float64 EqRadius;        // Equatorial radius
-	//cse::float64 EqCircum;        // Equatorial circumference
+	cse::float64 EqCircum;        // Equatorial circumference
 	cse::float64 Flattening;      // Flattening
-	//cse::float64 SurfArea;        // Surface area
+	cse::float64 SurfArea;        // Surface area
 	cse::float64 Volume;          // Volume
 	cse::float64 Mass;            // Mass
 	cse::float64 AvgDensity;      // Average density

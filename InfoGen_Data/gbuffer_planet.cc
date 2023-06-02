@@ -1,4 +1,5 @@
 ﻿#include "gbuffer_planet.h"
+#include <CSE/Planets.h>
 
 using namespace std;
 using namespace cse;
@@ -125,16 +126,20 @@ void GetLocalePlanet()
 PlanetParams gbuffer_planet(shared_ptr<Object> Companion)
 {
 	PlanetParams Par;
+	using namespace cse::planet;
 
-	Par.MeanRadius = Companion->Radius();
-	Par.EqRadius = cse::max({ Companion->Dimensions.x, Companion->Dimensions.y, Companion->Dimensions.z }) / 2.;
-	Par.PolarRadius = Companion->Dimensions.y / 2.;
-	Par.Flattening = (Par.EqRadius - Par.PolarRadius) / Par.EqRadius;
-	Par.Volume = (4. / 3.) * CSE_PI * (Companion->Dimensions.x / 2.) * (Companion->Dimensions.y / 2.) * (Companion->Dimensions.z / 2.);
+	Par.MeanRadius = MeanRadius(*Companion);
+	Par.EqRadius = EquatorialRadius(*Companion);
+	Par.PolarRadius = PolarRadius(*Companion);
+	Par.Flattening = Flattening(*Companion);
+	Par.EqCircum = CircumferenceE(*Companion);
+	Par.MeriCircum = CircumferenceM(*Companion);
+	Par.SurfArea = SurfaceArea(*Companion);
+	Par.Volume = Volume(*Companion);
 	Par.Mass = Companion->Mass;
-	Par.MeanDensity = Par.Mass / Par.Volume;
-	Par.SurfGrav = (GravConstant * Par.Mass) / cse::pow(Par.EqRadius, 2);
-	Par.EscapeVel = cse::sqrt(2. * Par.SurfGrav * Par.EqRadius);
+	Par.MeanDensity = MeanDensity(*Companion);
+	Par.SurfGrav = SurfaceGravity(*Companion);
+	Par.EscapeVel = EscapeVelocity(*Companion);
 	Par.SynodicPeriod = (Companion->Orbit.Period * Companion->Rotation.RotationPeriod) / (Companion->Orbit.Period - Companion->Rotation.RotationPeriod);
 	Par.RotationPeriod = Companion->Rotation.RotationPeriod;
 	Par.AxialTilt = Companion->Rotation.Obliquity;

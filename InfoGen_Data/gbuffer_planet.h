@@ -12,9 +12,9 @@ struct PlanetParams
 	cse::float64 EqRadius;
 	cse::float64 PolarRadius;
 	cse::float64 Flattening;
-	//cse::float64 EqCircum;
-	//cse::float64 MeriCircum;
-	//cse::float64 SurfArea;
+	cse::float64 EqCircum;
+	cse::float64 MeriCircum;
+	cse::float64 SurfArea;
 	cse::float64 Volume;
 	cse::float64 Mass;
 	cse::float64 MeanDensity;
