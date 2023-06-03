@@ -93,17 +93,14 @@ string MakeHTMLHead(string Title, int Charset, string CSSPath, LinkCSS Copy)
 	os << "\t\t" << vformat(_Html_Tags::_meta, make_format_args(CP)) << '\n';
 	os << "\t\t" << _Html_Tags::_title_begin << Title << _Html_Tags::_title_end << '\n';
 
-	if (CSSPath.empty())
-	{
-		CSSPath = DefaultCSSPath;
-		os << "\t\t" << vformat(_Html_Tags::_link, make_format_args(CSSPath)) << '\n';
-	}
+	if (CSSPath.empty()){CSSPath = DefaultCSSPath;}
+
 	if (Copy == LinkCSS::Copy)
 	{
 		CSSPath = MoveCSS(CSSPath, OutputFileName.substr(0, OutputFileName.size() - 5) + ".css");
 		os << "\t\t" << vformat(_Html_Tags::_link, make_format_args(CSSPath)) << '\n';
 	}
-	if (Copy == Inline)
+	else if (Copy == Inline)
 	{
 		ifstream cssf(CSSPath);
 		ostringstream tostr;
