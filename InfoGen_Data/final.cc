@@ -43,7 +43,8 @@ uint32_t _OUT_PRECISION = 12;
 string LcID = "1033";
 map<string, string> LocStrings;
 string OutputFileName;
-bool CopyCSS = false;
+enum LinkCSS LCSS = Static;
+extern int CSSEncod;
 int outencoding = 65001;
 
 string CSSPath;
@@ -284,6 +285,27 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 			CSSPath = args[i + 1];
 		}
 
+		else if (OFormat == HTML && args[i].substr(0, 10) == "-lcssmode=")
+		{
+			if (args[i] == "-lcssmode=static") { LCSS = Static; }
+			else if (args[i] == "-lcssmode=copy") { LCSS = Copy; }
+			else if (args[i].substr(0, 16) == "-lcssmode=inline")
+			{
+				LCSS = Inline;
+				string cpstr = args[i].substr(16, cpstr.size() - 16);
+				if (cpstr.empty() || cpstr.substr(0, 3) != "-cp") {}
+				else
+				{
+					CSSEncod = stoi(cpstr.substr(3, cpstr.size() - 3));
+				}
+			}
+			else
+			{
+				cout << "Invalid css mode." << '\n';
+				abort();
+			}
+		}
+
 		else if (args[i].substr(0, 7) == "-srccp=")
 		{
 			string encodstr = args[i];
@@ -297,7 +319,7 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		}
 	}
 
-	if (OFormat == HTML && find(args.begin(), args.end(), "-cpcss") != args.end()) { CopyCSS = true; }
+	if (OFormat == HTML && find(args.begin(), args.end(), "-cpcss") != args.end()) { LCSS = Copy; } // Capability of earlier version.
 
 	// Parse File
 

@@ -1,6 +1,6 @@
 /*
-	ÏêÏ¸ĞÅÏ¢Éú³ÉÆ÷Ä¬ÈÏÑùÊ½ÅäÖÃÎÄ¼ş¡¶ÂúÍ¥·¼¡·
-	ÑÕÉ«²Î¿¼£ºhttp://www.360doc.com/content/23/0130/19/71084434_1065516886.shtml
+	è¯¦ç»†ä¿¡æ¯ç”Ÿæˆå™¨é»˜è®¤æ ·å¼é…ç½®æ–‡ä»¶ã€Šæ»¡åº­èŠ³ã€‹
+	é¢œè‰²å‚è€ƒï¼šhttp://www.360doc.com/content/23/0130/19/71084434_1065516886.shtml
 */
 
 div.left
@@ -12,7 +12,7 @@ div.left
 	overflow: auto;
 	padding: 10px;
 
-	background-color:rgb(245, 242, 233) /* ÊÖÈçÈáÜè£¬·ôÈçÄıÖ¬£¬ÁìÈçòøòÓ£¬³İÈçğ­Ï¬¡£ */
+	background-color:rgb(245, 242, 233) /* æ‰‹å¦‚æŸ”è‘ï¼Œè‚¤å¦‚å‡è„‚ï¼Œé¢†å¦‚è¤è›´ï¼Œé½¿å¦‚ç“ çŠ€ã€‚ */
 }
 
 div.content
@@ -21,7 +21,7 @@ div.content
 	padding: 10px;
 	width: 75%;
 
-	background-color:rgb(234, 238, 241) /* Êèç²Áıº®£¬Ç³ÔÆÆÜÔÂ¡£ */
+	background-color:rgb(234, 238, 241) /* ç–ç»®ç¬¼å¯’ï¼Œæµ…äº‘æ –æœˆã€‚ */
 }
 
 h1.topmost
@@ -56,7 +56,7 @@ td.ESITableTitle
 	font-size:150%;
 	
 
-	background-color:rgb(236, 212, 82); /* ÓãÏ·ÅÅç½Ò¶£¬¹ê¸¡¼ûÂÌ³Ø¡£ */
+	background-color:rgb(236, 212, 82); /* é±¼æˆæ’ç¼ƒå¶ï¼Œé¾Ÿæµ®è§ç»¿æ± ã€‚ */
 }
 
 td.ESITableSubHead
@@ -64,14 +64,14 @@ td.ESITableSubHead
 	font-weight:bold;
 	width: 20%;
 	
-	background-color:rgb(255, 238, 111); /* ÇáÈçËÉ»¨Âä½ğ·Û£¬Å¨ËÆÌ¦½õº¬±Ì×Ì¡£ */
+	background-color:rgb(255, 238, 111); /* è½»å¦‚æ¾èŠ±è½é‡‘ç²‰ï¼Œæµ“ä¼¼è‹”é”¦å«ç¢§æ»‹ã€‚ */
 }
 
 td.ESITableSubHeadESI
 {
 	font-weight:bold;
 	
-	background-color:rgb(255, 238, 111); /* ÇáÈçËÉ»¨Âä½ğ·Û£¬Å¨ËÆÌ¦½õº¬±Ì×Ì¡£ */
+	background-color:rgb(255, 238, 111); /* è½»å¦‚æ¾èŠ±è½é‡‘ç²‰ï¼Œæµ“ä¼¼è‹”é”¦å«ç¢§æ»‹ã€‚ */
 }
 
 td.ESITableData
@@ -79,7 +79,7 @@ td.ESITableData
 	padding-left:10px;
 	padding-right:10px;	
 	
-	background-color:rgb(255, 251, 190); /* °ë¼ûÀë¹¬³ö£¬²Å·ÖÔ¶Ë®Ã÷¡£ */
+	background-color:rgb(255, 251, 190); /* åŠè§ç¦»å®«å‡ºï¼Œæ‰åˆ†è¿œæ°´æ˜ã€‚ */
 }
 
 /* Planet */
@@ -94,7 +94,7 @@ td.PlanetTableTop
 	border-right: hidden;
 
 	color:rgb(255, 255, 255);
-	background-color:rgb(46, 89, 167); /* ±Ş´¹Ì©ÔÀÈºÇàÄ©£¬Ğä·÷ËÕÌ¨ÍòÂÌ³õ¡£ */
+	background-color:rgb(46, 89, 167); /* é­å‚æ³°å²³ç¾¤é’æœ«ï¼Œè¢–æ‹‚è‹å°ä¸‡ç»¿åˆã€‚ */
 }
 
 td.PlanetTableTopEnd
@@ -105,10 +105,10 @@ td.PlanetTableTopEnd
 	border-left: hidden;
 
 	color:rgb(255, 255, 255);
-	background-color:rgb(46, 89, 167); /* ±Ş´¹Ì©ÔÀÈºÇàÄ©£¬Ğä·÷ËÕÌ¨ÍòÂÌ³õ¡£ */
+	background-color:rgb(46, 89, 167); /* é­å‚æ³°å²³ç¾¤é’æœ«ï¼Œè¢–æ‹‚è‹å°ä¸‡ç»¿åˆã€‚ */
 }
 
-/* ÏÂÃæÁ½¸ö·Ö±ğÓÃÊ¯ÇàµÄÈıÇàºÍËÄÇà£¬ÒòÎªÍ·ÇàºÍ¶şÇàÌ«ÉîÁË¡£ */
+/* ä¸‹é¢ä¸¤ä¸ªåˆ†åˆ«ç”¨çŸ³é’çš„ä¸‰é’å’Œå››é’ï¼Œå› ä¸ºå¤´é’å’ŒäºŒé’å¤ªæ·±äº†ã€‚ */
 td.PlanetTableSectionHeader
 {
 	font-weight:bold;
@@ -137,5 +137,5 @@ td.PlanetTableData
 	padding-left:10px;
 	padding-right:10px;	
 
-	background-color:rgb(212, 229, 239) /* ×í¿´Ä«»¨ÔÂ°×£¬»ĞÒÉÑ©ÂúÇ°´å¡£ */
+	background-color:rgb(212, 229, 239) /* é†‰çœ‹å¢¨èŠ±æœˆç™½ï¼Œæç–‘é›ªæ»¡å‰æ‘ã€‚ */
 }

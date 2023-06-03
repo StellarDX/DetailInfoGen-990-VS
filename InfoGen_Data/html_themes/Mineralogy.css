@@ -1,6 +1,6 @@
 /*
-	ÏêÏ¸ĞÅÏ¢Éú³ÉÆ÷Ä¬ÈÏÑùÊ½ÅäÖÃÎÄ¼ş¡¶ÂúÍ¥·¼¡·
-	ÑÕÉ«²Î¿¼£ºhttp://www.360doc.com/content/23/0130/19/71084434_1065516886.shtml
+	è¯¦ç»†ä¿¡æ¯ç”Ÿæˆå™¨é»˜è®¤æ ·å¼é…ç½®æ–‡ä»¶ã€Šæ»¡åº­èŠ³ã€‹
+	é¢œè‰²å‚è€ƒï¼šhttp://www.360doc.com/content/23/0130/19/71084434_1065516886.shtml
 */
 
 div.left
@@ -12,7 +12,7 @@ div.left
 	overflow: auto;
 	padding: 10px;
 
-	background-color:rgb(245, 242, 233) /* ÊÖÈçÈáÜè£¬·ôÈçÄıÖ¬£¬ÁìÈçòøòÓ£¬³İÈçğ­Ï¬¡£ */
+	background-color:rgb(245, 242, 233) /* æ‰‹å¦‚æŸ”è‘ï¼Œè‚¤å¦‚å‡è„‚ï¼Œé¢†å¦‚è¤è›´ï¼Œé½¿å¦‚ç“ çŠ€ã€‚ */
 }
 
 div.content
@@ -21,7 +21,7 @@ div.content
 	padding: 10px;
 	width: 75%;
 
-	background-color:rgb(234, 238, 241) /* Êèç²Áıº®£¬Ç³ÔÆÆÜÔÂ¡£ */
+	background-color:rgb(234, 238, 241) /* ç–ç»®ç¬¼å¯’ï¼Œæµ…äº‘æ –æœˆã€‚ */
 }
 
 h1.topmost
@@ -55,7 +55,7 @@ td.MajorPlanetsMineralTableTop
 	padding: 5px;
 
 	color:rgb(255, 255, 255);
-	background-color:rgb(46, 89, 167); /* ±Ş´¹Ì©ÔÀÈºÇàÄ©£¬Ğä·÷ËÕÌ¨ÍòÂÌ³õ¡£ */
+	background-color:rgb(46, 89, 167); /* é­å‚æ³°å²³ç¾¤é’æœ«ï¼Œè¢–æ‹‚è‹å°ä¸‡ç»¿åˆã€‚ */
 }
 
 td.MajorPlanetsMineralTableHead
@@ -82,7 +82,7 @@ td.MajorPlanetsMineralTableData
 	padding-left:10px;
 	padding-right:10px;	
 
-	background-color:rgb(212, 229, 239) /* ×í¿´Ä«»¨ÔÂ°×£¬»ĞÒÉÑ©ÂúÇ°´å¡£ */
+	background-color:rgb(212, 229, 239) /* é†‰çœ‹å¢¨èŠ±æœˆç™½ï¼Œæç–‘é›ªæ»¡å‰æ‘ã€‚ */
 }
 
 /* Minor planets */
@@ -96,7 +96,7 @@ td.MinorPlanetsMineralTableTop
 	padding: 5px;
 
 	color:rgb(255, 255, 255);
-	background-color:rgb(107, 84, 88); /* êòÍÁÖ®Æø£¬ÑöºõĞşÌì£¬ĞşÌìÁù°ÙËêÉúĞşíÆ¡£ */
+	background-color:rgb(107, 84, 88); /* ç‰åœŸä¹‹æ°”ï¼Œä»°ä¹ç„å¤©ï¼Œç„å¤©å…­ç™¾å²ç”Ÿç„ç ¥ã€‚ */
 }
 
 td.MinorPlanetsMineralTableHead
@@ -106,7 +106,7 @@ td.MinorPlanetsMineralTableHead
 	padding-left:5px;
 	padding-right:5px;
 
-	background-color:rgb(153, 128, 108); /* ²Ğº®ÕıÆÛ²¡¾Æ£¬ÑÚ³ÁÏãĞå»§¡£ */
+	background-color:rgb(153, 128, 108); /* æ®‹å¯’æ­£æ¬ºç—…é…’ï¼Œæ©æ²‰é¦™ç»£æˆ·ã€‚ */
 }
 
 td.MinorPlanetsMineralTableHeadLi
@@ -115,7 +115,7 @@ td.MinorPlanetsMineralTableHeadLi
 	padding-left:5px;
 	padding-right:5px;
 
-	background-color:rgb(153, 128, 108); /* ²Ğº®ÕıÆÛ²¡¾Æ£¬ÑÚ³ÁÏãĞå»§¡£ */
+	background-color:rgb(153, 128, 108); /* æ®‹å¯’æ­£æ¬ºç—…é…’ï¼Œæ©æ²‰é¦™ç»£æˆ·ã€‚ */
 }
 
 td.MinorPlanetsMineralTableData
@@ -123,7 +123,7 @@ td.MinorPlanetsMineralTableData
 	padding-left:10px;
 	padding-right:10px;
 
-	background-color: rgb(240, 246, 246); /* ç½¼´½ñÖ®¹ÅÉ«£¬¾©Ê¦ºôÌÀÃ×½¿¡£ */
+	background-color: rgb(240, 246, 246); /* ç¼ƒå³ä»Šä¹‹å¤è‰²ï¼Œäº¬å¸ˆå‘¼æ±¤ç±³å¨‡ã€‚ */
 }
 
 /* Minor moons */
@@ -137,7 +137,7 @@ td.SmallMoonsMineralTableTop
 	padding: 5px;
 
 	color:rgb(255, 255, 255);
-	background-color:rgb(66, 34, 86); /* ½ÇÉùÂúÌìÇïÉ«Àï£¬ÈûÉÏÑàÖ¬ÄıÒ¹×Ï¡£ */
+	background-color:rgb(66, 34, 86); /* è§’å£°æ»¡å¤©ç§‹è‰²é‡Œï¼Œå¡ä¸Šç‡•è„‚å‡å¤œç´«ã€‚ */
 }
 
 td.SmallMoonsMineralTableHead
@@ -147,7 +147,7 @@ td.SmallMoonsMineralTableHead
 	padding-left:5px;
 	padding-right:5px;
 
-	background-color:rgb(206, 147, 191); /* ´ºÉ«ÏÊÓÚ¶şÔÂÖĞ£¬·ÖÃ÷æ±×ÏÊ¤æÌºì¡£·­ÒÉÎóÆÃëÙÖ¬Ë®£¬»¯³ö»¨ÉíåÄ²»Í¬¡£ */
+	background-color:rgb(206, 147, 191); /* æ˜¥è‰²é²œäºäºŒæœˆä¸­ï¼Œåˆ†æ˜å§¹ç´«èƒœå«£çº¢ã€‚ç¿»ç–‘è¯¯æ³¼èƒ­è„‚æ°´ï¼ŒåŒ–å‡ºèŠ±èº«è¿¥ä¸åŒã€‚ */
 }
 
 td.SmallMoonsMineralTableHeadLi
@@ -156,7 +156,7 @@ td.SmallMoonsMineralTableHeadLi
 	padding-left:5px;
 	padding-right:5px;
 
-	background-color:rgb(206, 147, 191); /* ´ºÉ«ÏÊÓÚ¶şÔÂÖĞ£¬·ÖÃ÷æ±×ÏÊ¤æÌºì¡£·­ÒÉÎóÆÃëÙÖ¬Ë®£¬»¯³ö»¨ÉíåÄ²»Í¬¡£ */
+	background-color:rgb(206, 147, 191); /* æ˜¥è‰²é²œäºäºŒæœˆä¸­ï¼Œåˆ†æ˜å§¹ç´«èƒœå«£çº¢ã€‚ç¿»ç–‘è¯¯æ³¼èƒ­è„‚æ°´ï¼ŒåŒ–å‡ºèŠ±èº«è¿¥ä¸åŒã€‚ */
 }
 
 td.SmallMoonsMineralTableData
@@ -164,5 +164,5 @@ td.SmallMoonsMineralTableData
 	padding-left:10px;
 	padding-right:10px;
 
-	background-color:rgb(251, 231, 232); /* ³õÎ¢ºì£¬ºó²Ô°×£¬ÈçÒø³öÂ¯ */
+	background-color:rgb(251, 231, 232); /* åˆå¾®çº¢ï¼Œåè‹ç™½ï¼Œå¦‚é“¶å‡ºç‚‰ */
 }

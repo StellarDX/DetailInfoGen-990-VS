@@ -20,6 +20,8 @@ enum OutputFormat
 	MD
 };
 
+enum LinkCSS { Static, Copy, Inline };
+
 extern bool Astrobiology;
 
 extern OutputFormat OFormat;
@@ -31,7 +33,7 @@ extern ObjectBuffer System;
 extern std::map<std::string, std::string> LocStrings;
 
 extern std::string CSSPath;
-extern bool CopyCSS;
+extern LinkCSS LCSS;
 
 extern int outencoding;
 

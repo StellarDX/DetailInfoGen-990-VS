@@ -11,6 +11,7 @@
 using namespace std;
 
 string DefaultCSSPath = "./InfoGen_Data/html_themes/Default.css";
+int CSSEncod = 65001;
 extern string OutputFileName;
 
 map<int, string> HTMLCharsetsPerm
@@ -75,7 +76,7 @@ string MoveCSS(string _Src, string _Dst)
 	return FileName.back();
 }
 
-string MakeHTMLHead(string Title, int Charset, string CSSPath, bool Copy)
+string MakeHTMLHead(string Title, int Charset, string CSSPath, LinkCSS Copy)
 {
 	ostringstream os;
 	os << "\t" << _Html_Tags::_head_begin << '\n';
@@ -92,13 +93,25 @@ string MakeHTMLHead(string Title, int Charset, string CSSPath, bool Copy)
 	os << "\t\t" << vformat(_Html_Tags::_meta, make_format_args(CP)) << '\n';
 	os << "\t\t" << _Html_Tags::_title_begin << Title << _Html_Tags::_title_end << '\n';
 
-	if (CSSPath.empty()) { CSSPath = DefaultCSSPath; }
-	if (Copy)
+	if (CSSPath.empty())
+	{
+		CSSPath = DefaultCSSPath;
+		os << "\t\t" << vformat(_Html_Tags::_link, make_format_args(CSSPath)) << '\n';
+	}
+	if (Copy == LinkCSS::Copy)
 	{
 		CSSPath = MoveCSS(CSSPath, OutputFileName.substr(0, OutputFileName.size() - 5) + ".css");
+		os << "\t\t" << vformat(_Html_Tags::_link, make_format_args(CSSPath)) << '\n';
 	}
-	os << "\t\t" << vformat(_Html_Tags::_link, make_format_args(CSSPath)) << '\n';
-
+	if (Copy == Inline)
+	{
+		ifstream cssf(CSSPath);
+		ostringstream tostr;
+		tostr << cssf.rdbuf();
+		string FinalStr = cse::sc::parser::ConvertChar(tostr.str().c_str(), CSSEncod);
+		os << "\t\t" << _Html_Tags::_style_begin << '\n' << FinalStr << "\t\t" << _Html_Tags::_style_end << '\n';
+	}
+	
 	os << "\t" << _Html_Tags::_head_end << '\n';
 	return os.str();
 }

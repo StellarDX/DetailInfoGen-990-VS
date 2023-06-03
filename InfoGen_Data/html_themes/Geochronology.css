@@ -1,6 +1,6 @@
 /*
-	ÏêÏ¸ĞÅÏ¢Éú³ÉÆ÷Ä¬ÈÏÑùÊ½ÅäÖÃÎÄ¼ş¡¶ÂúÍ¥·¼¡·
-	ÑÕÉ«²Î¿¼£ºhttp://www.360doc.com/content/23/0130/19/71084434_1065516886.shtml
+	è¯¦ç»†ä¿¡æ¯ç”Ÿæˆå™¨é»˜è®¤æ ·å¼é…ç½®æ–‡ä»¶ã€Šæ»¡åº­èŠ³ã€‹
+	é¢œè‰²å‚è€ƒï¼šhttp://www.360doc.com/content/23/0130/19/71084434_1065516886.shtml
 */
 
 div.left
@@ -12,7 +12,7 @@ div.left
 	overflow: auto;
 	padding: 10px;
 
-	background-color:rgb(245, 242, 233) /* ÊÖÈçÈáÜè£¬·ôÈçÄıÖ¬£¬ÁìÈçòøòÓ£¬³İÈçğ­Ï¬¡£ */
+	background-color:rgb(245, 242, 233) /* æ‰‹å¦‚æŸ”è‘ï¼Œè‚¤å¦‚å‡è„‚ï¼Œé¢†å¦‚è¤è›´ï¼Œé½¿å¦‚ç“ çŠ€ã€‚ */
 }
 
 div.content
@@ -21,7 +21,7 @@ div.content
 	padding: 10px;
 	width: 75%;
 
-	background-color:rgb(234, 238, 241) /* Êèç²Áıº®£¬Ç³ÔÆÆÜÔÂ¡£ */
+	background-color:rgb(234, 238, 241) /* ç–ç»®ç¬¼å¯’ï¼Œæµ…äº‘æ –æœˆã€‚ */
 }
 
 h1.topmost
@@ -58,7 +58,7 @@ td.HadeanEonTableTop
 	border-right: hidden;
 
 	color:rgb(255, 255, 255);
-	background-color:rgb(183, 36, 48); /* ÑªÈ¾Ñóºì¾Ã²»Ïû£¬Ö¥Äà·½·¨·ÑÉîµ÷¡£ */
+	background-color:rgb(183, 36, 48); /* è¡€æŸ“æ´‹çº¢ä¹…ä¸æ¶ˆï¼ŒèŠæ³¥æ–¹æ³•è´¹æ·±è°ƒã€‚ */
 }
 
 td.HadeanEonTableTopEnd
@@ -69,7 +69,7 @@ td.HadeanEonTableTopEnd
 	border-left: hidden;
 
 	color:rgb(255, 255, 255);
-	background-color:rgb(183, 36, 48); /* ÑªÈ¾Ñóºì¾Ã²»Ïû£¬Ö¥Äà·½·¨·ÑÉîµ÷¡£ */
+	background-color:rgb(183, 36, 48); /* è¡€æŸ“æ´‹çº¢ä¹…ä¸æ¶ˆï¼ŒèŠæ³¥æ–¹æ³•è´¹æ·±è°ƒã€‚ */
 }
 
 td.HadeanEonTableHead
@@ -79,7 +79,7 @@ td.HadeanEonTableHead
 	padding-left:5px;
 	padding-right:5px;
 
-	background-color:rgb(233, 142, 122); /* Èü¶ù·½Ê®Ò»Ëê£¬´©µÄ¶«·½ÁÁÉÀ×Ó£¬Ë®Ä«Åû·ç£¬¶ì»ÆÈ¹¡£ */
+	background-color:rgb(233, 142, 122); /* èµ›å„¿æ–¹åä¸€å²ï¼Œç©¿çš„ä¸œæ–¹äº®è¡«å­ï¼Œæ°´å¢¨æŠ«é£ï¼Œé¹…é»„è£™ã€‚ */
 }
 
 td.HadeanEonTableData
@@ -87,7 +87,7 @@ td.HadeanEonTableData
 	padding-left:10px;
 	padding-right:10px;
 
-	background-color:rgb(254, 226, 223); /* ÀÃÂş»¨Åï½õĞåñ½£¬º£ÉÏÏ¼É«ÉÏÇáÂŞ¡£ */
+	background-color:rgb(254, 226, 223); /* çƒ‚æ¼«èŠ±æ£šé”¦ç»£çª ï¼Œæµ·ä¸Šéœè‰²ä¸Šè½»ç½—ã€‚ */
 }
 
 /* Archean Eon */
@@ -102,7 +102,7 @@ td.ArcheanEonTableTop
 	border-right: hidden;
 
 	color:rgb(255, 255, 255);
-	background-color:rgb(107, 84, 88); /* êòÍÁÖ®Æø£¬ÑöºõĞşÌì£¬ĞşÌìÁù°ÙËêÉúĞşíÆ¡£ */
+	background-color:rgb(107, 84, 88); /* ç‰åœŸä¹‹æ°”ï¼Œä»°ä¹ç„å¤©ï¼Œç„å¤©å…­ç™¾å²ç”Ÿç„ç ¥ã€‚ */
 }
 
 td.ArcheanEonTableTopEnd
@@ -114,7 +114,7 @@ td.ArcheanEonTableTopEnd
 	border-left: hidden;
 
 	color:rgb(255, 255, 255);
-	background-color:rgb(107, 84, 88); /* êòÍÁÖ®Æø£¬ÑöºõĞşÌì£¬ĞşÌìÁù°ÙËêÉúĞşíÆ¡£ */
+	background-color:rgb(107, 84, 88); /* ç‰åœŸä¹‹æ°”ï¼Œä»°ä¹ç„å¤©ï¼Œç„å¤©å…­ç™¾å²ç”Ÿç„ç ¥ã€‚ */
 }
 
 td.ArcheanEonTableHead
@@ -124,7 +124,7 @@ td.ArcheanEonTableHead
 	padding-left:5px;
 	padding-right:5px;
 
-	background-color:rgb(153, 128, 108); /* ²Ğº®ÕıÆÛ²¡¾Æ£¬ÑÚ³ÁÏãĞå»§¡£ */
+	background-color:rgb(153, 128, 108); /* æ®‹å¯’æ­£æ¬ºç—…é…’ï¼Œæ©æ²‰é¦™ç»£æˆ·ã€‚ */
 }
 
 td.ArcheanEonTableData
@@ -132,7 +132,7 @@ td.ArcheanEonTableData
 	padding-left:10px;
 	padding-right:10px;
 
-	background-color: rgb(240, 246, 246); /* ç½¼´½ñÖ®¹ÅÉ«£¬¾©Ê¦ºôÌÀÃ×½¿¡£ */
+	background-color: rgb(240, 246, 246); /* ç¼ƒå³ä»Šä¹‹å¤è‰²ï¼Œäº¬å¸ˆå‘¼æ±¤ç±³å¨‡ã€‚ */
 }
 
 /* Proterozoic Eon */
@@ -147,7 +147,7 @@ td.ProterozoicEonTableTop
 	border-right: hidden;
 
 	color:rgb(255, 255, 255);
-	background-color:rgb(66, 34, 86); /* ½ÇÉùÂúÌìÇïÉ«Àï£¬ÈûÉÏÑàÖ¬ÄıÒ¹×Ï¡£ */
+	background-color:rgb(66, 34, 86); /* è§’å£°æ»¡å¤©ç§‹è‰²é‡Œï¼Œå¡ä¸Šç‡•è„‚å‡å¤œç´«ã€‚ */
 }
 
 td.ProterozoicEonTableTopEnd
@@ -158,7 +158,7 @@ td.ProterozoicEonTableTopEnd
 	border-left: hidden;
 
 	color:rgb(255, 255, 255);
-	background-color:rgb(66, 34, 86); /* ½ÇÉùÂúÌìÇïÉ«Àï£¬ÈûÉÏÑàÖ¬ÄıÒ¹×Ï¡£ */
+	background-color:rgb(66, 34, 86); /* è§’å£°æ»¡å¤©ç§‹è‰²é‡Œï¼Œå¡ä¸Šç‡•è„‚å‡å¤œç´«ã€‚ */
 }
 
 td.ProterozoicEonTableHead
@@ -168,7 +168,7 @@ td.ProterozoicEonTableHead
 	padding-left:5px;
 	padding-right:5px;
 
-	background-color:rgb(206, 147, 191); /* ´ºÉ«ÏÊÓÚ¶şÔÂÖĞ£¬·ÖÃ÷æ±×ÏÊ¤æÌºì¡£·­ÒÉÎóÆÃëÙÖ¬Ë®£¬»¯³ö»¨ÉíåÄ²»Í¬¡£ */
+	background-color:rgb(206, 147, 191); /* æ˜¥è‰²é²œäºäºŒæœˆä¸­ï¼Œåˆ†æ˜å§¹ç´«èƒœå«£çº¢ã€‚ç¿»ç–‘è¯¯æ³¼èƒ­è„‚æ°´ï¼ŒåŒ–å‡ºèŠ±èº«è¿¥ä¸åŒã€‚ */
 }
 
 td.ProterozoicEonTableData
@@ -176,7 +176,7 @@ td.ProterozoicEonTableData
 	padding-left:10px;
 	padding-right:10px;
 
-	background-color:rgb(251, 231, 232); /* ³õÎ¢ºì£¬ºó²Ô°×£¬ÈçÒø³öÂ¯ */
+	background-color:rgb(251, 231, 232); /* åˆå¾®çº¢ï¼Œåè‹ç™½ï¼Œå¦‚é“¶å‡ºç‚‰ */
 }
 
 /* Phanerozoic Eon */
@@ -191,7 +191,7 @@ td.PhanerozoicEonTableTop
 	border-right: hidden;
 
 	color:rgb(255, 255, 255);
-	background-color:rgb(46, 89, 167); /* ±Ş´¹Ì©ÔÀÈºÇàÄ©£¬Ğä·÷ËÕÌ¨ÍòÂÌ³õ¡£ */
+	background-color:rgb(46, 89, 167); /* é­å‚æ³°å²³ç¾¤é’æœ«ï¼Œè¢–æ‹‚è‹å°ä¸‡ç»¿åˆã€‚ */
 }
 
 td.PhanerozoicEonTableTopEnd
@@ -202,7 +202,7 @@ td.PhanerozoicEonTableTopEnd
 	border-left: hidden;
 
 	color:rgb(255, 255, 255);
-	background-color:rgb(46, 89, 167); /* ±Ş´¹Ì©ÔÀÈºÇàÄ©£¬Ğä·÷ËÕÌ¨ÍòÂÌ³õ¡£ */
+	background-color:rgb(46, 89, 167); /* é­å‚æ³°å²³ç¾¤é’æœ«ï¼Œè¢–æ‹‚è‹å°ä¸‡ç»¿åˆã€‚ */
 }
 
 /* Palaeozoic Era */
@@ -214,7 +214,7 @@ td.PalaeozoicEraTableSectionHeader
 	font-weight:bold;
 	font-size:120%;
 
-	background-color:rgb(236, 212, 82); /* ÓãÏ·ÅÅç½Ò¶£¬¹ê¸¡¼ûÂÌ³Ø¡£ */
+	background-color:rgb(236, 212, 82); /* é±¼æˆæ’ç¼ƒå¶ï¼Œé¾Ÿæµ®è§ç»¿æ± ã€‚ */
 }
 
 td.PalaeozoicEraTableHead
@@ -224,7 +224,7 @@ td.PalaeozoicEraTableHead
 	padding-left:5px;
 	padding-right:5px;
 	
-	background-color:rgb(255, 238, 111); /* ÇáÈçËÉ»¨Âä½ğ·Û£¬Å¨ËÆÌ¦½õº¬±Ì×Ì¡£ */
+	background-color:rgb(255, 238, 111); /* è½»å¦‚æ¾èŠ±è½é‡‘ç²‰ï¼Œæµ“ä¼¼è‹”é”¦å«ç¢§æ»‹ã€‚ */
 }
 
 td.PalaeozoicEraTableData
@@ -232,7 +232,7 @@ td.PalaeozoicEraTableData
 	padding-left:10px;
 	padding-right:10px;	
 
-	background-color:rgb(255, 251, 190); /* °ë¼ûÀë¹¬³ö£¬²Å·ÖÔ¶Ë®Ã÷¡£ */
+	background-color:rgb(255, 251, 190); /* åŠè§ç¦»å®«å‡ºï¼Œæ‰åˆ†è¿œæ°´æ˜ã€‚ */
 }
 
 /* Mesozoic Era */
@@ -244,7 +244,7 @@ td.MesozoicEraTableSectionHeader
 	font-weight:bold;
 	font-size:120%;
 
-	background-color:rgb(117, 193, 196); /* µØÔ¶ËÉÊ¯¹Å£¬·çÑïÏÒ¹ÜÇå¡£ */
+	background-color:rgb(117, 193, 196); /* åœ°è¿œæ¾çŸ³å¤ï¼Œé£æ‰¬å¼¦ç®¡æ¸…ã€‚ */
 }
 
 td.MesozoicEraTableHead
@@ -254,7 +254,7 @@ td.MesozoicEraTableHead
 	padding-left:5px;
 	padding-right:5px;
 
-	background-color:rgb(177, 213, 200); /* Ë®É«²×ÀË£¬²¨ÌÎºÆº¹¡£ */
+	background-color:rgb(177, 213, 200); /* æ°´è‰²æ²§æµªï¼Œæ³¢æ¶›æµ©æ±—ã€‚ */
 }
 
 td.MesozoicEraTableData
@@ -262,7 +262,7 @@ td.MesozoicEraTableData
 	padding-left:10px;
 	padding-right:10px;	
 
-	background-color:rgb(213, 235, 225); /* Åñ´°¿úÌìçÎ£¬½­Ë®Õæ°²Á÷¡£ */
+	background-color:rgb(213, 235, 225); /* ç¯·çª—çª¥å¤©ç¼¥ï¼Œæ±Ÿæ°´çœŸå®‰æµã€‚ */
 }
 
 /* Cenozoic Era */
@@ -292,7 +292,7 @@ td.CenozoicEraTableData
 	padding-left:10px;
 	padding-right:10px;	
 
-	background-color:rgb(212, 229, 239) /* ×í¿´Ä«»¨ÔÂ°×£¬»ĞÒÉÑ©ÂúÇ°´å¡£ */
+	background-color:rgb(212, 229, 239) /* é†‰çœ‹å¢¨èŠ±æœˆç™½ï¼Œæç–‘é›ªæ»¡å‰æ‘ã€‚ */
 }
 
 /* Civilization */
@@ -307,7 +307,7 @@ td.CivilizationTableTop
 	border-right: hidden;
 
 	color:rgb(255, 255, 255);
-	background-color:rgb(46, 89, 167); /* ±Ş´¹Ì©ÔÀÈºÇàÄ©£¬Ğä·÷ËÕÌ¨ÍòÂÌ³õ¡£ */
+	background-color:rgb(46, 89, 167); /* é­å‚æ³°å²³ç¾¤é’æœ«ï¼Œè¢–æ‹‚è‹å°ä¸‡ç»¿åˆã€‚ */
 }
 
 td.CivilizationTableHead
@@ -325,5 +325,5 @@ td.CivilizationTableData
 	padding-left:10px;
 	padding-right:10px;	
 
-	background-color:rgb(212, 229, 239) /* ×í¿´Ä«»¨ÔÂ°×£¬»ĞÒÉÑ©ÂúÇ°´å¡£ */
+	background-color:rgb(212, 229, 239) /* é†‰çœ‹å¢¨èŠ±æœˆç™½ï¼Œæç–‘é›ªæ»¡å‰æ‘ã€‚ */
 }
