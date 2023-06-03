@@ -179,7 +179,7 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		cout << "\t\033[32m-lnkcss <path> \033[0m: Linking css file, only available for html mode.\n";
 
 		cout << "\t\033[32m-lcssmode=<mode>(-cp<encod>) \033[0m: CSS link mode, only available for html mode. The following values are available:\n";
-		cout << "\t\t\033[33mstatic \033[0m- link css with absolute path, maybe cause problems when files are moved.\n";
+		cout << "\t\t\033[33mstatic \033[0m- (Default value) link css with absolute path, maybe cause problems when files are moved.\n";
 		cout << "\t\t\033[33mcopy \033[0m- copy the css file to output path and link it with relative path.\n";
 		cout << "\t\t\033[33minline \033[0m- merge html and css into a single file. Most stable but the output file maybe very big.\n";
 		cout << "\t\tAddition: Custom encoding, aka. the \"-cp...\" after this argument, of css files is supported when using inline method.\n";
