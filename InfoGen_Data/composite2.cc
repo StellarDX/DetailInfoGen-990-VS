@@ -33,6 +33,11 @@ using namespace Localization;
 MPSArg MinorPlanetSortArg;
 vector<shared_ptr<Object>> MinorPlanetBuffer;
 
+const float64 MaxAsterDiameter = 120000;  // IRAS Standard, in meters
+const float64 MaxAsterMass     = 1E18;    // in Kg
+const float64 MinAsterRotation = 3600000; // in sec
+const float64 MaxAsterRotation = 100;     // in sec
+
 void __DFS_SearchMinorPlanets(ostream& os, shared_ptr<SystemStruct> SysTree, function<bool(shared_ptr<Object>)> _PFunc)
 {
 	if (SysTree == nullptr) { return; }
@@ -50,22 +55,22 @@ void __DFS_SearchMinorPlanets(ostream& os, shared_ptr<SystemStruct> SysTree, fun
 
 bool DiameterLargerThan120(shared_ptr<Object> Obj)
 {
-	return Obj->Radius() * 2. > 120000;
+	return Obj->Radius() * 2. > MaxAsterDiameter;
 }
 
 bool MassLargerThan1E18(shared_ptr<Object> Obj)
 {
-	return Obj->Mass > 1E18;
+	return Obj->Mass > MaxAsterMass;
 }
 
 bool RPeriodGreaterThan1000h(shared_ptr<Object> Obj)
 {
-	return Obj->Rotation.RotationPeriod > 3600000;
+	return Obj->Rotation.RotationPeriod > MinAsterRotation;
 }
 
 bool RPeriodLessThan100s(shared_ptr<Object> Obj)
 {
-	return Obj->Rotation.RotationPeriod < 100;
+	return Obj->Rotation.RotationPeriod < MaxAsterRotation;
 }
 
 bool IsRetrograde(shared_ptr<Object> Obj)

@@ -34,19 +34,18 @@
 using namespace std;
 using namespace cse;
 
+enum OutputFormat OFormat  = MD;
+bool Astrobiology          = false;
+uint32_t _OUT_PRECISION    = 12;
+string LcID                = "1033";
+enum LinkCSS LCSS          = Static;
+int outencoding            = 65001;
+
 ObjectBuffer System;
 string Final;
-
-enum OutputFormat OFormat = MD;
-bool Astrobiology = false;
-uint32_t _OUT_PRECISION = 12;
-string LcID = "1033";
 map<string, string> LocStrings;
 string OutputFileName;
-enum LinkCSS LCSS = Static;
 extern int CSSEncod;
-int outencoding = 65001;
-
 string CSSPath;
 
 void Transcode(string& arg, int encoding)
