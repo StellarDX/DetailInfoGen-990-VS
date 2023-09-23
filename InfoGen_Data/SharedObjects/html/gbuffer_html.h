@@ -4,9 +4,14 @@
 #define __GBUF_HTML__
 
 #include <xstring>
-#include "final.h"
 
-class _Html_Tags // Tags
+#if defined(_EXPORT) && !defined(EXTERNAL_CALL)
+#define EXTERNAL_CALL __declspec(dllexport)
+#else
+#define EXTERNAL_CALL __declspec(dllimport)
+#endif
+
+class EXTERNAL_CALL _Html_Tags // Tags
 {
 public:
 	static constexpr auto _DOCTYPE     = "<!DOCTYPE html>"; // HTML5 type
@@ -40,10 +45,16 @@ public:
 	static constexpr auto _para_end    = "</p>";
 };
 
-extern std::string HTMLhead;
-extern std::string HTMLcontent;
-extern std::string HTMLMenu;
+enum EXTERNAL_CALL LinkCSS { Static, Copy, Inline };
+enum EXTERNAL_CALL CopyOption { Asking, Skip, Replace };
 
-std::string MakeHTMLHead(std::string Title, int Charset, std::string CSSPath = "", LinkCSS Copy = Static);
+extern CopyOption EXTERNAL_CALL Cpm;
+extern std::string EXTERNAL_CALL HTMLhead;
+extern std::string EXTERNAL_CALL HTMLcontent;
+extern std::string EXTERNAL_CALL HTMLMenu;
+
+EXTERNAL_CALL std::string MakeHTMLHead(std::string OutputFileName, std::string Title, int Charset, std::string CSSPath = "", LinkCSS Copy = Static);
+
+EXTERNAL_CALL void HTMLWrite(string* Dst);
 
 #endif

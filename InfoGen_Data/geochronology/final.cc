@@ -1,6 +1,5 @@
 ﻿#include "composite.h"
 #include "final.h"
-#include "../final.h"
 
 #include <CSE/Object.h>
 
@@ -115,8 +114,14 @@ void LoadCustomModel(string FName, uint64 Encod)
 extern string LcID;
 void ParseLocalStrings(string FileName, string LCID, UINT CP);
 
-void geochronology(ISCStream& SystemIn, vector<string> args)
+int main(int argc, char const* argv[])
 {
+	vector<string> args;
+	for (size_t i = 0; i < argc; i++)
+	{
+		args.push_back(argv[i]);
+	}
+
 	string ObjectName, ParentName;
 	SysIn = SystemIn;
 

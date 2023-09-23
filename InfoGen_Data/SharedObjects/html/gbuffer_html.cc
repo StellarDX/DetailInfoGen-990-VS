@@ -10,9 +10,14 @@
 
 using namespace std;
 
-string DefaultCSSPath = "./InfoGen_Data/html_themes/Default.css";
-int CSSEncod = 65001;
-extern string OutputFileName;
+string DefaultCSSPath = "./InfoGen_Data/SharedObjects/html/themes/Default.css";
+int EXTERNAL_CALL CSSEncod = 65001;
+
+string HTMLhead;
+string HTMLcontent;
+string HTMLMenu;
+
+enum CopyOption EXTERNAL_CALL Cpm = Asking;
 
 map<int, string> HTMLCharsetsPerm
 {
@@ -42,9 +47,23 @@ string MoveCSS(string _Src, string _Dst)
 	}
 	if (!stat(_Dst.c_str(), &BufferD))
 	{
-		cout << "Destination css file is already exist, cover this file? (Y/N)\n";
 		char YN;
-		cin >> YN;
+
+		switch (Cpm)
+		{
+		case Asking:
+		default:
+			cout << "Destination css file is already exist, cover this file? (Y/N)\n";
+			cin >> YN;
+			break;
+		case Skip:
+			YN = 'N';
+			break;
+		case Replace:
+			YN = 'Y';
+			break;
+		}
+
 		switch (YN)
 		{
 		case 'N':
@@ -76,7 +95,34 @@ string MoveCSS(string _Src, string _Dst)
 	return FileName.back();
 }
 
-string MakeHTMLHead(string Title, int Charset, string CSSPath, LinkCSS Copy)
+string ConvertChar(const char* str, int SrcEncod)
+{
+	// This function taken from CSDN jianminfly
+	// https://blog.csdn.net/jianminfly/article/details/106186909
+	// Copyright(C) jianminfly，Licenced under CC BY-SA 4.0
+
+	string result;
+	WCHAR* strSrc;
+	LPSTR szRes;
+
+	// Get size of variable
+	int i = MultiByteToWideChar(SrcEncod, 0, str, -1, NULL, 0);
+	strSrc = new WCHAR[i + 1];
+	MultiByteToWideChar(SrcEncod, 0, str, -1, strSrc, i);
+
+	// Get size of variable
+	i = WideCharToMultiByte(CP_ACP, 0, strSrc, -1, NULL, 0, NULL, NULL);
+	szRes = new CHAR[i + 1];
+	WideCharToMultiByte(CP_ACP, 0, strSrc, -1, szRes, i, NULL, NULL);
+
+	result = szRes;
+	delete[]strSrc;
+	delete[]szRes;
+
+	return result;
+}
+
+EXTERNAL_CALL string MakeHTMLHead(string OutputFileName, string Title, int Charset, string CSSPath, LinkCSS Copy)
 {
 	ostringstream os;
 	os << "\t" << _Html_Tags::_head_begin << '\n';
@@ -105,10 +151,46 @@ string MakeHTMLHead(string Title, int Charset, string CSSPath, LinkCSS Copy)
 		ifstream cssf(CSSPath);
 		ostringstream tostr;
 		tostr << cssf.rdbuf();
-		string FinalStr = cse::sc::parser::ConvertChar(tostr.str().c_str(), CSSEncod);
+		string FinalStr = ConvertChar(tostr.str().c_str(), CSSEncod);
 		os << "\t\t" << _Html_Tags::_style_begin << '\n' << FinalStr << "\t\t" << _Html_Tags::_style_end << '\n';
 	}
 	
 	os << "\t" << _Html_Tags::_head_end << '\n';
 	return os.str();
+}
+
+EXTERNAL_CALL void HTMLWrite(string* Dst)
+{
+	*Dst += HTMLhead;
+
+	// Body
+	*Dst += '\t' + string(_Html_Tags::_body_begin) + '\n';
+
+	*Dst += "\t\t" + vformat(_Html_Tags::_div_begin, make_format_args("left")) + '\n';
+	*Dst += HTMLMenu;
+	*Dst += "\t\t" + string(_Html_Tags::_div_end) + '\n';
+
+	*Dst += "\t\t" + vformat(_Html_Tags::_div_begin, make_format_args("content")) + '\n';
+	*Dst += HTMLcontent;
+	*Dst += "\t\t" + string(_Html_Tags::_div_end) + '\n';
+
+	*Dst += '\t' + string(_Html_Tags::_body_end) + '\n';
+}
+
+BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
+{
+	switch (ul_reason_for_call)
+	{
+	case DLL_PROCESS_ATTACH:
+		cout << "[HTMLBuilder.so] Initializing HTML Builder...\n";
+		break;
+		//case DLL_THREAD_ATTACH:
+		//case DLL_THREAD_DETACH:
+	case DLL_PROCESS_DETACH:
+		cout << "[HTMLBuilder.so] Destroying HTML Builder...\n";
+		break;
+	default:
+		break;
+	}
+	return TRUE;
 }

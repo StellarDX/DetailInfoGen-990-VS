@@ -18,7 +18,6 @@
 *
 ****/
 
-#include "gbuffer_html.h"
 #include "composite.h"
 #include "composite1.h"
 #include "composite2.h"
@@ -28,7 +27,7 @@
 #include <fstream>
 #include <yvals_core.h> // STD version header
 
-#include "geochronology/final.h"
+//#include "geochronology/final.h"
 #include "mineralogy/final.h"
 
 using namespace std;
@@ -45,7 +44,7 @@ ObjectBuffer System;
 string Final;
 map<string, string> LocStrings;
 string OutputFileName;
-extern int CSSEncod;
+extern EXTERNAL_CALL int CSSEncod;
 string CSSPath;
 
 void Transcode(string& arg, int encoding)
@@ -97,24 +96,6 @@ void ParseLocalStrings(string FileName, string LCID, UINT CP)
 	}
 }
 
-void HTMLWrite()
-{
-	Final += HTMLhead;
-
-	// Body
-	Final += '\t' + string(_Html_Tags::_body_begin) + '\n';
-
-	Final += "\t\t" + vformat(_Html_Tags::_div_begin, make_format_args("left")) + '\n';
-	Final += HTMLMenu;
-	Final += "\t\t" + string(_Html_Tags::_div_end) + '\n';
-
-	Final += "\t\t" + vformat(_Html_Tags::_div_begin, make_format_args("content")) + '\n';
-	Final += HTMLcontent;
-	Final += "\t\t" + string(_Html_Tags::_div_end) + '\n';
-
-	Final += '\t' + string(_Html_Tags::_body_end)+'\n';
-}
-
 void NormalProcess(ISCStream& SystemIn, vector<string> args)
 {
 	UINT LCodePage = 65001;
@@ -151,7 +132,7 @@ void NormalProcess(ISCStream& SystemIn, vector<string> args)
 		composite4();
 	}
 
-	if (OFormat == HTML) { HTMLWrite(); }
+	if (OFormat == HTML) { HTMLWrite(&Final); }
 }
 
 /////////////////////////MAIN//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -179,7 +160,7 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 
 		cout << "\t\033[32m-lcssmode=<mode>(-cp<encod>) \033[0m: CSS link mode, only available for html mode. The following values are available:\n";
 		cout << "\t\t\033[33mstatic \033[0m- (Default value) link css with absolute path, maybe cause problems when files are moved.\n";
-		cout << "\t\t\033[33mcopy \033[0m- copy the css file to output path and link it with relative path.\n";
+		cout << "\t\t\033[33mcopy \033[0m- copy the css file to output path and link it with relative path. add \"-skip\" or \"-replace\" at the end to disable asking when file is already exist.\n";
 		cout << "\t\t\033[33minline \033[0m- merge html and css into a single file. Most stable but the output file maybe very big.\n";
 		cout << "\t\tAddition: Custom encoding, aka. the \"-cp...\" after this argument, of css files is supported when using inline method.\n";
 
@@ -295,6 +276,16 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		{
 			if (args[i] == "-lcssmode=static") { LCSS = Static; }
 			else if (args[i] == "-lcssmode=copy") { LCSS = Copy; }
+			else if (args[i] == "-lcssmode=copy-skip")
+			{
+				LCSS = Copy;
+				Cpm = Skip;
+			}
+			else if (args[i] == "-lcssmode=copy-replace")
+			{
+				LCSS = Copy;
+				Cpm = Replace;
+			}
 			else if (args[i].substr(0, 16) == "-lcssmode=inline")
 			{
 				LCSS = Inline;

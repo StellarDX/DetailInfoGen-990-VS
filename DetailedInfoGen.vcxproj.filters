@@ -58,9 +58,6 @@
     <ClCompile Include="InfoGen_Data\composite4.cc">
       <Filter>Src</Filter>
     </ClCompile>
-    <ClCompile Include="InfoGen_Data\gbuffer_html.cc">
-      <Filter>Src</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InfoGen_Data\composite.h">
@@ -117,10 +114,10 @@
     <None Include="InfoGen_Data\astrobiology\GB3095_2012.inl" />
     <None Include="InfoGen_Data\astrobiology\DB23T_1791_2021.inl" />
     <None Include="InfoGen_Data\astrobiology\GB14554_93.inl" />
-    <None Include="InfoGen_Data\html_themes\Default.css" />
-    <None Include="InfoGen_Data\html_themes\Geochronology.css" />
-    <None Include="InfoGen_Data\html_themes\Mineralogy.css" />
-    <None Include="InfoGen_Data\html_themes\Astrobiology.css" />
+    <None Include="InfoGen_Data\SharedObjects\html\themes\Default.css" />
+    <None Include="InfoGen_Data\SharedObjects\html\themes\Geochronology.css" />
+    <None Include="InfoGen_Data\SharedObjects\html\themes\Mineralogy.css" />
+    <None Include="InfoGen_Data\SharedObjects\html\themes\Astrobiology.css" />
     <None Include="README.md" />
     <None Include="LICENSE" />
   </ItemGroup>

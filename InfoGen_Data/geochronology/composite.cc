@@ -1,7 +1,6 @@
 ﻿#include "composite.h"
 #include "final.h"
-#include "../gbuffer_html.h"
-#include "../final.h"
+#include "html/gbuffer_html.h"
 
 #include <map>
 
@@ -579,8 +578,8 @@ void composite0geo(Object Target, Object Parent)
 	switch (OFormat)
 	{
 	case HTML:
-		if (CSSPath.empty()) { CSSPath = "./InfoGen_Data/html_themes/Geochronology.css"; }
-		Final += MakeHTMLHead(vformat(Geo_Title, make_format_args(Target.Name[0])), outencoding, CSSPath, LCSS);
+		if (CSSPath.empty()) { CSSPath = "./InfoGen_Data/SharedObjects/html/themes/Geochronology.css"; }
+		Final += MakeHTMLHead(OutputFileName, vformat(Geo_Title, make_format_args(Target.Name[0])), outencoding, CSSPath, LCSS);
 		if (CustomModel) { HTMLcontent = HTMLProcess(Target, Parent); }
 		else { HTMLcontent += HTMLProcessEarth(Target, Parent); }
 		break;

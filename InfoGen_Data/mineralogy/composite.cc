@@ -2,7 +2,7 @@
 #include "final.h"
 
 #include "../gbuffer_planet.h"
-#include "../gbuffer_html.h"
+#include "html/gbuffer_html.h"
 #include "../composite.h"
 #include "../composite2.h"
 #include "../final.h"
@@ -289,8 +289,8 @@ void composite0min()
 	switch (OFormat)
 	{
 	case HTML:
-		if (CSSPath.empty()) { CSSPath = "./InfoGen_Data/html_themes/Mineralogy.css"; }
-		Final += MakeHTMLHead(vformat(Min_Title, make_format_args(SystemBarycenter)), outencoding, CSSPath, LCSS);
+		if (CSSPath.empty()) { CSSPath = "./InfoGen_Data/SharedObjects/html/themes/Mineralogy.css"; }
+		Final += MakeHTMLHead(OutputFileName, vformat(Min_Title, make_format_args(SystemBarycenter)), outencoding, CSSPath, LCSS);
 		HTMLcontent += HTMLGenMineral();
 		break;
 	case MD:

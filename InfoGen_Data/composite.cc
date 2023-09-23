@@ -18,7 +18,7 @@
 *
 ****/
 
-#include "gbuffer_html.h"
+#include "html/gbuffer_html.h"
 
 #include "composite.h"
 #include "final.h"
@@ -50,10 +50,6 @@ using namespace Localization;
 map<string, vector<size_t>> TypeIndices;
 map<string, vector<size_t>> Companions;
 string SystemBarycenter;
-
-string HTMLhead;
-string HTMLcontent;
-string HTMLMenu;
 
 // -------------------- Functions -------------------- //
 
@@ -123,7 +119,7 @@ void FormatOutputSysInfo(ostream& os, string fmtstring, string ifmtstring, const
 string HTMLHeadOutput()
 {
 	ostringstream fout;
-	fout << MakeHTMLHead(SystemBarycenter, outencoding, CSSPath, LCSS);
+	fout << MakeHTMLHead(OutputFileName, SystemBarycenter, outencoding, CSSPath, LCSS);
 
 	return fout.str();
 }
