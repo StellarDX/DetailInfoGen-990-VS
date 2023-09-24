@@ -9,4 +9,18 @@
 #define EXTERNAL_CALL __declspec(dllimport)
 #endif
 
+#ifdef _DEBUG
+#define _DATABUFFER_PATH "SharedObjects.so"
+#define _DATABUFFER_PATH_INNER "SharedObjects.so"
+#else
+#define _DATABUFFER_PATH "./InfoGen_Data/SharedObjects/DataBuffer.so"
+#define _DATABUFFER_PATH_INNER "./SharedObjects/DataBuffer.so"
+#endif
+
+enum OutputFormat
+{
+	HTML,
+	MD
+};
+
 #endif

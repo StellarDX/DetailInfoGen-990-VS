@@ -11,13 +11,6 @@
 using namespace std;
 
 string DefaultCSSPath = "./InfoGen_Data/SharedObjects/html/themes/Default.css";
-int EXTERNAL_CALL CSSEncod = 65001;
-
-string HTMLhead;
-string HTMLcontent;
-string HTMLMenu;
-
-enum CopyOption EXTERNAL_CALL Cpm = Asking;
 
 map<int, string> HTMLCharsetsPerm
 {
@@ -35,7 +28,7 @@ map<int, string> HTMLCharsets4b1d
 	/*{     , "SCSU"        },*/ /*{     , "EBCDIC"     },*/ /*{      , "UTF-32"      }*/
 };
 
-string MoveCSS(string _Src, string _Dst)
+string MoveCSS(string _Src, string _Dst, CopyOption Cpm)
 {
 	ifstream BufferS(_Src);
 	struct stat BufferD;
@@ -122,7 +115,7 @@ string ConvertChar(const char* str, int SrcEncod)
 	return result;
 }
 
-EXTERNAL_CALL string MakeHTMLHead(string OutputFileName, string Title, int Charset, string CSSPath, LinkCSS Copy)
+EXTERNAL_CALL string MakeHTMLHead(string OutputFileName, string Title, int Charset, string CSSPath, int CSSEncod, LinkCSS Copy, CopyOption Cpm)
 {
 	ostringstream os;
 	os << "\t" << _Html_Tags::_head_begin << '\n';
@@ -143,7 +136,7 @@ EXTERNAL_CALL string MakeHTMLHead(string OutputFileName, string Title, int Chars
 
 	if (Copy == LinkCSS::Copy)
 	{
-		CSSPath = MoveCSS(CSSPath, OutputFileName.substr(0, OutputFileName.size() - 5) + ".css");
+		CSSPath = MoveCSS(CSSPath, OutputFileName.substr(0, OutputFileName.size() - 5) + ".css", Cpm);
 		os << "\t\t" << vformat(_Html_Tags::_link, make_format_args(CSSPath)) << '\n';
 	}
 	else if (Copy == Inline)
@@ -159,7 +152,7 @@ EXTERNAL_CALL string MakeHTMLHead(string OutputFileName, string Title, int Chars
 	return os.str();
 }
 
-EXTERNAL_CALL void HTMLWrite(string* Dst)
+EXTERNAL_CALL void HTMLWrite(string* Dst, string HTMLhead, string HTMLMenu, string HTMLcontent)
 {
 	*Dst += HTMLhead;
 

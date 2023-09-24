@@ -15,12 +15,7 @@
 #include <CSE/Object.h>
 
 #include "html/gbuffer_html.h"
-
-enum OutputFormat
-{
-	HTML,
-	MD
-};
+#include "DataBuffer.h"
 
 extern bool Astrobiology;
 extern OutputFormat OFormat;
@@ -32,6 +27,12 @@ extern std::string CSSPath;
 extern enum LinkCSS LCSS;
 extern int outencoding;
 extern std::string OutputFileName;
+
+extern CopyOption Cpm;
+extern std::string HTMLhead;
+extern std::string HTMLcontent;
+extern std::string HTMLMenu;
+extern int CSSEncod;
 
 void Transcode(std::string& arg, int encoding);
 

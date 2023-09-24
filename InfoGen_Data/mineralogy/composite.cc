@@ -33,10 +33,7 @@ namespace Localization
 
 using namespace Localization;
 
-bool IsRockyPlanet(shared_ptr<Object> Obj)
-{
-	return Obj->Class == "Ferria" || Obj->Class == "Terra" || Obj->Class == "Aquaria" || Obj->Class == "Carbonia" || Obj->Class == "Asteroid";
-}
+bool IsRockyPlanet(shared_ptr<Object> Obj);
 
 void FindRockyPlanets(const ObjectBuffer& Src, const map<string, vector<size_t>>& Indices)
 {

@@ -11,7 +11,7 @@
 #define EXTERNAL_CALL __declspec(dllimport)
 #endif
 
-class EXTERNAL_CALL _Html_Tags // Tags
+class _Html_Tags // Tags
 {
 public:
 	static constexpr auto _DOCTYPE     = "<!DOCTYPE html>"; // HTML5 type
@@ -48,13 +48,8 @@ public:
 enum EXTERNAL_CALL LinkCSS { Static, Copy, Inline };
 enum EXTERNAL_CALL CopyOption { Asking, Skip, Replace };
 
-extern CopyOption EXTERNAL_CALL Cpm;
-extern std::string EXTERNAL_CALL HTMLhead;
-extern std::string EXTERNAL_CALL HTMLcontent;
-extern std::string EXTERNAL_CALL HTMLMenu;
+EXTERNAL_CALL std::string MakeHTMLHead(std::string OutputFileName, std::string Title, int Charset, std::string CSSPath = "", int CSSEncod = 65001, LinkCSS Copy = Static, CopyOption Cpm = Asking);
 
-EXTERNAL_CALL std::string MakeHTMLHead(std::string OutputFileName, std::string Title, int Charset, std::string CSSPath = "", LinkCSS Copy = Static);
-
-EXTERNAL_CALL void HTMLWrite(string* Dst);
+EXTERNAL_CALL void HTMLWrite(std::string* Dst, std::string HTMLhead, std::string HTMLMenu, std::string HTMLcontent);
 
 #endif

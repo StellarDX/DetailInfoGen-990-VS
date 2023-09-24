@@ -28,7 +28,7 @@
 #include <yvals_core.h> // STD version header
 
 //#include "geochronology/final.h"
-#include "mineralogy/final.h"
+//#include "mineralogy/final.h"
 
 using namespace std;
 using namespace cse;
@@ -38,14 +38,20 @@ bool Astrobiology          = false;
 uint32_t _OUT_PRECISION    = 12;
 string LcID                = "1033";
 enum LinkCSS LCSS          = Static;
+int srcencoding            = 65001;
 int outencoding            = 65001;
 
 ObjectBuffer System;
 string Final;
 map<string, string> LocStrings;
 string OutputFileName;
-extern EXTERNAL_CALL int CSSEncod;
 string CSSPath;
+
+string HTMLhead;
+string HTMLcontent;
+string HTMLMenu;
+int CSSEncod = 65001;
+enum CopyOption Cpm = Asking;
 
 void Transcode(string& arg, int encoding)
 {
@@ -132,13 +138,92 @@ void NormalProcess(ISCStream& SystemIn, vector<string> args)
 		composite4();
 	}
 
-	if (OFormat == HTML) { HTMLWrite(&Final); }
+	if (OFormat == HTML) { HTMLWrite(&Final, HTMLhead, HTMLMenu, HTMLcontent); }
+}
+
+#ifdef _DEBUG
+#define GEOCHRO_PATH "Geochronology.exe"
+#else
+#define GEOCHRO_PATH ".\\InfoGen_Data\\Geochronology.exe"
+#endif
+
+void GeochronologyCall(vector<string> args)
+{
+	// Construct data buffer
+	cout << "Constructing data buffer...\n";
+	auto DataBufferHInst = LoadLibraryA(_DATABUFFER_PATH);
+	if (!DataBufferHInst)
+	{
+		cout << "Data buffer couldn't be constructed, program will exit.\n";
+		exit(3);
+	}
+	cout << "Data buffer address: " << DataBufferHInst << '\n';
+
+	// send data
+	cout << "Exporting data...\n";
+	void (*SendDataFPtr)(string _Buf, int _OFmt, UINT _ICP, UINT _OCP, string _OFName, string _LCID)
+		= (void (*)(string, int, UINT, UINT, string, string))GetProcAddress(DataBufferHInst, "SendBasicParams");
+
+	SendDataFPtr(Final, OFormat, srcencoding, outencoding, OutputFileName, LcID);
+
+	if (OFormat == HTML)
+	{
+		void (*SendHTMLFPtr)(int _LCSSM, string _CSSPath, int _CPMethod)
+			= (void (*)(int, string, int))GetProcAddress(DataBufferHInst, "SendHTMLParams");
+		SendHTMLFPtr(LCSS, CSSPath, Cpm);
+	}
+
+	cout << "DONE.\n";
+
+	cout << "Starting Geochronology process...\n";
+
+	string CmdLine;
+	args[0] = GEOCHRO_PATH;
+	for (auto i : args)
+	{
+		CmdLine += "\"" + i + "\"" + ' ';
+	}
+	char CmdStr[500];
+	strcpy_s(CmdStr, CmdLine.c_str());
+
+	STARTUPINFOA GeoChronoInfo;
+	PROCESS_INFORMATION GeoChronoPInf;
+	memset(&GeoChronoInfo, 0, sizeof(STARTUPINFO));
+	GeoChronoInfo.cb = sizeof(STARTUPINFO);
+	memset(&GeoChronoPInf, 0, sizeof(PROCESS_INFORMATION));
+
+	bool GeochronoReturn = CreateProcessA(nullptr, CmdStr, nullptr, nullptr, false, NORMAL_PRIORITY_CLASS, nullptr, nullptr, &GeoChronoInfo, &GeoChronoPInf);
+	if (!GeochronoReturn) 
+	{
+		cout << "Geochronology process start failed.\n";
+	}
+
+	cout << "Waiting for process...\n";
+	WaitForSingleObject(GeoChronoPInf.hProcess, 0xFFFFFFFF);
+
+	cout << "Geochronology exited, receiving result.\n";
+	char DBuf[0x7FFF], OFname[200], LocID[5];
+	void (*LoadDataFPtr)(char* _DBuf, UINT * _OFmt, UINT * _Scp, UINT * _Ocp, char* _OFName, char* _LCID)
+		= (void (*)(char*, UINT*, UINT*, UINT*, char*, char*))GetProcAddress(DataBufferHInst, "LoadBasicParams");
+	LoadDataFPtr(DBuf, (UINT*)(&OFormat), (UINT*)&srcencoding, (UINT*)&outencoding, OFname, LocID);
+
+	Final = DBuf;
+	OutputFileName = OFname;
+	LcID = LocID;
+
+	cout << "DONE.\n";
+	
+	CloseHandle(GeoChronoPInf.hProcess);
+	CloseHandle(GeoChronoPInf.hThread);
+	FreeLibrary(DataBufferHInst);
 }
 
 /////////////////////////MAIN//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 int main(int argc, char const* argv[]) // main function can return "void" in C++20, WHY???
 {
+	SetDllDirectoryA("./InfoGen_Data/SharedObjects");
+
 	cout << "SpaceEngine 0.990 Detailed information generator\nCopyright (C) StellarDX Astronomy.\n";
 	cout << "This is a free software, see the source for copying condition. \n";
 	//cout << "There is no warranty; not even for merchantability or fitness for a particular purpose.\n";
@@ -221,7 +306,6 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		break;
 	}
 
-	int srcencoding = 65001; // Default encoding is UTF-8
 	//int outencoding = 65001; // Default encoding is UTF-8
 	for (size_t i = 0; i < args.size(); i++)
 	{
@@ -318,17 +402,6 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 
 	if (OFormat == HTML && find(args.begin(), args.end(), "-cpcss") != args.end()) { LCSS = Copy; } // Capability of earlier version.
 
-	// Parse File
-
-	cout << "Loading File...\n";
-	ISCStream SystemIn;
-	try {SystemIn = ParseFile(args[1], srcencoding); }
-	catch (exception e)
-	{
-		cout << e.what();
-		abort();
-	}
-
 	// Processing
 
 	if (OFormat == HTML)
@@ -336,10 +409,19 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		Final += string(_Html_Tags::_DOCTYPE) + '\n';
 		Final += string(_Html_Tags::_html_begin) + '\n';
 	}
-	if (find(args.begin(), args.end(), "-geochronology") != args.end()) { geochronology(SystemIn, args); }
-	else if (find(args.begin(), args.end(), "-mineralogy") != args.end()) { minerals(SystemIn, args); }
+	if (find(args.begin(), args.end(), "-geochronology") != args.end()) { GeochronologyCall(args); }
+	//else if (find(args.begin(), args.end(), "-mineralogy") != args.end()) { minerals(SystemIn, args); }
 	else
 	{
+		// Parse File
+		cout << "Loading File...\n";
+		ISCStream SystemIn;
+		try { SystemIn = ParseFile(args[1], srcencoding); }
+		catch (exception e)
+		{
+			cout << e.what();
+			abort();
+		}
 		if (find(args.begin(), args.end(), "-astrobiology") != args.end()) { Astrobiology = true; }
 		NormalProcess(SystemIn, args);
 	}

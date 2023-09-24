@@ -119,7 +119,7 @@ void FormatOutputSysInfo(ostream& os, string fmtstring, string ifmtstring, const
 string HTMLHeadOutput()
 {
 	ostringstream fout;
-	fout << MakeHTMLHead(OutputFileName, SystemBarycenter, outencoding, CSSPath, LCSS);
+	fout << MakeHTMLHead(OutputFileName, SystemBarycenter, outencoding, CSSPath, CSSEncod, LCSS, Cpm);
 
 	return fout.str();
 }
