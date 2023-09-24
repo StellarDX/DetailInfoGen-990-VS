@@ -14,26 +14,31 @@
 #include <CSE/SCStream.h>
 #include <CSE/Object.h>
 
-#include "html/gbuffer_html.h"
-#include "DataBuffer.h"
+enum OutputFormat
+{
+	HTML,
+	MD
+};
+
+enum LinkCSS { Static, Copy, Inline };
 
 extern bool Astrobiology;
+
 extern OutputFormat OFormat;
 extern std::string Final;
+
 using ObjectBuffer = std::vector<cse::Object>;
 extern ObjectBuffer System;
-extern std::map<std::string, std::string> LocStrings;
-extern std::string CSSPath;
-extern enum LinkCSS LCSS;
-extern int outencoding;
-extern std::string OutputFileName;
 
-extern CopyOption Cpm;
-extern std::string HTMLhead;
-extern std::string HTMLcontent;
-extern std::string HTMLMenu;
-extern int CSSEncod;
+extern std::map<std::string, std::string> LocStrings;
+
+extern std::string CSSPath;
+extern LinkCSS LCSS;
+
+extern int outencoding;
 
 void Transcode(std::string& arg, int encoding);
+
+void HTMLWrite();
 
 #endif

@@ -1,7 +1,7 @@
 ﻿#include "composite.h"
 #include "final.h"
-#include "html/gbuffer_html.h"
-#include "DataBuffer.h"
+#include "../gbuffer_html.h"
+#include "../final.h"
 
 #include <map>
 
@@ -535,17 +535,7 @@ void _DefInit()
 	};
 }
 
-void GetLcString(string Key, string* Val)
-{
-	auto it = LocStrings.find(Key);
-	if (it == LocStrings.end())
-	{
-		cout << vformat("String \"{}\"(Default Value = \"{}\") is not found in localization file, using default value.\n", make_format_args(Key, *Val));
-		return;
-	}
-	*Val = it->second;
-}
-
+void GetLcString(string Key, string* Val);
 void GeoLoadLocStr()
 {
 	GetLcString("Geo_Title",       &Geo_Title);
@@ -589,8 +579,8 @@ void composite0geo(Object Target, Object Parent)
 	switch (OFormat)
 	{
 	case HTML:
-		if (CSSPath.empty()) { CSSPath = "./InfoGen_Data/SharedObjects/html/themes/Geochronology.css"; }
-		Final += MakeHTMLHead(OutputFileName, vformat(Geo_Title, make_format_args(Target.Name[0])), outencoding, CSSPath, CSSEncod, LCSS, Cpm);
+		if (CSSPath.empty()) { CSSPath = "./InfoGen_Data/html_themes/Geochronology.css"; }
+		Final += MakeHTMLHead(vformat(Geo_Title, make_format_args(Target.Name[0])), outencoding, CSSPath, LCSS);
 		if (CustomModel) { HTMLcontent = HTMLProcess(Target, Parent); }
 		else { HTMLcontent += HTMLProcessEarth(Target, Parent); }
 		break;

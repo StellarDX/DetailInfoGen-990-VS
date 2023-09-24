@@ -1,6 +1,6 @@
 #include "composite3.h"
 
-#include "html/gbuffer_html.h"
+#include "gbuffer_html.h"
 #include "gbuffer_planet.h"
 #include "composite.h"
 #include "composite2.h"
@@ -22,10 +22,7 @@ namespace Localization
 
 using namespace Localization;
 
-bool IsRockyPlanet(shared_ptr<Object> Obj)
-{
-	return Obj->Class == "Ferria" || Obj->Class == "Terra" || Obj->Class == "Aquaria" || Obj->Class == "Carbonia" || Obj->Class == "Asteroid";
-}
+bool IsRockyPlanet(shared_ptr<Object> Obj);
 
 void __DFS_FindRockyObj(shared_ptr<SystemStruct> SysTree)
 {
@@ -43,8 +40,8 @@ void __DFS_FindRockyObj(shared_ptr<SystemStruct> SysTree)
 
 string HTMLAstrobiology()
 {
-	if (CSSPath.empty()) { CSSPath = "./InfoGen_Data/SharedObjects/html/themes/Astrobiology.css"; }
-	Final += MakeHTMLHead(OutputFileName, vformat(Asb_Title, make_format_args(SystemBarycenter)), outencoding, CSSPath, CSSEncod, LCSS, Cpm);
+	if (CSSPath.empty()) { CSSPath = "./InfoGen_Data/html_themes/Astrobiology.css"; }
+	Final += MakeHTMLHead(vformat(Asb_Title, make_format_args(SystemBarycenter)), outencoding, CSSPath, LCSS);
 	ostringstream os;
 	os << vformat("\t\t\t" + string(_Html_Tags::_h1_begin) + Asb_Title + string(_Html_Tags::_h1_end) + "\n", make_format_args(SystemBarycenter));
 	os << "\t\t\t" << _Html_Tags::_table_begin << '\n';

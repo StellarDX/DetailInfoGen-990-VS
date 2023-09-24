@@ -1,31 +1,14 @@
 ﻿#include "composite.h"
 #include "final.h"
+#include "../final.h"
 
-#include <iostream>
 #include <CSE/Object.h>
 
 using namespace std;
 using namespace cse;
 
 ISCStream SysIn;
-string Final;
-
-bool CustomModel          = false;
-enum OutputFormat OFormat = MD;
-UINT srcencoding          = 65001;
-UINT outencoding          = 65001;
-string OutputFileName;
-string CSSPath;
-enum LinkCSS LCSS         = Static;
-
-string LcID               = "1033";
-map<string, string> LocStrings;
-
-enum CopyOption Cpm       = Asking;
-string HTMLhead;
-string HTMLcontent;
-string HTMLMenu;
-int CSSEncod              = 65001;
+bool CustomModel = false;
 
 vec2 LoadEonRange(ISCStream& is, string Key)
 {
@@ -129,82 +112,13 @@ void LoadCustomModel(string FName, uint64 Encod)
 	EndStr = is->GetQualified("EndString")->as<string>()->get();
 }
 
-void ParseLocalStrings(string FileName, string LCID, UINT CP)
+extern string LcID;
+void ParseLocalStrings(string FileName, string LCID, UINT CP);
+
+void geochronology(ISCStream& SystemIn, vector<string> args)
 {
-	ISCStream LCIS;
-	bool FileExist = true;
-	try { LCIS = ParseFile("InfoGen_Data\\geochronology\\" + LCID + "\\" + FileName, CP); }
-	catch (const std::exception&)
-	{
-		cout << "Localization is not specified or file not exist, using default strings.\n";
-		FileExist = false;
-	}
-
-	if (!FileExist) { return; }
-
-	string InternationalName = sc::GetAs<string>(LCIS, "InternationalName");
-	string LocalName = sc::GetAs<string>(LCIS, "LocalName");
-	cout << "Enabled localization: " + LocalName + '(' + InternationalName + ')' + '\n';
-
-	auto it = LCIS->find("Translations");
-	if (it == LCIS->end())
-	{
-		cout << "Invalid localization file.\n";
-		abort();
-	}
-
-	auto Translations = it->SubTable;
-	for (size_t i = 0; i < Translations->Catalogue.size(); i++)
-	{
-		LocStrings.insert({ Translations->Catalogue[i].Key, sc::GetAs<string>(Translations, Translations->Catalogue[i].Key) });
-	}
-}
-
-void ReceiveBufferData(HINSTANCE hInstance)
-{
-	char DBuf[0x7FFF], OFname[200], LocID[5];
-	void (*LoadDataFPtr)(char* _DBuf, UINT* _OFmt, UINT* _Scp, UINT* _Ocp, char* _OFName, char* _LCID)
-		= (void (*)(char*, UINT*, UINT*, UINT*, char*, char*))GetProcAddress(hInstance, "LoadBasicParams");
-	LoadDataFPtr(DBuf, (UINT*)(&OFormat), &srcencoding, &outencoding, OFname, LocID);
-
-	Final = DBuf;
-	OutputFileName = OFname;
-	LcID = LocID;
-
-	cout << "Data loaded : \n"
-		<< "\tBuffer Content : \n" << Final << '\n'
-		<< "\tOutput Format : " << OFormat << '\n'
-		<< "\tSource encoding : " << srcencoding << '\n'
-		<< "\tOutput encoding : " << outencoding << '\n'
-		<< "\tOutput File Name : " << OutputFileName << '\n'
-		<< "\tLCID : " << LcID << '\n';
-
-	if (OFormat == HTML)
-	{
-		char CPath[200];
-		void (*LoadHTMLFPtr)(int* _LnkCSS, char* _CPath, int* _Cpm)
-			= (void (*)(int*, char*, int*))GetProcAddress(hInstance, "LoadHTMLParams");
-		LoadHTMLFPtr((int*)(&LCSS), CPath, (int*)&Cpm);
-		CSSPath = CPath;
-	}
-}
-
-void SendBufferData(HINSTANCE hInstance)
-{
-	void (*SendDataFPtr)(string _Buf, int _OFmt, UINT _ICP, UINT _OCP, string _OFName, string _LCID)
-		= (void (*)(string, int, UINT, UINT, string, string))GetProcAddress(hInstance, "SendBasicParams");
-	SendDataFPtr(Final, OFormat, srcencoding, outencoding, OutputFileName, LcID);
-}
-
-int main(int argc, char const* argv[]) 
-{
-	vector<string> args;
-	for (size_t i = 0; i < argc; i++)
-	{
-		args.push_back(argv[i]);
-	}
-
 	string ObjectName, ParentName;
+	SysIn = SystemIn;
 
 	UINT LCodePage = 65001;
 
@@ -212,13 +126,6 @@ int main(int argc, char const* argv[])
 	uint64 CMEncoding = 65001;
 	for (size_t i = 0; i < args.size(); i++)
 	{
-		// Seed
-		if (args[i].substr(0, 6) == "-seed=")
-		{
-			string encodstr = args[i];
-			random.seed(stoull(encodstr.substr(6, encodstr.size() - 6), nullptr, 16));
-		}
-
 		if (args[i].substr(0, 8) == "-lchset=")
 		{
 			string lccp = args[i];
@@ -262,17 +169,6 @@ int main(int argc, char const* argv[])
 		}
 	}
 
-	// Receiving Buffer data
-
-	cout << "Loading data buffer...\n";
-	auto DataBufferhInst = LoadLibraryA(_DATABUFFER_PATH_INNER);
-	if (DataBufferhInst)
-	{
-		cout << "Data buffer is found in address " << DataBufferhInst << "\n";
-		ReceiveBufferData(DataBufferhInst);
-	}
-	else { cout << "Failed to load data buffer.\n"; }
-
 	cout << "Loading localizations...\n";
 	ParseLocalStrings("Geochronology.cfg", LcID, LCodePage);
 
@@ -286,16 +182,10 @@ int main(int argc, char const* argv[])
 
 	// Find object
 
-	try { SysIn = ParseFile(args[1], srcencoding); }
-	catch (exception e)
-	{
-		cout << e.what();
-		abort();
-	}
-	Object Target = GetSEObject(SysIn, ObjectName);
+	Object Target = GetSEObject(SystemIn, ObjectName);
 	Object Parent;
-	if (ParentName.empty()) { Parent = GetSEObject(SysIn, Target.ParentBody); }
-	else { Parent = GetSEObject(SysIn, ParentName); }
+	if (ParentName.empty()) { Parent = GetSEObject(SystemIn, Target.ParentBody); }
+	else { Parent = GetSEObject(SystemIn, ParentName); }
 
 	if (!(Target.Type != "Jupiter" && Target.Type != "GasGiant" && Target.Type != "Neptune" && Target.Type != "IceGiant") &&
 		Target.NoOcean && Target.NoAtmosphere &&
@@ -308,7 +198,5 @@ int main(int argc, char const* argv[])
 
 	composite0geo(Target, Parent);
 
-	if (OFormat == HTML) { HTMLWrite(&Final, HTMLhead, HTMLMenu, HTMLcontent); }
-
-	SendBufferData(DataBufferhInst);
+	if (OFormat == HTML) { HTMLWrite(); }
 }
