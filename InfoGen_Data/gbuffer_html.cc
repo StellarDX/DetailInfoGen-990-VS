@@ -6,13 +6,17 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <filesystem>
 #include <windows.h>
 
 using namespace std;
+using namespace std::filesystem;
 
 string DefaultCSSPath = "./InfoGen_Data/html_themes/Default.css";
 int CSSEncod = 65001;
 extern string OutputFileName;
+
+enum CopyDefaultMethod DefaultCCpyMethod = Asking;
 
 map<int, string> HTMLCharsetsPerm
 {
@@ -32,19 +36,32 @@ map<int, string> HTMLCharsets4b1d
 
 string MoveCSS(string _Src, string _Dst)
 {
-	ifstream BufferS(_Src);
-	struct stat BufferD;
+	path FileName(_Dst);
+
 	bool IsCopy = true;
-	if (!BufferS)
+	if (!exists(_Src))
 	{
 		cout << "Source css file is not exist.\n";
 		abort();
 	}
-	if (!stat(_Dst.c_str(), &BufferD))
+	if (exists(_Dst))
 	{
-		cout << "Destination css file is already exist, cover this file? (Y/N)\n";
 		char YN;
-		cin >> YN;
+		switch (DefaultCCpyMethod)
+		{
+		case Asking:
+		default:
+			cout << "Destination css file is already exist, cover this file? (Y/N)\n";
+			cin >> YN;
+			break;
+		case Skip:
+			YN = 'N';
+			break;
+		case Replace:
+			YN = 'Y';
+			break;
+		}
+
 		switch (YN)
 		{
 		case 'N':
@@ -57,23 +74,29 @@ string MoveCSS(string _Src, string _Dst)
 			break;
 		}
 	}
+	else if (!exists(FileName.parent_path()))
+	{
+		if (MakeDir)
+		{
+			cout << "Output directory is not exist, creating...\n";
+			if (!create_directory(FileName.parent_path()))
+			{
+				cout << "Failed to create directory.\n";
+				exit(114514);
+			}
+		}
+		else
+		{
+			cout << "Output directory is not exist.\n";
+			exit(114514);
+		}
+	}
 	if (IsCopy)
 	{
-		CopyFileA(_Src.c_str(), _Dst.c_str(), false);
+		copy(_Src, _Dst);
 	}
 
-	string FileNameTmp;
-	vector<string> FileName;
-	for (size_t i = 0; i < _Dst.size(); i++)
-	{
-		if (_Dst[i] == '/') { _Dst[i] = '\\'; }
-	}
-	istringstream in(_Dst);
-	while (getline(in, FileNameTmp, '\\'))
-	{
-		FileName.push_back(FileNameTmp);
-	}
-	return FileName.back();
+	return FileName.stem().string() + FileName.extension().string();
 }
 
 string MakeHTMLHead(string Title, int Charset, string CSSPath, LinkCSS Copy)

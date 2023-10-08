@@ -95,7 +95,7 @@ string HTMLMPDiam(shared_ptr<Object> Obj)
 	(
 		Obj->Name[0],
 		Obj->ParentBody,
-		cse::cbrt(Obj->Dimensions.x * Obj->Dimensions.y * Obj->Dimensions.z),
+		Obj->Radius(),
 		Obj->Dimensions.x,
 		Obj->Dimensions.y,
 		Obj->Dimensions.z,
@@ -111,7 +111,7 @@ string GHMarkDownMPDiam(shared_ptr<Object> Obj)
 	(
 		Obj->Name[0],
 		Obj->ParentBody,
-		cse::cbrt(Obj->Dimensions.x * Obj->Dimensions.y * Obj->Dimensions.z),
+		Obj->Radius(),
 		Obj->Dimensions.x,
 		Obj->Dimensions.y,
 		Obj->Dimensions.z,
@@ -152,7 +152,7 @@ string HTMLMPRot(shared_ptr<Object> Obj)
 		Obj->Name[0],
 		Obj->Rotation.RotationPeriod,
 		Obj->ParentBody,
-		cse::cbrt(Obj->Dimensions.x * Obj->Dimensions.y * Obj->Dimensions.z)
+		Obj->Radius()
 	));
 }
 
@@ -165,7 +165,7 @@ string GHMarkDownMPRot(shared_ptr<Object> Obj)
 		Obj->Name[0],
 		Obj->Rotation.RotationPeriod,
 		Obj->ParentBody,
-		cse::cbrt(Obj->Dimensions.x * Obj->Dimensions.y * Obj->Dimensions.z)
+		Obj->Radius()
 	));
 }
 

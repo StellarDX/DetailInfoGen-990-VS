@@ -1,5 +1,5 @@
-﻿#include "composite.h"
-#include "final.h"
+﻿#include "geochronogen.h"
+#include "geochronofinal.h"
 #include "../gbuffer_html.h"
 #include "../final.h"
 

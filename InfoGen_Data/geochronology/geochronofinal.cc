@@ -1,5 +1,5 @@
-﻿#include "composite.h"
-#include "final.h"
+﻿#include "geochronogen.h"
+#include "geochronofinal.h"
 #include "../final.h"
 
 #include <CSE/Object.h>

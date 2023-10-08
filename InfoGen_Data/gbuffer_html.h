@@ -40,6 +40,13 @@ public:
 	static constexpr auto _para_end    = "</p>";
 };
 
+extern enum CopyDefaultMethod
+{
+	Asking,
+	Skip,
+	Replace
+}DefaultCCpyMethod;
+
 extern std::string HTMLhead;
 extern std::string HTMLcontent;
 extern std::string HTMLMenu;

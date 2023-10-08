@@ -71,13 +71,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ExternalIncludePath>E:\Projects\C艹\CSpaceEngine\Headers;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
-    <LibraryPath>E:\Projects\C艹\CSpaceEngine\Libraries;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <ExternalIncludePath>$(SolutionDir)InfoGen_Data\lib;E:\Projects\C艹\CSpaceEngine\Headers;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
+    <LibraryPath>$(SolutionDir)InfoGen_Data\lib;E:\Projects\C艹\CSpaceEngine\Libraries;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
     <TargetName>InfoGen</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ExternalIncludePath>E:\Projects\C艹\CSpaceEngine\Headers;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
-    <LibraryPath>E:\Projects\C艹\CSpaceEngine\Libraries;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <ExternalIncludePath>$(SolutionDir)InfoGen_Data\lib;E:\Projects\C艹\CSpaceEngine\Headers;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
+    <LibraryPath>$(SolutionDir)InfoGen_Data\lib;E:\Projects\C艹\CSpaceEngine\Libraries;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
     <TargetName>InfoGen</TargetName>
     <OutDir>$(SolutionDir)</OutDir>
     <CopyLocalDeploymentContent>true</CopyLocalDeploymentContent>
@@ -151,6 +151,7 @@
     <ClCompile Include="InfoGen_Data\composite1.cc" />
     <ClCompile Include="InfoGen_Data\composite2.cc" />
     <ClCompile Include="InfoGen_Data\composite4.cc" />
+    <ClCompile Include="InfoGen_Data\partition\partition.cc" />
     <ClCompile Include="InfoGen_Data\final.cc" />
     <ClCompile Include="InfoGen_Data\gbuffer_atmosphere.cc" />
     <ClCompile Include="InfoGen_Data\gbuffer_basic.cc" />
@@ -158,73 +159,14 @@
     <ClCompile Include="InfoGen_Data\gbuffer_planet.cc" />
     <ClCompile Include="InfoGen_Data\gbuffer_star.cc" />
     <ClCompile Include="InfoGen_Data\gbuffer_water.cc" />
-    <ClCompile Include="InfoGen_Data\geochronology\composite.cc">
-      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_geo</AssemblerListingLocation>
-      <ModuleOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_geo</ModuleOutputFile>
-      <ModuleDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_geo</ModuleDependenciesFile>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)composite_geo</ObjectFileName>
-      <ProgramDataBaseFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)vc$(PlatformToolsetVersion)_geo.pdb</ProgramDataBaseFileName>
-      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_geo</XMLDocumentationFileName>
-      <SourceDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_geo</SourceDependenciesFile>
-      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_geo</AssemblerListingLocation>
-      <ModuleOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_geo</ModuleOutputFile>
-      <ModuleDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_geo</ModuleDependenciesFile>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)composite_geo</ObjectFileName>
-      <ProgramDataBaseFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)vc$(PlatformToolsetVersion)_geo.pdb</ProgramDataBaseFileName>
-      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_geo</XMLDocumentationFileName>
-      <SourceDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_geo</SourceDependenciesFile>
-    </ClCompile>
-    <ClCompile Include="InfoGen_Data\geochronology\final.cc">
-      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_geo</AssemblerListingLocation>
-      <ModuleOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_geo</ModuleOutputFile>
-      <ModuleDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_geo</ModuleDependenciesFile>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)final_geo</ObjectFileName>
-      <ProgramDataBaseFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)vc$(PlatformToolsetVersion)_geo.pdb</ProgramDataBaseFileName>
-      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_geo</XMLDocumentationFileName>
-      <SourceDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_geo</SourceDependenciesFile>
-      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_geo</AssemblerListingLocation>
-      <ModuleOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_geo</ModuleOutputFile>
-      <ModuleDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_geo</ModuleDependenciesFile>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)final_geo</ObjectFileName>
-      <ProgramDataBaseFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)vc$(PlatformToolsetVersion)_geo.pdb</ProgramDataBaseFileName>
-      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_geo</XMLDocumentationFileName>
-      <SourceDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_geo</SourceDependenciesFile>
-    </ClCompile>
-    <ClCompile Include="InfoGen_Data\mineralogy\composite.cc">
-      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_min</AssemblerListingLocation>
-      <ModuleOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_min</ModuleOutputFile>
-      <ModuleDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_min</ModuleDependenciesFile>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)composite_min</ObjectFileName>
-      <ProgramDataBaseFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)vc$(PlatformToolsetVersion)_min.pdb</ProgramDataBaseFileName>
-      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_min</XMLDocumentationFileName>
-      <SourceDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_min</SourceDependenciesFile>
-      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_min</AssemblerListingLocation>
-      <ModuleOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_min</ModuleOutputFile>
-      <ModuleDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_min</ModuleDependenciesFile>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)composite_min</ObjectFileName>
-      <ProgramDataBaseFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)vc$(PlatformToolsetVersion)_min.pdb</ProgramDataBaseFileName>
-      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_min</XMLDocumentationFileName>
-      <SourceDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_min</SourceDependenciesFile>
-    </ClCompile>
-    <ClCompile Include="InfoGen_Data\mineralogy\final.cc">
-      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_min</AssemblerListingLocation>
-      <ModuleOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_min</ModuleOutputFile>
-      <ModuleDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_min</ModuleDependenciesFile>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)final_min</ObjectFileName>
-      <ProgramDataBaseFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)vc$(PlatformToolsetVersion)_min.pdb</ProgramDataBaseFileName>
-      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_min</XMLDocumentationFileName>
-      <SourceDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)_min</SourceDependenciesFile>
-      <AssemblerListingLocation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_min</AssemblerListingLocation>
-      <ModuleOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_min</ModuleOutputFile>
-      <ModuleDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_min</ModuleDependenciesFile>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)final_min</ObjectFileName>
-      <ProgramDataBaseFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)vc$(PlatformToolsetVersion)_min.pdb</ProgramDataBaseFileName>
-      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_min</XMLDocumentationFileName>
-      <SourceDependenciesFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)_min</SourceDependenciesFile>
-    </ClCompile>
+    <ClCompile Include="InfoGen_Data\geochronology\geochronogen.cc" />
+    <ClCompile Include="InfoGen_Data\geochronology\geochronofinal.cc" />
+    <ClCompile Include="InfoGen_Data\mineralogy\mineralgen.cc" />
+    <ClCompile Include="InfoGen_Data\mineralogy\mineralfinal.cc" />
     <ClCompile Include="InfoGen_Data\sorting.cc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="InfoGen_Data\partition\partition.h" />
     <ClInclude Include="InfoGen_Data\gbuffer_html.h" />
     <ClInclude Include="InfoGen_Data\astrobiology\GB16297-1996.inl" />
     <ClInclude Include="InfoGen_Data\composite.h" />
@@ -237,24 +179,19 @@
     <ClInclude Include="InfoGen_Data\gbuffer_planet.h" />
     <ClInclude Include="InfoGen_Data\gbuffer_star.h" />
     <ClInclude Include="InfoGen_Data\gbuffer_water.h" />
-    <ClInclude Include="InfoGen_Data\geochronology\composite.h" />
-    <ClInclude Include="InfoGen_Data\geochronology\final.h" />
-    <ClInclude Include="InfoGen_Data\mineralogy\composite.h" />
-    <ClInclude Include="InfoGen_Data\mineralogy\final.h" />
-    <ClInclude Include="InfoGen_Data\mineralogy\OreDict.tbl" />
+    <ClInclude Include="InfoGen_Data\geochronology\geochronogen.h" />
+    <ClInclude Include="InfoGen_Data\geochronology\geochronofinal.h" />
+    <ClInclude Include="InfoGen_Data\mineralogy\mineralgen.h" />
+    <ClInclude Include="InfoGen_Data\mineralogy\mineralfinal.h" />
     <ClInclude Include="InfoGen_Data\sorting.h" />
     <ClInclude Include="InfoGen_Data\composite4.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="InfoGen_Data\geochronology\COMMON.inl">
-      <FileType>Document</FileType>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="InfoGen_Data\astrobiology\DB23T_1791_2021.inl" />
     <None Include="InfoGen_Data\astrobiology\GB14554_93.inl" />
     <None Include="InfoGen_Data\astrobiology\GB3095_2012.inl" />
     <None Include="InfoGen_Data\COMMON.inl" />
+    <None Include="InfoGen_Data\geochronology\COMMON.inl" />
     <None Include="InfoGen_Data\html_themes\Astrobiology.css" />
     <None Include="InfoGen_Data\html_themes\Default.css" />
     <None Include="InfoGen_Data\html_themes\Geochronology.css" />

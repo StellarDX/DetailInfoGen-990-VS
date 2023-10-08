@@ -25,17 +25,22 @@
 #include "composite3.h"
 #include "composite4.h"
 #include "final.h"
+#include <iostream>
 #include <fstream>
+#include <filesystem>
 #include <yvals_core.h> // STD version header
 
-#include "geochronology/final.h"
-#include "mineralogy/final.h"
+#include "geochronology/geochronofinal.h"
+#include "mineralogy/mineralfinal.h"
+#include "partition/partition.h"
 
 using namespace std;
 using namespace cse;
+using namespace std::filesystem;
 
 enum OutputFormat OFormat  = MD;
 bool Astrobiology          = false;
+bool MakeDir               = false;
 uint32_t _OUT_PRECISION    = 12;
 string LcID                = "1033";
 enum LinkCSS LCSS          = Static;
@@ -144,7 +149,7 @@ void NormalProcess(ISCStream& SystemIn, vector<string> args)
 
 	composite();
 	composite1();
-	composite2(args);
+	if (!PartitionReload) { composite2(args); }
 	if (Astrobiology)
 	{
 		composite3(args);
@@ -152,6 +157,8 @@ void NormalProcess(ISCStream& SystemIn, vector<string> args)
 	}
 
 	if (OFormat == HTML) { HTMLWrite(); }
+
+	cout << "DONE.\n";
 }
 
 /////////////////////////MAIN//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -173,13 +180,14 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		cout << "\t\033[32m-srccp=<encod> \033[0m: Specify Source file encoding, use numbers of codepage, e.g. -srccp=0 -> ANSI.\n";
 		cout << "\t\033[32m-outcp=<encod> \033[0m: Specify output file encoding.\n";
 		cout << "\t\033[32m-out <filename> \033[0m: Specify output file name.\n";
+		cout << "\t\033[32m-mkdir \033[0m: Create output directory if not exist.\n";
 		cout << "\t\033[32m-seed=<seed> \033[0m: Specify seed of random generator, using Hexadecimal(0 - FFFFFFFF), it will randomly generated when argument is missing.\n";
 		cout << "\t\033[32m-prec=<int> \033[0m: Specify output precision, default is 12.\n";
 		cout << "\t\033[32m-lnkcss <path> \033[0m: Linking css file, only available for html mode.\n";
 
 		cout << "\t\033[32m-lcssmode=<mode>(-cp<encod>) \033[0m: CSS link mode, only available for html mode. The following values are available:\n";
 		cout << "\t\t\033[33mstatic \033[0m- (Default value) link css with absolute path, maybe cause problems when files are moved.\n";
-		cout << "\t\t\033[33mcopy \033[0m- copy the css file to output path and link it with relative path.\n";
+		cout << "\t\t\033[33mcopy \033[0m- copy the css file to output path and link it with relative path. Add \"-skip\" or \"-replace\" at the end to select default method.\n";
 		cout << "\t\t\033[33minline \033[0m- merge html and css into a single file. Most stable but the output file maybe very big.\n";
 		cout << "\t\tAddition: Custom encoding, aka. the \"-cp...\" after this argument, of css files is supported when using inline method.\n";
 
@@ -206,7 +214,11 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		cout << "\t\t\033[33m-oredict <filename> \033[0m: Specify custom ore dictionary file, program will use default ore dictionary when this argument is missing.\n";
 		cout << "\t\t\033[33m-oredictencod=<encod> \033[0m: Specify file encoding of custom ore dictionary, default is 65001(UTF-8).\n";
 		cout << "\n";
-
+		cout << "\t\033[32m-partition \033[0m: Separate objects into multiple CSV files, classified by object type, the following options are available.\n";
+		cout << "\t\t\033[33m-starflags=<flags>, -planflags=<flags>, -sateflags=<flags> \033[0m: Output data controled by bit fields, requires a binary formed number with less than 16 bits for value.\n";
+		cout << "\t\t\033[33m-starseq=<seqnum>, -planseq=<seqnum>, -sateseq=<seqnum> \033[0m: Sequence of output data, using hexadecimal form.\n";
+		cout << "\t\t(See the source file \"partition.cc\" for output details.)\n";
+		cout << "\n";
 		cout << "Localizations: \n\n";
 		cout << "\t\033[32m-lcid=<ID> \033[0m: Locale ID, e.g. -lcid=1033 -> en_us.\n";
 		cout << "\t\033[32m-lchset=<encod> \033[0m: Encoding of localization file.\n";
@@ -238,6 +250,10 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 	default:
 		OutputFileName = args[1].substr(0, args[1].size() - 3) + ".md";
 		break;
+	}
+	if (find(args.begin(), args.end(), "-partition") != args.end())
+	{
+		OutputFileName = path(OutputFileName).parent_path().string();
 	}
 
 	int srcencoding = 65001; // Default encoding is UTF-8
@@ -295,6 +311,16 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 		{
 			if (args[i] == "-lcssmode=static") { LCSS = Static; }
 			else if (args[i] == "-lcssmode=copy") { LCSS = Copy; }
+			else if (args[i] == "-lcssmode=copy-skip")
+			{
+				LCSS = Copy;
+				DefaultCCpyMethod = Skip;
+			}
+			else if (args[i] == "-lcssmode=copy-replace")
+			{
+				LCSS = Copy;
+				DefaultCCpyMethod = Replace;
+			}
 			else if (args[i].substr(0, 16) == "-lcssmode=inline")
 			{
 				LCSS = Inline;
@@ -326,6 +352,7 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 	}
 
 	if (OFormat == HTML && find(args.begin(), args.end(), "-cpcss") != args.end()) { LCSS = Copy; } // Capability of earlier version.
+	if (find(args.begin(), args.end(), "-mkdir") != args.end()) { MakeDir = true; }
 
 	// Parse File
 
@@ -347,6 +374,7 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 	}
 	if (find(args.begin(), args.end(), "-geochronology") != args.end()) { geochronology(SystemIn, args); }
 	else if (find(args.begin(), args.end(), "-mineralogy") != args.end()) { minerals(SystemIn, args); }
+	else if (find(args.begin(), args.end(), "-partition") != args.end()) { ::partition(SystemIn, args); }
 	else
 	{
 		if (find(args.begin(), args.end(), "-astrobiology") != args.end()) { Astrobiology = true; }
@@ -359,6 +387,24 @@ int main(int argc, char const* argv[]) // main function can return "void" in C++
 	Transcode(Final, outencoding);
 
 	// Output file
+
+	if (!exists(path(OutputFileName).parent_path()))
+	{
+		if (MakeDir)
+		{
+			cout << "Output directory is not exist, creating...\n";
+			if (!create_directory(path(OutputFileName).parent_path()))
+			{
+				cout << "Failed to create directory.\n";
+				exit(114514);
+			}
+		}
+		else
+		{
+			cout << "Output directory is not exist.\n";
+			exit(114514);
+		}
+	}
 
 	ofstream fout(OutputFileName);
 	fout << Final;

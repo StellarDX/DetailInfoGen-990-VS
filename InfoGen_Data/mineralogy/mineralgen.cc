@@ -1,5 +1,5 @@
-﻿#include "composite.h"
-#include "final.h"
+﻿#include "mineralgen.h"
+#include "mineralfinal.h"
 
 #include "../gbuffer_planet.h"
 #include "../gbuffer_html.h"

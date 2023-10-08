@@ -18,6 +18,7 @@
 *
 ****/
 
+#include "partition/partition.h"
 #include "gbuffer_star.h"
 #include "gbuffer_planet.h"
 #include "gbuffer_atmosphere.h"
@@ -1178,6 +1179,12 @@ void __DFS_TransLum(shared_ptr<SystemStruct> SysTree)
 	for (size_t i = 0; i < SysTree->Catalog.size(); i++)
 	{
 		__DFS_TransLum(SysTree->Catalog[i].SubSystem);
+		if (SysTree->Catalog[i].Pointer->Type == "Star" && IsStarRemnant(SysTree->Catalog[i].Pointer->SpecClass) && !SysTree->Catalog[i].Pointer->NoAccretionDisk)
+		{
+			SysTree->Catalog[i].Pointer->Luminosity += SysTree->Catalog[i].Pointer->AccretionDisk.Luminosity;
+			SysTree->Catalog[i].Pointer->LumBol += SysTree->Catalog[i].Pointer->AccretionDisk.LumBol;
+			SysTree->Catalog[i].Pointer->Teff = max(SysTree->Catalog[i].Pointer->Teff, SysTree->Catalog[i].Pointer->AccretionDisk.DiskParams1.x);
+		}
 		if (SysTree->Catalog[i].Pointer->Type == "Barycenter")
 		{
 			// Find components of system barycenter
@@ -1241,12 +1248,12 @@ void Proccess(shared_ptr<Object> Obj)
 	switch (OFormat)
 	{
 	case HTML:
-		if (!Astrobiology) { HTMLcontent += HTMLProc(Obj); }
+		if (!Astrobiology && !PartitionReload) { HTMLcontent += HTMLProc(Obj); }
 		else { HTMLProc(Obj); }
 		break;
 	case MD:
 	default:
-		if (!Astrobiology){Final += GHMarkDownProc(Obj);}
+		if (!Astrobiology && !PartitionReload){Final += GHMarkDownProc(Obj);}
 		else { GHMarkDownProc(Obj); }
 		break;
 	}
@@ -1357,7 +1364,6 @@ void GetLocaleComp1()
 	GetLcString("C1_Planet_MRad",     &C1_Planet_MRad);
 	GetLcString("C1_Planet_ERad",     &C1_Planet_ERad);
 	GetLcString("C1_Planet_PRad",     &C1_Planet_PRad);
-	GetLcString("C1_Planet_PRad",     &C1_Planet_PRad);
 	GetLcString("C1_Planet_Oblate",   &C1_Planet_Oblate);
 	GetLcString("C1_Planet_ECircum",  &C1_Planet_ECircum);
 	GetLcString("C1_Planet_MCircum",  &C1_Planet_MCircum);
@@ -1416,7 +1422,7 @@ void composite1()
 	switch (OFormat)
 	{
 	case HTML:
-		if (!Astrobiology)
+		if (!Astrobiology && !PartitionReload)
 		{
 			//HTMLcontent += "\t\t\t" + string(_Html_Tags::_html_line) + '\n';
 			HTMLcontent += "\t\t\t" + string(_Html_Tags::_h2_begin) + C1_Title2 + _Html_Tags::_h2_end + "\n";
@@ -1425,7 +1431,7 @@ void composite1()
 		break;
 	case MD:
 	default:
-		if (!Astrobiology)
+		if (!Astrobiology && !PartitionReload)
 		{
 			Final += "\n## " + C1_Title2 + "\n";
 		}

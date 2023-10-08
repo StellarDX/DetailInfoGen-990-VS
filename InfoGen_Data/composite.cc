@@ -18,6 +18,7 @@
 *
 ****/
 
+#include "partition/partition.h"
 #include "gbuffer_html.h"
 
 #include "composite.h"
@@ -237,7 +238,7 @@ void composite()
 		break;
 	case MD:
 	default:
-		if (!Astrobiology){Final = GHMarkDownOutput();}
+		if (!Astrobiology && !PartitionReload){Final = GHMarkDownOutput();}
 		else { GHMarkDownOutput(); }
 		break;
 	}
