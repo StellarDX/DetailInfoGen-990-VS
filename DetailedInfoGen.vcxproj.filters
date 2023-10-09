@@ -118,5 +118,6 @@
     <None Include="README.md" />
     <None Include="LICENSE" />
     <None Include="InfoGen_Data\geochronology\COMMON.inl" />
+    <None Include="InfoGen_Data\partition\PARTITION_HELP.md" />
   </ItemGroup>
 </Project>

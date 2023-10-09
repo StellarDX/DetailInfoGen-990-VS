@@ -16,7 +16,7 @@ using namespace std::filesystem;
 
 // -------------------- FLAGS --------------------
 
-//           Parameter             Flag                   Sequence in full output
+//            Parameter            Flag                   Sequence in full output
 const int8_t  CSVStarSystem      = 0b00000001;         // 0
 const int8_t  CSVStarDesignation = 0b00000010;         // 1
 const int8_t  CSVStarClass       = 0b00000100;         // 2
@@ -59,7 +59,21 @@ const int8_t  CSVSateMask        = 0b00111111;
 
 // ----------------------------------------------
 
-const int64_t DefSequence        = 0xFEDCBA9876543210; // Low Endians
+// 接手的兄弟我知道你看到大片的0和1会很吃惊
+// 事实上这只是C/C++语言里头，尤其是系统底层和嵌入式常出现的小把戏而已。
+// 你现在看的这段是整个项目唯一用中文写的注释。
+// 具体我是什么用意自己去看帮助文档吧，文件名是PARTITION_HELP.md，我承认如果不细说代码连帝弓都看不懂。
+
+// 2023/10/02，青雀。你干吗学太卜啊，我才刚闲下来你就把项目扔过来了。
+// 我服了，修了一个Bug又多一个Bug，完全跑不起来
+// 2023/10/04 不管了，走了走了，打麻将去了。
+
+// 2023/10/05，符玄
+// 这方法到底是谁想出来的，一眼望去全是01，而且很多操作看似非比寻常，真是奇怪...
+// 2023/10/07 麻了，本座看了半天才稍微看出些所以然，原想着试下常规操作能不能实现相同功能，没想到比没重构Bug还多。
+// 2023/10/08 不管了，告辞。
+
+const int64_t DefSequence        = 0xFEDCBA9876543210; // Little Endian
 
 // -------------------- PRESETS --------------------
 
@@ -71,7 +85,7 @@ const CSVPreset8  CSVStarPreset2 = {CSVStarSystem | CSVStarDesignation | CSVStar
 const CSVPreset8  CSVStarPreset3 = {CSVStarSystem | CSVStarDesignation | CSVStarMass | CSVStarMagnitude | CSVStarTEff,             0x00043210}; // By Mass
 const CSVPreset8  CSVStarPreset4 = {CSVStarSystem | CSVStarDesignation | CSVStarRadius | CSVStarClass,                             0x00002310}; // By Radius
 const CSVPreset8  CSVStarPreset5 = {CSVStarSystem | CSVStarDesignation | CSVStarTEff | CSVStarMass | CSVStarLumBol | CSVStarClass, 0x00243510}; // By Temperature
-const CSVPreset8  CSVStarPresetF = {CSVStarMask};
+const CSVPreset8  CSVStarPresetF = {CSVStarMask, int32_t(DefSequence & 0xFFFFFFFFLL)};
 
 const CSVPreset16 CSVPlanPreset1 = {CSVPlanLabel | CSVPlanMass | CSVPlanRadius | CSVPlanOrbitT | CSVPlanOrbitA | CSVPlanTemp | CSVPlanDiscMethod | CSVPlanParentMass | CSVPlanParentTeff, 0x0000000876543210}; // Default preset
 const CSVPreset16 CSVPlanPreset2 = {CSVPlanParentName | CSVPlanParentMass | CSVPlanLabel | CSVPlanMass | CSVPlanRadius | CSVPlanOrbData | CSVPlanDisData,                                 0x0000010A98756432}; // Wikipedia-1
@@ -80,7 +94,7 @@ const CSVPreset16 CSVPlanPreset4 = {CSVPlanLabel | CSVPlanMass | CSVPlanOrbData 
 const CSVPreset16 CSVPlanPreset5 = {CSVPlanLabel | CSVPlanMass | CSVPlanRadius | CSVPlanDensity | CSVPlanTemp | CSVPlanOrbData | CSVPlanDiscDate,                                         0x0000009487653210}; // Wikipedia-3
 const CSVPreset16 CSVPlanPreset6 = {CSVPlanParentName | CSVPlanLabel | CSVPlanMass | CSVPlanRadius | CSVPlanOrbitT | CSVPlanOrbitA | CSVPlanOrbitE | CSVPlanDiscDate,                     0x0000000007654321}; // Wikipedia-4
 const CSVPreset16 CSVPlanPreset7 = {CSVPlanLabel | CSVPlanMass | CSVPlanRadius | CSVPlanSurfGrav | CSVPlanTemp | CSVPlanOrbitA | CSVPlanOrbitE,                                           0x0000000004653210}; // Terrestrial
-const CSVPreset16 CSVPlanPresetF = {CSVPlanMask};
+const CSVPreset16 CSVPlanPresetF = {CSVPlanMask, DefSequence};
 
 const CSVPreset8  CSVSatePresetF = {CSVSateMask, int32_t(DefSequence & 0xFFFFFFLL)};
 
@@ -94,7 +108,7 @@ namespace Localization
 	static string CP_Star_Mass          = "Mass (Kg)";
 	static string CP_Star_MagBol        = "Bolometric magnitude";
 	static string CP_Star_Lum           = "Luminosity (W)";
-	static string CP_Star_Teff          = "Temperature (��K)";
+	static string CP_Star_Teff          = "Temperature (°K)";
 	static string CP_Star_MRad          = "Radius (m)";
 
 	static string CP_Planet_Label       = "Name";
@@ -106,13 +120,13 @@ namespace Localization
 	static string CP_Orbit_a            = "Semi-major axis (a) (m)";
 	static string CP_Orbit_e            = "Eccentricity (e)";
 	static string CP_Orbit_i            = "Inclination (i)";
-	static string CP_Planet_Temp        = "Temp. (��K)";
+	static string CP_Planet_Temp        = "Temp. (°K)";
 	static string CP_Planet_DiscMeth    = "Discovery method";
 	static string CP_Planet_DiscDate    = "Discovery year";
 	static string CP_Planet_StarName    = "Star";
 	static string CP_Planet_StarType    = "Star type";
 	static string CP_Planet_StarMass    = "Host star mass (Kg)";
-	static string CP_Planet_StarTemp    = "Host star temp. (��K)";
+	static string CP_Planet_StarTemp    = "Host star temp. (°K)";
 
 	static string CP_Satellite_Name     = "Name";
 	static string CP_Satellite_Parent   = "Parent";
