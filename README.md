@@ -1,5 +1,6 @@
 # SpaceEngine 0.990 详细信息生成器《星示昭明》
 
+<b>注：此版本将不再更新，新的CMake版本正在开发中</b>
 协议：本体使用[GPLv2](https://www.gnu.org/licenses/licenses.html)，部分存放字符串的文件为[CC BY-SA 4.0](https://creativecommons.org/licenses)
 
 上一个详细信息生成器链接：[百度贴吧搬运链接，SE论坛的原链接不知去向](https://tieba.baidu.com/p/4458618242)
